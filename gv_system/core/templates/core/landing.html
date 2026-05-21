@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-gradient-to-b from-velvet-900 to-velvet-800 text-white py-16 px-4 text-center">
+    <div class="max-w-4xl mx-auto space-y-6">
+        <span class="bg-velvet-600/30 text-velvet-100 text-xs uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-velvet-600">
+            Secure & Confidential Platform
+        </span>
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight">
+            Combat Online Harassment & Technology-Facilitated Abuse
+        </h1>
+        <p class="text-base md:text-xl text-velvet-100/80 max-w-2xl mx-auto">
+            Report incidents safely, track responses securely, and get access to expert legal and psychological care. Your safety is our absolute priority.
+        </p>
+        
+        <div class="pt-4 flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="{% url 'file_report' %}" class="w-full sm:w-auto bg-velvet-600 hover:bg-velvet-100 hover:text-velvet-950 text-white text-lg font-bold px-8 py-4 rounded-lg shadow-lg transition transform hover:-translate-y-0.5 text-center">
+                File a Secure Report
+            </a>
+            
+            <a href="{% url 'track_case' %}" class="w-full sm:w-auto bg-transparent border-2 border-velvet-100/40 hover:border-velvet-100 text-velvet-100 text-lg font-semibold px-8 py-4 rounded-lg transition text-center">
+                Track Existing Report
+            </a>
+        </div>
+        <p class="text-xs text-velvet-100/50">Registration is *not* required to log an incident.</p>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center text-velvet-900 mb-4">Recognizing Online Violence</h2>
+    <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Technology-facilitated gender-based violence manifests in various forms. Select a category during reporting to help the triage team react swiftly.</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-velvet-100">
+            <div class="w-12 h-12 rounded-lg bg-velvet-100 text-velvet-600 flex items-center justify-center font-bold text-xl mb-4">💬</div>
+            <h3 class="text-lg font-bold text-velvet-900 mb-2">Cyberstalking</h3>
+            <p class="text-sm text-gray-600">Persistent unwanted messaging, surveillance, location hacking, or relentless online monitoring.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-velvet-100">
+            <div class="w-12 h-12 rounded-lg bg-velvet-100 text-velvet-600 flex items-center justify-center font-bold text-xl mb-4">🔒</div>
+            <h3 class="text-lg font-bold text-velvet-900 mb-2">Doxing & Image Sharing</h3>
+            <p class="text-sm text-gray-600">Leaking private, unconsented intimate photographs or distributing personal contact strings maliciously.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-velvet-100">
+            <div class="w-12 h-12 rounded-lg bg-velvet-100 text-velvet-600 flex items-center justify-center font-bold text-xl mb-4">👤</div>
+            <h3 class="text-lg font-bold text-velvet-900 mb-2">Impersonation</h3>
+            <p class="text-sm text-gray-600">Creating malicious duplicate profiles or identities designed to defame, blackmail, or target victims.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-velvet-100">
+            <div class="w-12 h-12 rounded-lg bg-velvet-100 text-velvet-600 flex items-center justify-center font-bold text-xl mb-4">⚠️</div>
+            <h3 class="text-lg font-bold text-velvet-900 mb-2">Threats & Hate Speech</h3>
+            <p class="text-sm text-gray-600">Direct threats of bodily harm, sexual violence, or structured targeted hate campaigns across platforms.</p>
+        </div>
+    </div>
+</div>
+
+<div id="emergency" class="bg-white border-t border-b border-velvet-100 py-16 px-4">
+    <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-bold text-center text-velvet-900 mb-2">Immediate Crisis & Emergency Helplines</h2>
+        <p class="text-center text-gray-600 mb-8">If you are in immediate physical danger, reach out to these toll-free rapid dispatch numbers immediately.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div class="p-6 bg-red-50 rounded-xl border border-red-200">
+                <h3 class="font-bold text-red-900 text-lg">National Gender Helpline</h3>
+                <p class="text-2xl font-black text-red-600 my-2">1195</p>
+                <p class="text-xs text-red-700">Free, confidential 24/7 medical & psychosocial support routing.</p>
+            </div>
+            <div class="p-6 bg-velvet-50 rounded-xl border border-velvet-200">
+                <h3 class="font-bold text-velvet-900 text-lg">Childline Kenya Helpline</h3>
+                <p class="text-2xl font-black text-velvet-600 my-2">116</p>
+                <p class="text-xs text-velvet-700">Dedicated support framework for minor reporting pipelines.</p>
+            </div>
+            <div class="p-6 bg-amber-50 rounded-xl border border-amber-200">
+                <h3 class="font-bold text-amber-900 text-lg">Police Emergency Dispatch</h3>
+                <p class="text-2xl font-black text-amber-600 my-2">999 / 112</p>
+                <p class="text-xs text-amber-700">Immediate response routing for active physical safety threats.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="faqs" class="max-w-4xl mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold text-center text-velvet-900 mb-8">Frequently Asked Questions</h2>
+    
+    <div class="space-y-4">
+        <div class="bg-white rounded-lg border border-velvet-100 overflow-hidden">
+            <button class="w-full text-left p-5 font-bold text-velvet-900 flex justify-between items-center bg-velvet-50/50 hover:bg-velvet-50 transition" onclick="toggleFaq(this)">
+                <span>Do I have to create an account to file an incident?</span>
+                <span class="text-xl">+</span>
+            </button>
+            <div class="p-5 text-gray-600 hidden border-t border-velvet-50 text-sm leading-relaxed">
+                No. You can file a completely anonymous report. The system will issue you a unique Reference Number that you can use to check for updates without inputting any personal identifying data.
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg border border-velvet-100 overflow-hidden">
+            <button class="w-full text-left p-5 font-bold text-velvet-900 flex justify-between items-center bg-velvet-50/50 hover:bg-velvet-50 transition" onclick="toggleFaq(this)">
+                <span>How does the AI Engine help process my report?</span>
+                <span class="text-xl">+</span>
+            </button>
+            <div class="p-5 text-gray-600 hidden border-t border-velvet-50 text-sm leading-relaxed">
+                Once submitted, our integrated multi-agent AI Engine immediately reads the incident context to classify the offense type and calculate an urgency rating. This prioritizes critical cases for administrators, ensuring faster review and response times.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="fixed bottom-6 right-6 z-50">
+    <button class="bg-velvet-600 hover:bg-velvet-800 text-white p-4 rounded-full shadow-2xl flex items-center space-x-2 transition transform hover:scale-105 focus:outline-none">
+        <span class="text-xl">💬</span>
+        <span class="font-bold text-sm hidden sm:inline">AI Help Assistant</span>
+    </button>
+</div>
+
+<script>
+    // Simple, responsive layout toggle logic for the FAQs accordion
+    function toggleFaq(button) {
+        const targetPanel = button.nextElementSibling;
+        const iconIndicator = button.querySelector('span:last-child');
+        
+        if (targetPanel.classList.contains('hidden')) {
+            targetPanel.classList.remove('hidden');
+            iconIndicator.textContent = '−';
+        } else {
+            targetPanel.classList.add('hidden');
+            iconIndicator.textContent = '+';
+        }
+    }
+</script>
+{% endblock %}

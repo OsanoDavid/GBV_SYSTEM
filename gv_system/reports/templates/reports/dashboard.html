@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-12 space-y-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-gray-200 pb-6">
+        <div>
+            <h1 class="text-3xl font-black text-velvet-900 tracking-tight">Your Case Dashboard</h1>
+            <p class="text-sm text-gray-500">Logged in securely as user: <span class="font-mono text-violet-700 font-bold">@{{ request.user.username }}</span></p>
+        </div>
+        <a href="{% url 'file_report' %}" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded-lg text-sm shadow transition shrink-0 text-center">
+            + File a New Incident
+        </a>
+    </div>
+
+    <div class="space-y-4">
+        <h2 class="text-lg font-bold text-velvet-900">Your Submitted Incident Records</h2>
+        
+        {% if reports %}
+            <div class="overflow-hidden bg-white rounded-xl shadow-md border border-violet-100">
+                <table class="min-w-full divide-y divide-gray-200 text-left text-sm">
+                    <thead class="bg-gray-50 text-xs uppercase font-bold text-gray-500 tracking-wider">
+                        <tr>
+                            <th class="px-6 py-4">Reference Number</th>
+                            <th class="px-6 py-4">Submission Date</th>
+                            <th class="px-6 py-4">Vector Platform</th>
+                            <th class="px-6 py-4">Lifecycle Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 font-medium">
+                        {% for report in reports %}
+                            <tr class="hover:bg-violet-50/40 transition">
+                                <td class="px-6 py-4 font-mono font-bold text-violet-700 select-all">{{ report.reference_number }}</td>
+                                <td class="px-6 py-4 text-gray-500">{{ report.created_at|date:"M d, Y" }}</td>
+                                <td class="px-6 py-4 text-gray-700 capitalize">{{ report.platform_used }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide
+                                        {% if report.status == 'pending' %} bg-amber-100 text-amber-800
+                                        {% elif report.status == 'under_review' %} bg-blue-100 text-blue-800
+                                        {% else %} bg-green-100 text-green-800 {% endif %}">
+                                        {{ report.get_status_display }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-12 text-center bg-gray-50 border border-dashed border-gray-300 rounded-xl space-y-2">
+                <p class="text-gray-600 font-medium">No incidents linked to this profile context account yet.</p>
+                <p class="text-xs text-gray-400">If you filed past cases as a guest, use your unique tracking identifier token to locate them.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SafeSpace | TFGBV Reporting platform{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        velvet: {
+                            50: '#F5F3FF',
+                            100: '#E8E3F5',
+                            600: '#8B5CF6',
+                            800: '#3B1C72',
+                            900: '#2E1A47',
+                            950: '#1E1035',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-velvet-50 text-velvet-950 flex flex-col min-h-screen">
+
+    <nav class="bg-velvet-900 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-2">
+                    <a href="{% url 'landing' %}" class="text-2xl font-bold tracking-tight text-velvet-100">
+                        Safe<span class="text-velvet-600">Space</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="{% url 'landing' %}" class="hover:text-velvet-600 transition">Home</a>
+                    <a href="{% url 'track_case' %}" class="hover:text-velvet-600 transition">Track Report</a>
+                    
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'user_dashboard' %}" class="text-violet-400 hover:text-white transition font-bold">My Dashboard</a>
+                        {% if user.is_superuser %}
+                            <a href="/admin/" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black px-2.5 py-1 rounded uppercase tracking-wider">Admin Panel</a>
+                        {% endif %}
+                        <form action="{% url 'logout' %}" method="POST" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="hover:text-red-400 transition text-sm">Log Out</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="hover:text-velvet-600 transition">Log In</a>
+                        <a href="{% url 'register' %}" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-1.5 rounded-md text-sm font-semibold transition">Sign Up</a>
+                    {% endif %}
+                    
+                    <button onclick="quickEscape()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded shadow transition focus:outline-none">
+                        QUICK ESCAPE (ESC)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-velvet-950 text-velvet-100 py-8 border-t border-velvet-800">
+        <div class="max-w-7xl mx-auto px-4 text-center md:flex md:justify-between md:items-center">
+            <p class="text-sm text-velvet-100/70">&copy; 2026 SafeSpace Initiative. Data Encrypted Securely.</p>
+        </div>
+    </footer>
+
+    <script>
+        function quickEscape() {
+            window.location.replace("https://www.google.com/search?q=weather");
+        }
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') { quickEscape(); }
+        });
+    </script>
+</body>
+</html>

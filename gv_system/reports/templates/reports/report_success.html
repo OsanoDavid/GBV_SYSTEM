@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-16">
+    <div class="bg-white rounded-2xl shadow-xl border border-violet-100 p-8 text-center space-y-6">
+        
+        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-3xl font-bold">
+            ✓
+        </div>
+        
+        <div class="space-y-2">
+            <h1 class="text-3xl font-black text-velvet-900 tracking-tight">Report Successfully Logged</h1>
+            <p class="text-sm text-gray-500 max-w-md mx-auto">
+                Your incident file has been verified. Copy the generated unique reference code below. You will use this code to track your case progress securely.
+            </p>
+        </div>
+        
+        <div class="bg-violet-50 border border-violet-200 rounded-xl p-4 font-mono text-xl font-black text-violet-700 tracking-wider select-all shadow-inner">
+            {% if ref_num %}
+                {{ ref_num }}
+            {% else %}
+                <span class="text-gray-400 text-sm font-sans font-normal">Token generation delayed... Refreshing context</span>
+            {% endif %}
+        </div>
+        
+        <p class="text-xs text-amber-600 font-medium bg-amber-50 inline-block px-3 py-1 rounded-full border border-amber-200">
+            ⚠️ Warning: Please save this code now. For safety, it will not be displayed again.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row justify-center gap-3 pt-4">
+            <a href="{% url 'track_case' %}?query={{ ref_num }}" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded-xl text-sm transition shadow shadow-violet-200">
+                Go to Status Tracker
+            </a>
+            <a href="{% url 'landing' %}" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-xl text-sm transition">
+                Return Home
+            </a>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto px-4 py-16">
+    <div class="bg-white rounded-2xl shadow-xl border border-violet-100 p-8 space-y-6">
+        <div class="text-center">
+            <h1 class="text-2xl font-bold text-velvet-900">Create Private Dashboard</h1>
+            <p class="text-xs text-gray-500 mt-1">Choose an anonymous username to preserve your privacy.</p>
+        </div>
+        
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="space-y-1">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-600">{{ field.label }}</label>
+                    <div class="text-sm text-gray-500">{{ field.help_text }}</div>
+                    <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" class="w-full p-3 bg-gray-50 border border-violet-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600 text-sm">
+                    {% if field.errors %}
+                        <p class="text-xs text-red-600 font-semibold">{{ field.errors.as_text }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 rounded-lg shadow transition">
+                Register & Initialize Account
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
