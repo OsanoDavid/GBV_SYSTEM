@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import file_report_view, report_success_view, track_case_view, register_user_view, user_dashboard_view
 from django.contrib.auth import views as auth_views
+from .views import ai_assistant_chat_view
 
 urlpatterns = [
     path('report/', file_report_view, name='file_report'),
@@ -12,4 +13,5 @@ urlpatterns = [
     path('dashboard/', user_dashboard_view, name='user_dashboard'),
     path('login/', auth_views.LoginView.as_repr() if hasattr(auth_views.LoginView, 'as_repr') else auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='landing'), name='logout'),
+    path('api/assistant/chat/', ai_assistant_chat_view, name='ai_assistant_chat'),
 ]

@@ -48,10 +48,10 @@
                             {% csrf_token %}
                             <button type="submit" class="hover:text-red-400 transition text-sm">Log Out</button>
                         </form>
-                    {% else %}
+                    {%   else %}
                         <a href="{% url 'login' %}" class="hover:text-velvet-600 transition">Log In</a>
                         <a href="{% url 'register' %}" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-1.5 rounded-md text-sm font-semibold transition">Sign Up</a>
-                    {% endif %}
+                    {%   endif %}
                     
                     <button onclick="quickEscape()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded shadow transition focus:outline-none">
                         QUICK ESCAPE (ESC)
@@ -64,6 +64,47 @@
     <main class="flex-grow">
         {% block content %}{% endblock %}
     </main>
+
+    <div class="fixed bottom-6 right-6 z-50 font-sans flex flex-col items-end space-y-4">
+        
+        <div id="chat-window-box" class="hidden w-80 sm:w-96 h-[450px] bg-white rounded-2xl shadow-2xl border border-violet-100 flex flex-col overflow-hidden transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right mb-2">
+            
+            <div class="bg-gradient-to-r from-velvet-900 to-velvet-800 text-white p-4 flex justify-between items-center shadow-md">
+                <div class="flex items-center space-x-2">
+                    <div class="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></div>
+                    <div>
+                        <h3 class="text-sm font-black tracking-wide">SafeSpace Support Bot</h3>
+                        <p class="text-[10px] text-violet-200">Confidential, encrypted assistance</p>
+                    </div>
+                </div>
+                <button onclick="toggleChatWindow()" class="text-violet-200 hover:text-white transition focus:outline-none p-1">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div id="chat-messages-scroll" class="flex-grow p-4 overflow-y-auto space-y-3 bg-gray-50/50 text-xs leading-relaxed">
+                <div class="flex flex-col items-start space-y-1 max-w-[85%]">
+                    <div class="bg-white border border-violet-100 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm">
+                        Hello! I am your safe guide. Type a keyword like <span class="font-mono text-violet-700 font-bold">evidence</span>, <span class="font-mono text-violet-700 font-bold">blackmail</span>, or <span class="font-mono text-violet-700 font-bold">report</span> to receive immediate support resources.
+                    </div>
+                    <span class="text-[9px] text-gray-400 px-1 font-mono">System • Just Now</span>
+                </div>
+            </div>
+
+            <form id="chat-submission-form" onsubmit="sendChatMessage(event)" class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
+                <input type="text" id="chat-input-field" placeholder="Ask a question or type a topic..." autocomplete="off" class="flex-grow p-2.5 bg-gray-50 border border-violet-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-violet-600 focus:bg-white transition">
+                <button type="submit" class="bg-violet-600 hover:bg-violet-700 text-white p-2.5 rounded-xl shadow transition shrink-0 focus:outline-none">
+                    <svg class="w-4 h-4 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </button>
+            </form>
+        </div>
+
+        <button id="chat-toggle-btn" onclick="toggleChatWindow()" class="bg-violet-600 hover:bg-violet-700 text-white font-bold px-5 py-3 rounded-full shadow-2xl flex items-center space-x-2 transition transform hover:-translate-y-0.5 active:scale-95 focus:outline-none">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+            <span class="text-sm font-black tracking-wide">AI Help Assistant</span>
+        </button>
+
+    </div>
 
     <footer class="bg-velvet-950 text-velvet-100 py-8 border-t border-velvet-800">
         <div class="max-w-7xl mx-auto px-4 text-center md:flex md:justify-between md:items-center">
@@ -78,6 +119,72 @@
         window.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') { quickEscape(); }
         });
+
+        // AI Assistant Window Toggling Handler
+        function toggleChatWindow() {
+            const box = document.getElementById('chat-window-box');
+            if(box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                setTimeout(() => {
+                    box.classList.remove('scale-95', 'opacity-0');
+                    box.classList.add('scale-100', 'opacity-100');
+                }, 10);
+            } else {
+                box.classList.remove('scale-100', 'opacity-100');
+                box.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => box.classList.add('hidden'), 300);
+            }
+        }
+
+        // Asynchronous Messaging Stream Dispatcher
+        function sendChatMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('chat-input-field');
+            const scrollArea = document.getElementById('chat-messages-scroll');
+            const messageText = input.value.trim();
+            
+            if(!messageText) return;
+
+            // Render User Text Bubble Instantly
+            const userBubble = document.createElement('div');
+            userBubble.className = "flex flex-col items-end space-y-1 max-w-[85%] ml-auto";
+            userBubble.innerHTML = `
+                <div class="bg-violet-600 text-white p-3 rounded-2xl rounded-tr-none shadow-md font-medium">
+                    ${messageText}
+                </div>
+                <span class="text-[9px] text-gray-400 px-1 font-mono">You • Just Now</span>
+            `;
+            scrollArea.appendChild(userBubble);
+            input.value = '';
+            scrollArea.scrollTop = scrollArea.scrollHeight;
+
+            // Dispatch non-blocking AJAX fetch stream transaction call
+            fetch("{% url 'ai_assistant_chat' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({ message: messageText })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Render Backend Response Engine Data
+                const botBubble = document.createElement('div');
+                botBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
+                botBubble.innerHTML = `
+                    <div class="bg-white border border-violet-100 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-violet-50">
+                        ${data.reply || data.message}
+                    </div>
+                    <span class="text-[9px] text-gray-400 px-1 font-mono">System • Agent Active</span>
+                `;
+                scrollArea.appendChild(botBubble);
+                scrollArea.scrollTop = scrollArea.scrollHeight;
+            })
+            .catch(error => {
+                console.error("AJAX Interface error:", error);
+            });
+        }
     </script>
 </body>
 </html>
