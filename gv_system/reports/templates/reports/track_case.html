@@ -1,33 +1,53 @@
 {% extends 'base.html' %}
 
+{% block title %}Track Case Status | SafeSpace{% endblock %}
+
 {% block content %}
-<div class="max-w-md mx-auto px-4 py-12">
-    <div class="bg-white rounded-2xl shadow-xl border border-violet-100 p-6 space-y-6">
+<div class="max-w-2xl mx-auto px-4 py-12">
+    <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-purple-100/80 p-8 space-y-6">
         <div class="text-center">
-            <h1 class="text-2xl font-bold text-velvet-900">Case Status Tracking</h1>
-            <p class="text-xs text-gray-500 mt-1">Input your unique tracking sequence token below.</p>
+            <h1 class="text-2xl font-black text-purple-950 tracking-tight">Case Status Tracking</h1>
+            <p class="text-xs text-gray-500 mt-1">Input your unique tracking sequence token credentials below.</p>
         </div>
         
-        <form method="GET" action="{% url 'track_case' %}" class="space-y-4">
-            <input type="text" 
-                   name="query" 
-                   value="{% if query %}{{ query }}{% else %}{{ ref_num }}{% endif %}" 
-                   placeholder="e.g., GBV-A1B2-C3D4" 
-                   class="w-full p-3 text-center uppercase font-mono tracking-widest bg-gray-50 border border-violet-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-600">
+        <form method="POST" action="{% url 'track_case' %}" class="space-y-4 bg-gray-50/60 backdrop-blur-sm p-6 rounded-2xl border border-purple-100/40 shadow-inner">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-purple-400 font-mono">Reference Code</label>
+                    <input type="text" 
+                           name="reference_number" 
+                           value="{{ request.POST.reference_number }}" 
+                           placeholder="e.g., GBV-A1B2-C3D4" 
+                           required
+                           class="w-full p-3 uppercase font-mono text-xs font-bold text-center bg-white/90 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition shadow-sm">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-purple-400 font-mono">Secret Access PIN</label>
+                    <input type="password" 
+                           name="case_access_pin" 
+                           placeholder="••••••" 
+                           maxlength="6"
+                           required
+                           class="w-full p-3 font-mono text-xs font-bold text-center bg-white/90 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition shadow-sm">
+                </div>
+            </div>
             
-            <button type="submit" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 rounded-lg shadow transition">
+            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-purple-600/20 transition-all duration-200 text-xs uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-purple-500 active:scale-[0.99]">
                 Search Case Status
             </button>
         </form>
 
-        {% if query_performed or searched %}
-            <hr class="border-violet-100">
+        {% if request.method == "POST" %}
+            <hr class="border-purple-100">
             {% if report %}
                 <div class="space-y-4 text-left">
                     
-                    <div class="p-4 rounded-xl border border-violet-200 text-center space-y-2 {% if report.status == 'pending' %}bg-amber-50/60{% elif report.status == 'under_review' %}bg-blue-50/60{% else %}bg-green-50/60{% endif %}">
-                        <span class="text-xs uppercase font-bold tracking-wider block text-gray-500">Current Lifecycle Status</span>
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-black uppercase tracking-wide
+                    <div class="p-4 rounded-xl border border-purple-200 text-center space-y-2 {% if report.status == 'pending' %}bg-amber-50/60{% elif report.status == 'under_review' %}bg-blue-50/60{% else %}bg-green-50/60{% endif %}">
+                        <span class="text-xs font-mono font-bold text-purple-600 block">{{ report.reference_number }}</span>
+                        <h2 class="text-base font-black text-gray-800 tracking-tight">{{ report.get_incident_category_display }}</h2>
+                        
+                        <span class="inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide
                             {% if report.status == 'pending' %} bg-amber-200 text-amber-800
                             {% elif report.status == 'under_review' %} bg-blue-200 text-blue-800
                             {% elif report.status == 'action_taken' %} bg-green-200 text-green-800
@@ -35,6 +55,11 @@
                             {{ report.get_status_display }}
                         </span>
                         <p class="text-[10px] text-gray-400 font-mono mt-1">Last System Update: {{ report.updated_at|date:"M d, Y H:i" }}</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 text-xs bg-white p-3 rounded-xl border border-gray-100 font-medium text-gray-600">
+                        <div><span class="text-gray-400 block text-[10px] uppercase font-mono">Incident Date</span>{{ report.incident_date|date:"F d, Y" }}</div>
+                        <div><span class="text-gray-400 block text-[10px] uppercase font-mono">Platform Used</span>{{ report.platform_used }}</div>
                     </div>
 
                     <div class="space-y-1 bg-gray-50 p-4 rounded-xl border border-gray-100">
@@ -76,8 +101,10 @@
 
                 </div>
             {% else %}
-                <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-center text-sm text-red-800 font-medium">
-                    No matching report found for reference sequence token "<span class="font-mono font-bold">{% if query %}{{ query }}{% else %}{{ ref_num }}{% endif %}</span>". Please verify the code and try again.
+                <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-center text-xs text-red-800 font-medium leading-normal">
+                    No matching report structure discovered for reference sequence token 
+                    "<span class="font-mono font-bold">{{ request.POST.reference_number }}</span>" with the specified PIN profile. 
+                    Please double-check your cryptographic key credentials and try again.
                 </div>
             {% endif %}
         {% endif %}

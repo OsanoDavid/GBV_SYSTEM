@@ -1,126 +1,195 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-purple-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SafeSpace | TFGBV Reporting platform{% endblock %}</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        velvet: {
-                            50: '#F5F3FF',
-                            100: '#E8E3F5',
-                            600: '#8B5CF6',
-                            800: '#3B1C72',
-                            900: '#2E1A47',
-                            950: '#1E1035',
+                        purple: {
+                            50: '#F9F2FF',
+                            100: '#F3E5FF',
+                            200: '#E7CCFF',
+                            300: '#D4A3FF',
+                            600: '#9D00FF', 
+                            700: '#8600DB',
+                            800: '#5C0099',
+                            900: '#3D0066',
+                            950: '#24003D',
                         }
                     }
                 }
             }
         }
     </script>
+    <link rel="stylesheet" href="{% static 'images/custom.css' %}?v=3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="bg-velvet-50 text-velvet-950 flex flex-col min-h-screen">
+<body class="bg-purple-50 text-purple-950 flex flex-col min-h-screen font-sans antialiased">
 
-    <nav class="bg-velvet-900 text-white shadow-lg sticky top-0 z-50">
+    <nav class="bg-purple-900 text-white shadow-lg sticky top-0 z-50" role="navigation" aria-label="Main Security Directory">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
+                
                 <div class="flex items-center space-x-2">
-                    <a href="{% url 'landing' %}" class="text-2xl font-bold tracking-tight text-velvet-100">
-                        Safe<span class="text-velvet-600">Space</span>
+                    <a href="{% url 'landing' %}" class="text-2xl font-black tracking-tight text-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-600 rounded p-1" aria-label="SafeSpace Home Brand Link">
+                        Safe<span class="text-purple-600">Space</span>
                     </a>
                 </div>
                 
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="{% url 'landing' %}" class="hover:text-velvet-600 transition">Home</a>
-                    <a href="{% url 'track_case' %}" class="hover:text-velvet-600 transition">Track Report</a>
+                <div class="hidden md:flex items-center space-x-3">
+                    <a href="{% url 'landing' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">
+                        Home
+                    </a>
+                    <a href="{% url 'file_report' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">
+                        File Report
+                    </a>
+                    <a href="{% url 'track_case' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">
+                        Track Report
+                    </a>
                     
                     {% if user.is_authenticated %}
-                        <a href="{% url 'user_dashboard' %}" class="text-violet-400 hover:text-white transition font-bold">My Dashboard</a>
+                        <a href="{% url 'user_dashboard' %}" class="text-sm text-purple-300 font-bold px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:outline-none">
+                            My Dashboard
+                        </a>
                         {% if user.is_superuser %}
-                            <a href="/admin/" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black px-2.5 py-1 rounded uppercase tracking-wider">Admin Panel</a>
+                            <a href="/admin/" target="_blank" rel="noopener noreferrer" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black px-2.5 py-1.5 rounded uppercase tracking-wider transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">Admin Panel</a>
                         {% endif %}
-                        <form action="{% url 'logout' %}" method="POST" class="inline">
+                        <form action="{% url 'logout' %}" method="POST" class="inline m-0">
                             {% csrf_token %}
-                            <button type="submit" class="hover:text-red-400 transition text-sm">Log Out</button>
+                            <button type="submit" class="text-purple-200 text-sm font-medium px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-red-400 hover:border-red-400 focus:outline-none">Log Out</button>
                         </form>
-                    {%   else %}
-                        <a href="{% url 'login' %}" class="hover:text-velvet-600 transition">Log In</a>
-                        <a href="{% url 'register' %}" class="bg-violet-600 hover:bg-violet-700 text-white px-4 py-1.5 rounded-md text-sm font-semibold transition">Sign Up</a>
-                    {%   endif %}
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">
+                            Log In
+                        </a>
+                        <a href="{% url 'register_user' %}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500">Sign Up</a>
+                    {% endif %}
                     
-                    <button onclick="quickEscape()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded shadow transition focus:outline-none">
+                    <button onclick="quickEscape()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl shadow-md transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 ml-2" aria-label="Instantly leave page to conceal browse metrics">
                         QUICK ESCAPE (ESC)
+                    </button>
+                </div>
+
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" class="text-purple-200 hover:text-white focus:outline-none p-1">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
         </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-purple-950 px-4 pt-2 pb-4 space-y-2 border-t border-purple-800">
+            <a href="{% url 'landing' %}" class="block text-sm text-purple-200 py-2">Home</a>
+            <a href="{% url 'file_report' %}" class="block text-sm text-purple-200 py-2">File Report</a>
+            <a href="{% url 'track_case' %}" class="block text-sm text-purple-200 py-2">Track Report</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'user_dashboard' %}" class="block text-sm text-purple-200 py-2">My Dashboard</a>
+                <form action="{% url 'logout' %}" method="POST" class="block py-2">
+                    {% csrf_token %}
+                    <button type="submit" class="text-red-400 text-sm font-medium">Log Out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="block text-sm text-purple-200 py-2">Log In</a>
+                <a href="{% url 'register_user' %}" class="block bg-purple-600 text-white text-center py-2 rounded-xl text-sm font-semibold mt-2">Sign Up</a>
+            {% endif %}
+            <button onclick="quickEscape()" class="w-full bg-red-600 text-white text-center py-2 rounded-xl text-xs font-bold uppercase tracking-wider mt-2">QUICK ESCAPE</button>
+        </div>
     </nav>
 
-    <main class="flex-grow">
+    <main class="flex-grow focus:outline-none" id="main-content" tabindex="-1">
         {% block content %}{% endblock %}
     </main>
 
-    <div class="fixed bottom-6 right-6 z-50 font-sans flex flex-col items-end space-y-4">
-        
-        <div id="chat-window-box" class="hidden w-80 sm:w-96 h-[450px] bg-white rounded-2xl shadow-2xl border border-violet-100 flex flex-col overflow-hidden transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right mb-2">
-            
-            <div class="bg-gradient-to-r from-velvet-900 to-velvet-800 text-white p-4 flex justify-between items-center shadow-md">
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-4">
+        <div id="chat-window-box" class="hidden w-80 sm:w-96 h-[450px] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-purple-100 flex flex-col overflow-hidden transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right mb-2">
+            <div class="bg-gradient-to-r from-purple-900 to-purple-800 text-white p-4 flex justify-between items-center shadow-md">
                 <div class="flex items-center space-x-2">
-                    <div class="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></div>
+                    <div class="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse" aria-hidden="true"></div>
                     <div>
                         <h3 class="text-sm font-black tracking-wide">SafeSpace Support Bot</h3>
-                        <p class="text-[10px] text-violet-200">Confidential, encrypted assistance</p>
+                        <p class="text-[10px] text-purple-200">Confidential, encrypted assistance</p>
                     </div>
                 </div>
-                <button onclick="toggleChatWindow()" class="text-violet-200 hover:text-white transition focus:outline-none p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button onclick="toggleChatWindow()" class="text-purple-200 hover:text-white transition focus:outline-none p-1 rounded hover:bg-white/10" aria-label="Close Help Chat Dialog Overlay">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
 
-            <div id="chat-messages-scroll" class="flex-grow p-4 overflow-y-auto space-y-3 bg-gray-50/50 text-xs leading-relaxed">
+            <div id="chat-messages-scroll" class="flex-grow p-4 overflow-y-auto space-y-3 bg-purple-50/20 text-xs leading-relaxed">
                 <div class="flex flex-col items-start space-y-1 max-w-[85%]">
-                    <div class="bg-white border border-violet-100 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm">
-                        Hello! I am your safe guide. Type a keyword like <span class="font-mono text-violet-700 font-bold">evidence</span>, <span class="font-mono text-violet-700 font-bold">blackmail</span>, or <span class="font-mono text-violet-700 font-bold">report</span> to receive immediate support resources.
+                    <div class="bg-white border border-purple-100 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-purple-50/30">
+                        Hello! I am your safe guide. Type a keyword like <span class="font-mono text-purple-700 font-bold bg-purple-50 px-1 rounded">evidence</span>, <span class="font-mono text-purple-700 font-bold bg-purple-50 px-1 rounded">blackmail</span>, or <span class="font-mono text-purple-700 font-bold bg-purple-50 px-1 rounded">report</span> to receive immediate support resources.
                     </div>
                     <span class="text-[9px] text-gray-400 px-1 font-mono">System • Just Now</span>
                 </div>
             </div>
 
             <form id="chat-submission-form" onsubmit="sendChatMessage(event)" class="p-3 bg-white border-t border-gray-100 flex items-center space-x-2">
-                <input type="text" id="chat-input-field" placeholder="Ask a question or type a topic..." autocomplete="off" class="flex-grow p-2.5 bg-gray-50 border border-violet-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-violet-600 focus:bg-white transition">
-                <button type="submit" class="bg-violet-600 hover:bg-violet-700 text-white p-2.5 rounded-xl shadow transition shrink-0 focus:outline-none">
-                    <svg class="w-4 h-4 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                <input type="text" id="chat-input-field" placeholder="Ask a question or type a topic..." autocomplete="off" required class="flex-grow p-2.5 bg-gray-50 border border-purple-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition">
+                <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white p-2.5 rounded-xl shadow transition shrink-0 focus:outline-none focus:ring-2 focus:ring-purple-400" aria-label="Transmit Message Data String">
+                    <svg class="w-4 h-4 transform rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </button>
             </form>
         </div>
 
-        <button id="chat-toggle-btn" onclick="toggleChatWindow()" class="bg-violet-600 hover:bg-violet-700 text-white font-bold px-5 py-3 rounded-full shadow-2xl flex items-center space-x-2 transition transform hover:-translate-y-0.5 active:scale-95 focus:outline-none">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-            <span class="text-sm font-black tracking-wide">AI Help Assistant</span>
+        <button id="chat-toggle-btn" onclick="toggleChatWindow()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-5 py-3 rounded-full shadow-2xl flex items-center space-x-2 transition transform hover:-translate-y-0.5 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600" aria-label="Toggle live safety help chat interface window box overlay">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+            <span class="text-sm font-black tracking-wide hidden sm:inline">AI Help Assistant</span>
         </button>
-
     </div>
 
-    <footer class="bg-velvet-950 text-velvet-100 py-8 border-t border-velvet-800">
-        <div class="max-w-7xl mx-auto px-4 text-center md:flex md:justify-between md:items-center">
-            <p class="text-sm text-velvet-100/70">&copy; 2026 SafeSpace Initiative. Data Encrypted Securely.</p>
+    <footer class="bg-purple-950 text-purple-100 py-8 border-t border-purple-800" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 text-center md:flex md:justify-between md:items-center text-xs sm:text-sm">
+            <p class="text-purple-100/70">&copy; 2026 SafeSpace Initiative. All communication tracks are encrypted securely.</p>
+            <p class="text-purple-100/40 mt-2 md:mt-0">Built under strict institutional protection layouts.</p>
         </div>
+        <footer class="bg-purple-950 text-purple-100 py-12 border-t border-purple-800" role="contentinfo">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center space-y-6">
+        
+        <div class="text-center">
+            <p class="text-sm font-semibold text-purple-300 mb-6 uppercase tracking-widest">Connect With Us</p>
+            <div class="flex space-x-8 text-2xl">
+                <a href="https://wa.me/254108383799" target="_blank" class="hover:text-green-400 transition-all hover:scale-110">
+                <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://facebook.com/YOUR_PAGE" target="_blank" class="hover:text-blue-500 transition-all hover:scale-110"><i class="fab fa-facebook"></i></a>
+                <a href="https://instagram.com/YOUR_HANDLE" target="_blank" class="hover:text-pink-500 transition-all hover:scale-110"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com/YOUR_HANDLE" target="_blank" class="hover:text-sky-400 transition-all hover:scale-110"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+
+        <div class="w-full border-t border-purple-800 pt-8 text-center text-xs sm:text-sm">
+            <p class="text-purple-100/70">&copy; 2026 SafeSpace Initiative. All communication tracks are encrypted securely.</p>
+            <p class="text-purple-100/40 mt-2">Built under strict institutional protection layouts.</p>
+        </div>
+    </div>
+</footer>
     </footer>
 
     <script>
+        // Toggle mobile drawer visibility state
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
         function quickEscape() {
             window.location.replace("https://www.google.com/search?q=weather");
         }
+        
         window.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') { quickEscape(); }
         });
 
-        // AI Assistant Window Toggling Handler
         function toggleChatWindow() {
             const box = document.getElementById('chat-window-box');
             if(box.classList.contains('hidden')) {
@@ -136,7 +205,6 @@
             }
         }
 
-        // Asynchronous Messaging Stream Dispatcher
         function sendChatMessage(event) {
             event.preventDefault();
             const input = document.getElementById('chat-input-field');
@@ -145,12 +213,11 @@
             
             if(!messageText) return;
 
-            // Render User Text Bubble Instantly
             const userBubble = document.createElement('div');
             userBubble.className = "flex flex-col items-end space-y-1 max-w-[85%] ml-auto";
             userBubble.innerHTML = `
-                <div class="bg-violet-600 text-white p-3 rounded-2xl rounded-tr-none shadow-md font-medium">
-                    ${messageText}
+                <div class="bg-purple-600 text-white p-3 rounded-2xl rounded-tr-none shadow-md font-medium">
+                    ${escapeHtml(messageText)}
                 </div>
                 <span class="text-[9px] text-gray-400 px-1 font-mono">You • Just Now</span>
             `;
@@ -158,7 +225,7 @@
             input.value = '';
             scrollArea.scrollTop = scrollArea.scrollHeight;
 
-            // Dispatch non-blocking AJAX fetch stream transaction call
+            // UPDATED: Changed targeting path string from "#" to match your application's chat view routing
             fetch("{% url 'ai_assistant_chat' %}", {
                 method: "POST",
                 headers: {
@@ -167,13 +234,15 @@
                 },
                 body: JSON.stringify({ message: messageText })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error('Network transaction error caught');
+                return response.json();
+            })
             .then(data => {
-                // Render Backend Response Engine Data
                 const botBubble = document.createElement('div');
                 botBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
                 botBubble.innerHTML = `
-                    <div class="bg-white border border-violet-100 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-violet-50">
+                    <div class="bg-white border border-purple-100 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-purple-50/30">
                         ${data.reply || data.message}
                     </div>
                     <span class="text-[9px] text-gray-400 px-1 font-mono">System • Agent Active</span>
@@ -182,9 +251,19 @@
                 scrollArea.scrollTop = scrollArea.scrollHeight;
             })
             .catch(error => {
-                console.error("AJAX Interface error:", error);
+                console.error("AJAX Application tracking error:", error);
             });
         }
+
+        function escapeHtml(string) {
+            return string.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+        // Add this to your script to auto-close menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
     </script>
 </body>
 </html>

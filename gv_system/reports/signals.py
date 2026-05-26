@@ -15,5 +15,8 @@ def run_automated_incident_triage(sender, instance, **kwargs):
         
         # FIXED MAP: Syncing directly to your newly configured choice schemas
         instance.ai_urgency_score = priority # Maps ('low', 'medium', 'high', 'critical')
-        instance.ai_classified_category = instance.get_category_display()
+        
+        # FIXED HERE: Swapped get_category_display() to get_incident_category_display()
+        instance.ai_classified_category = instance.get_incident_category_display()
+        
         instance.ai_research_insights = f"Automated AI Assessment: Identified Key Abuse Vectors: [{tags}]."

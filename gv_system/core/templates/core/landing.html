@@ -1,122 +1,208 @@
 {% extends 'base.html' %}
+{% load static %}
+
+<style>
+    /* Central Hero Layout Wrapper */
+    .hero-banner {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-align: center;
+        color: #ffffff;
+    }
+
+    /* FIXED: Using proper Django static token processing with high-contrast text overlay */
+    .hero-bg-section {
+        background-image: linear-gradient(rgba(49, 13, 85, 0.88), rgba(21, 4, 38, 0.95)), 
+                          url("{% static 'images/bac.jpeg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    /* Confidential Platform Subheader Badge */
+    .secure-badge {
+        background-color: rgba(157, 0, 255, 0.15);
+        color: #f5f3ff;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        padding: 0.35rem 0.85rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(157, 0, 255, 0.4);
+        display: inline-block;
+        transition: all 0.2s ease;
+    }
+
+    .secure-badge:hover {
+        background-color: rgba(157, 0, 255, 0.3);
+        border-color: rgba(157, 0, 255, 0.6);
+    }
+
+    .hero-description {
+        color: rgba(245, 243, 255, 0.85);
+    }
+
+    .hero-footer-note {
+        color: rgba(245, 243, 255, 0.55);
+    }
+</style>
 
 {% block content %}
-<div class="bg-gradient-to-b from-velvet-900 to-velvet-800 text-white py-16 px-4 text-center">
+<div class="relative py-20 px-4 text-center hero-bg-section" role="banner">
     <div class="max-w-4xl mx-auto space-y-6">
-        <span class="bg-velvet-600/30 text-velvet-100 text-xs uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-velvet-600">
+        <span class="secure-badge" tabindex="0">
             Secure & Confidential Platform
         </span>
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight">
-            Combat Online Harassment & Technology-Facilitated Abuse
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white" tabindex="0">
+            Combat Online Harassment & <span class="text-purple-300">Technology-Facilitated Abuse</span>
         </h1>
-        <p class="text-base md:text-xl text-velvet-100/80 max-w-2xl mx-auto">
+        <p class="text-base md:text-xl max-w-2xl mx-auto font-medium hero-description" tabindex="0">
             Report incidents safely, track responses securely, and get access to expert legal and psychological care. Your safety is our absolute priority.
         </p>
         
         <div class="pt-4 flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a href="{% url 'file_report' %}" class="w-full sm:w-auto bg-velvet-600 hover:bg-velvet-100 hover:text-velvet-950 text-white text-lg font-bold px-8 py-4 rounded-lg shadow-lg transition transform hover:-translate-y-0.5 text-center">
-                File a Secure Report
+            <a href="{% url 'file_report' %}" 
+               class="w-full sm:w-auto bg-purple-600 text-white font-bold text-lg px-8 py-4 rounded-xl shadow-lg transition-all duration-200 hover:bg-emerald-500 hover:shadow-emerald-500/20 active:scale-95 text-center focus:outline-none focus:ring-2 focus:ring-purple-500"
+               autofocus>
+                 File a Secure Report
             </a>
             
-            <a href="{% url 'track_case' %}" class="w-full sm:w-auto bg-transparent border-2 border-velvet-100/40 hover:border-velvet-100 text-velvet-100 text-lg font-semibold px-8 py-4 rounded-lg transition text-center">
+            <a href="{% url 'track_case' %}" 
+               class="w-full sm:w-auto bg-white text-purple-950 font-bold text-lg px-8 py-4 rounded-xl shadow-md border-2 border-purple-100 transition-all duration-200 hover:bg-purple-100 hover:text-purple-900 active:scale-95 text-center focus:outline-none focus:ring-2 focus:ring-purple-500">
                 Track Existing Report
             </a>
         </div>
-        <p class="text-xs text-velvet-100/50">Registration is *not* required to log an incident.</p>
+        <p class="text-xs hero-footer-note font-medium" tabindex="0">Registration is *not* required to log an incident.</p>
     </div>
 </div>
 
-<div class="max-w-7xl mx-auto px-4 py-16">
-    <h2 class="text-3xl font-bold text-center text-velvet-900 mb-4">Recognizing Online Violence</h2>
-    <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">Technology-facilitated gender-based violence manifests in various forms. Select a category during reporting to help the triage team react swiftly.</p>
+<div class="max-w-7xl mx-auto px-4 py-16" id="incident-types">
+    <h2 class="text-3xl font-bold text-center text-purple-900 mb-4" tabindex="0">Recognizing Online Violence</h2>
+    <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12" tabindex="0">
+        Technology-facilitated gender-based violence manifests in various forms. Select a category during reporting to help the triage team react swiftly.
+    </p>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-velvet-100">
-            <div class="w-12 h-12 rounded-lg bg-velvet-100 text-velvet-600 flex items-center justify-center font-bold text-xl mb-4">💬</div>
-            <h3 class="text-lg font-bold text-velvet-900 mb-2">Cyberstalking</h3>
-            <p class="text-sm text-gray-600">Persistent unwanted messaging, surveillance, location hacking, or relentless online monitoring.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100/70 category-card" tabindex="0">
+            <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4 border border-purple-100/50">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-purple-900 mb-2">Cyberstalking</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">Persistent unwanted messaging, surveillance, location tracking, or relentless online observation loops.</p>
         </div>
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-velvet-100">
-            <div class="w-12 h-12 rounded-lg bg-velvet-100 text-velvet-600 flex items-center justify-center font-bold text-xl mb-4">🔒</div>
-            <h3 class="text-lg font-bold text-velvet-900 mb-2">Doxing & Image Sharing</h3>
-            <p class="text-sm text-gray-600">Leaking private, unconsented intimate photographs or distributing personal contact strings maliciously.</p>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100/70 category-card" tabindex="0">
+            <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4 border border-purple-100/50">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-purple-900 mb-2">Doxing & Intimate Leaks</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">Maliciously distributing personal data records, phone directories, or unconsented private imagery across public spaces.</p>
         </div>
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-velvet-100">
-            <div class="w-12 h-12 rounded-lg bg-velvet-100 text-velvet-600 flex items-center justify-center font-bold text-xl mb-4">👤</div>
-            <h3 class="text-lg font-bold text-velvet-900 mb-2">Impersonation</h3>
-            <p class="text-sm text-gray-600">Creating malicious duplicate profiles or identities designed to defame, blackmail, or target victims.</p>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100/70 category-card" tabindex="0">
+            <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4 border border-purple-100/50">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-purple-900 mb-2">Impersonation</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">Fabricating duplicate profiles or identity matrices to spread disinformation, commit fraud, or target reputations.</p>
         </div>
-        <div class="bg-white p-6 rounded-xl shadow-sm border border-velvet-100">
-            <div class="w-12 h-12 rounded-lg bg-velvet-100 text-velvet-600 flex items-center justify-center font-bold text-xl mb-4">⚠️</div>
-            <h3 class="text-lg font-bold text-velvet-900 mb-2">Threats & Hate Speech</h3>
-            <p class="text-sm text-gray-600">Direct threats of bodily harm, sexual violence, or structured targeted hate campaigns across platforms.</p>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100/70 category-card" tabindex="0">
+            <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4 border border-purple-100/50">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-bold text-purple-900 mb-2">Threats & Hate Speech</h3>
+            <p class="text-sm text-gray-600 leading-relaxed">Direct intimidation of physical harm, targeted hate speech campaigns, or systematic harassment patterns.</p>
         </div>
     </div>
 </div>
 
-<div id="emergency" class="bg-white border-t border-b border-velvet-100 py-16 px-4">
+<div id="emergency" class="bg-white border-t border-b border-purple-100 py-16 px-4">
     <div class="max-w-5xl mx-auto">
-        <h2 class="text-3xl font-bold text-center text-velvet-900 mb-2">Immediate Crisis & Emergency Helplines</h2>
-        <p class="text-center text-gray-600 mb-8">If you are in immediate physical danger, reach out to these toll-free rapid dispatch numbers immediately.</p>
+        <h2 class="text-3xl font-bold text-center text-purple-900 mb-2" tabindex="0">Immediate Crisis & Emergency Helplines</h2>
+        <p class="text-center text-gray-600 mb-8" tabindex="0">If you are in immediate physical danger, click these options to establish a direct emergency line.</p>
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-            <div class="p-6 bg-red-50 rounded-xl border border-red-200">
-                <h3 class="font-bold text-red-900 text-lg">National Gender Helpline</h3>
-                <p class="text-2xl font-black text-red-600 my-2">1195</p>
-                <p class="text-xs text-red-700">Free, confidential 24/7 medical & psychosocial support routing.</p>
-            </div>
-            <div class="p-6 bg-velvet-50 rounded-xl border border-velvet-200">
-                <h3 class="font-bold text-velvet-900 text-lg">Childline Kenya Helpline</h3>
-                <p class="text-2xl font-black text-velvet-600 my-2">116</p>
-                <p class="text-xs text-velvet-700">Dedicated support framework for minor reporting pipelines.</p>
-            </div>
-            <div class="p-6 bg-amber-50 rounded-xl border border-amber-200">
-                <h3 class="font-bold text-amber-900 text-lg">Police Emergency Dispatch</h3>
-                <p class="text-2xl font-black text-amber-600 my-2">999 / 112</p>
-                <p class="text-xs text-amber-700">Immediate response routing for active physical safety threats.</p>
-            </div>
+            <button onclick="openModal('1195', 'National Gender Helpline')" class="p-6 bg-red-50 rounded-2xl border border-red-200 hover:bg-red-100/70 hover:scale-[1.02] transition-all block focus:ring-4 focus:ring-red-500 group">
+                <h3 class="font-bold text-red-900 text-lg group-hover:underline">National Gender Helpline</h3>
+                <p class="text-3xl font-black text-red-600 my-2 tracking-wide">1195</p>
+                <p class="text-xs text-red-700/90">Free, confidential 24/7 medical & psychosocial crisis response infrastructure.</p>
+            </button>
+
+            <button onclick="openModal('116', 'Childline Kenya Helpline')" class="p-6 bg-purple-50 rounded-2xl border border-purple-200 hover:bg-purple-100/70 hover:scale-[1.02] transition-all block focus:ring-4 focus:ring-purple-500 group">
+                <h3 class="font-bold text-purple-900 text-lg group-hover:underline">Childline Kenya Helpline</h3>
+                <p class="text-3xl font-black text-purple-600 my-2 tracking-wide">116</p>
+                <p class="text-xs text-purple-700/90">Dedicated tracking and response pipelines specialized for minor support structures.</p>
+            </button>
+
+            <button onclick="openModal('999', 'Police Emergency Dispatch')" class="p-6 bg-amber-50 rounded-2xl border border-amber-200 hover:bg-amber-100/70 hover:scale-[1.02] transition-all block focus:ring-4 focus:ring-amber-500 group">
+                <h3 class="font-bold text-amber-900 text-lg group-hover:underline">Police Emergency Dispatch</h3>
+                <p class="text-3xl font-black text-amber-600 my-2 tracking-wide">999</p>
+                <p class="text-xs text-amber-700/90">Immediate physical rescue integration loops for active physical danger management.</p>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="callModal" class="fixed inset-0 bg-purple-950/60 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
+        <h3 class="text-xl font-bold text-purple-900 mb-2">Initiate Emergency Call?</h3>
+        <p class="text-gray-600 mb-6" id="modalText">You are about to call <span id="modalNumber" class="font-bold"></span>.</p>
+        <div class="flex gap-4">
+            <button onclick="closeModal()" class="flex-1 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200">Cancel</button>
+            <a id="confirmCallBtn" href="#" class="flex-1 py-3 rounded-xl bg-purple-600 text-white font-bold hover:bg-emerald-500">Call Now</a>
         </div>
     </div>
 </div>
 
 <div id="faqs" class="max-w-4xl mx-auto px-4 py-16">
-    <h2 class="text-3xl font-bold text-center text-velvet-900 mb-8">Frequently Asked Questions</h2>
+    <h2 class="text-3xl font-bold text-center text-purple-900 mb-8" tabindex="0">Frequently Asked Questions</h2>
     
     <div class="space-y-4">
-        <div class="bg-white rounded-lg border border-velvet-100 overflow-hidden">
-            <button class="w-full text-left p-5 font-bold text-velvet-900 flex justify-between items-center bg-velvet-50/50 hover:bg-velvet-50 transition" onclick="toggleFaq(this)">
+        <div class="bg-white rounded-xl border border-purple-100 overflow-hidden">
+            <button class="w-full text-left p-5 font-bold text-purple-900 flex justify-between items-center bg-purple-50/50 hover:bg-purple-50 transition focus:bg-purple-100" 
+                    onclick="toggleFaq(this)" aria-expanded="false">
                 <span>Do I have to create an account to file an incident?</span>
-                <span class="text-xl">+</span>
+                <span class="text-xl" aria-hidden="true">+</span>
             </button>
-            <div class="p-5 text-gray-600 hidden border-t border-velvet-50 text-sm leading-relaxed">
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed" tabindex="0">
                 No. You can file a completely anonymous report. The system will issue you a unique Reference Number that you can use to check for updates without inputting any personal identifying data.
             </div>
         </div>
         
-        <div class="bg-white rounded-lg border border-velvet-100 overflow-hidden">
-            <button class="w-full text-left p-5 font-bold text-velvet-900 flex justify-between items-center bg-velvet-50/50 hover:bg-velvet-50 transition" onclick="toggleFaq(this)">
+        <div class="bg-white rounded-xl border border-purple-100 overflow-hidden">
+            <button class="w-full text-left p-5 font-bold text-purple-900 flex justify-between items-center bg-purple-50/50 hover:bg-purple-50 transition focus:bg-purple-100" 
+                    onclick="toggleFaq(this)" aria-expanded="false">
                 <span>How does the AI Engine help process my report?</span>
-                <span class="text-xl">+</span>
+                <span class="text-xl" aria-hidden="true">+</span>
             </button>
-            <div class="p-5 text-gray-600 hidden border-t border-velvet-50 text-sm leading-relaxed">
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed" tabindex="0">
                 Once submitted, our integrated multi-agent AI Engine immediately reads the incident context to classify the offense type and calculate an urgency rating. This prioritizes critical cases for administrators, ensuring faster review and response times.
             </div>
         </div>
     </div>
 </div>
 
-<div class="fixed bottom-6 right-6 z-50">
-    <button class="bg-velvet-600 hover:bg-velvet-800 text-white p-4 rounded-full shadow-2xl flex items-center space-x-2 transition transform hover:scale-105 focus:outline-none">
-        <span class="text-xl">💬</span>
-        <span class="font-bold text-sm hidden sm:inline">AI Help Assistant</span>
-    </button>
-</div>
-
 <script>
-    // Simple, responsive layout toggle logic for the FAQs accordion
     function toggleFaq(button) {
         const targetPanel = button.nextElementSibling;
         const iconIndicator = button.querySelector('span:last-child');
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        
+        button.setAttribute('aria-expanded', !isExpanded);
         
         if (targetPanel.classList.contains('hidden')) {
             targetPanel.classList.remove('hidden');
@@ -125,6 +211,25 @@
             targetPanel.classList.add('hidden');
             iconIndicator.textContent = '+';
         }
+    }
+
+    // Modal Logic
+    function openModal(number, name) {
+        const modal = document.getElementById('callModal');
+        const numberSpan = document.getElementById('modalNumber');
+        const confirmBtn = document.getElementById('confirmCallBtn');
+        
+        numberSpan.textContent = name + " (" + number + ")";
+        confirmBtn.href = "tel:" + number;
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('callModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
     }
 </script>
 {% endblock %}

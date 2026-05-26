@@ -21,10 +21,12 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-42n35)3u$7s*_hr_b2z$lop*z-(3%u!)0hd_*qia27=*r(%2zk')
 
 # 3. READ DEBUG STATUS FROM THE VAULT (Defaults to True if not specified)
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+#DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+DEBUG = True
+ALLOWED_HOSTS = ['*']  # Or ['127.0.0.1', 'localhost']
 
 # 4. ALLOW LOCAL CONNECTIONS TO ACCESS THE ENVIRONMENT Safely
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+#ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -120,10 +122,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+# STATIC_URL = 'static/'
 
+# Tell Django to look inside your app-level static folders
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'core', 'static'),
+]
 # NEW: Production static file management configurations
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+#STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
