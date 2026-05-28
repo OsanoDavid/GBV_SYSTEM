@@ -29,9 +29,18 @@ def env_list(name, default=''):
 
 
 # 3. READ DEBUG STATUS FROM THE VAULT
-DEBUG = env_bool('DJANGO_DEBUG', False)
-ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost')
-CSRF_TRUSTED_ORIGINS = env_list('DJANGO_CSRF_TRUSTED_ORIGINS')
+import os
+
+# Ensure these settings are pulling from the environment correctly
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+
+# Allow both local and production hosts
+allowed_hosts_str = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost')
+ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_str.split(',')]
+
+# CSRF Trusted Origins
+csrf_trusted_str = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '')
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in csrf_trusted_str.split(',') if origin]
 
 # 4. ALLOW LOCAL CONNECTIONS TO ACCESS THE ENVIRONMENT Safely
 #ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
@@ -149,13 +158,29 @@ STORAGES = {
     },
 }
 
-# settings.py
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = env_bool('EMAIL_USE_TLS', True)
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+# Email Configuration
+if DEBUG:
+    # Development: Use console backend (prints emails to console)
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # Production: Use SendGrid if available, otherwise use dummy backend (prevents crashes)
+    sendgrid_key = os.getenv('SENDGRID_API_KEY', '')
+    email_host_user = os.getenv('EMAIL_HOST_USER', '')
+    email_host_password = os.getenv('EMAIL_HOST_PASSWORD', '')
+    
+    if sendgrid_key:
+        EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
+    elif email_host_user and email_host_password:
+        EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+        EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+        EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+        EMAIL_USE_TLS = env_bool('EMAIL_USE_TLS', True)
+        EMAIL_HOST_USER = email_host_user
+        EMAIL_HOST_PASSWORD = email_host_password
+    else:
+        # Fallback: Use dummy backend (logs emails instead of sending)
+        EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'SafeSpace System <no-reply@safespace.org>')
 
 if not DEBUG:

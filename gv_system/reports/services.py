@@ -71,7 +71,7 @@ class AssignmentService:
                 ),
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[department.email],
-                fail_silently=False,
+                fail_silently=True,  # Changed to True to prevent crashes
             )
             email_status = "Email notification sent."
         except Exception as e:
