@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nearby Protection Services | SafeSpace{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto px-4 py-12">
+    <div class="mb-8">
+        <a href="javascript:history.back()" class="inline-flex items-center space-x-2 text-sm font-semibold text-violet-700 hover:text-violet-900 transition">
+            <span>←</span> <span>Back to Previous Screen</span>
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900 mt-4">Emergency Protection Centers</h1>
+        <p class="text-sm text-gray-500 mt-1">Found the following facilities closest to your current location.</p>
+    </div>
+
+    {% if error_message %}
+        <div class="mb-4 bg-red-50 border border-red-200 rounded-2xl p-4 text-sm text-red-800 font-medium">
+            {{ error_message }}
+        </div>
+    {% endif %}
+
+    {% if homes %}
+        <div class="space-y-4">
+            {% for home in homes %}
+            <div class="bg-white p-5 border border-gray-100 rounded-3xl shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-black text-gray-900 text-lg">{{ home.name }}</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">{{ home.address }}</p>
+                    </div>
+                    {% if home.distance %}
+                    <span class="bg-violet-50 text-violet-700 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase">
+                        {{ home.distance }} km
+                    </span>
+                    {% endif %}
+                </div>
+                
+                <div class="mt-5">
+                    <a href="tel:{{ home.phone }}" 
+                       class="flex items-center justify-center w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-2xl font-bold text-sm transition-transform active:scale-[0.98]">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-2.25a2.25 2.25 0 00-2.25-2.25H15a2.25 2.25 0 00-2.25 2.25v.75a2.25 2.25 0 01-2.25 2.25h-1.5a2.25 2.25 0 01-2.25-2.25v-1.5a2.25 2.25 0 012.25-2.25h.75a2.25 2.25 0 002.25-2.25V9a2.25 2.25 0 00-2.25-2.25H6.75"/>
+                        </svg>
+                        Call Now: {{ home.phone }}
+                    </a>
+                    <a href="https://www.google.com/maps?q={{ home.lat }},{{ home.lng }}" target="_blank" rel="noopener noreferrer"
+                       class="mt-3 flex items-center justify-center w-full bg-violet-600 hover:bg-violet-700 text-white py-3 rounded-2xl font-bold text-sm transition-transform active:scale-[0.98]">
+                        Open Map
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-gray-50 border border-dashed border-gray-200 rounded-3xl p-8 text-center">
+            <div class="text-4xl mb-3">!</div>
+            <h3 class="font-bold text-gray-900">No facilities found nearby</h3>
+            <p class="text-sm text-gray-500 mt-2 mb-6">We couldn't locate any registered children's homes from the current records. Please try again or contact national emergency services.</p>
+            <a href="{% url 'file_report' %}" class="text-violet-700 font-bold text-sm hover:underline">Return to Incident Portal</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

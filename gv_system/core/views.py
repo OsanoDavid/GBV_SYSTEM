@@ -6,7 +6,9 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from reports.models import IncidentReport 
+from reports.models import AuditLog, IncidentReport 
+from reports.notifications import send_tracking_sms
+from reports.services import AssignmentService
 
 # -------------------------------------------------------------
 # CORE VIEW HUB CONFIGURATIONS
@@ -35,6 +37,9 @@ def file_report(request):
             reporter_name = request.POST.get('reporter_name', '')
             reporter_email = request.POST.get('reporter_email', '')
             reporter_phone = request.POST.get('reporter_phone', '')
+            user_lat = request.POST.get('user_lat') or request.session.get('last_user_lat')
+            user_lng = request.POST.get('user_lng') or request.session.get('last_user_lng')
+            nearest_home_id = request.session.get('last_nearest_home_id')
 
             # Intercept "other" selection and pull from the custom text field
             category_selection = request.POST.get('incident_category')
@@ -63,6 +68,20 @@ def file_report(request):
             if request.user.is_authenticated:
                 report.reporter_profile = request.user
                 report.save()
+
+            AssignmentService.auto_route_report(
+                report.id,
+                user=request.user if request.user.is_authenticated else None,
+                user_lat=user_lat,
+                user_lng=user_lng,
+                nearest_home_id=nearest_home_id,
+            )
+            sms_sent, sms_status = send_tracking_sms(report)
+            AuditLog.objects.create(
+                report=report,
+                user=request.user if request.user.is_authenticated else None,
+                action=sms_status
+            )
             
             # Cache the tracking credentials in the session for one-time display
             request.session['success_ref'] = str(report.reference_number)
@@ -77,11 +96,13 @@ def file_report(request):
 
 def report_success(request):
     """Displays secure generated credentials one-time only to the reporter."""
+    reference = request.session.get('success_ref')
     context = {
-        'ref': request.session.get('success_ref'),
+        'reference': reference,
+        'ref': reference,
         'pin': request.session.get('success_pin')
     }
-    if not context['ref']:
+    if not context['reference']:
         return redirect('landing')
         
     return render(request, 'reports/report_success.html', context)
@@ -97,11 +118,42 @@ def track_case(request):
         try:
             # Query and match exact reference number AND security pin sequence
             report = IncidentReport.objects.get(reference_number=ref_num, case_access_pin=pin_num)
+            refresh_report_workflow(report, request)
             context['report'] = report
         except IncidentReport.DoesNotExist:
             context['report'] = None
             
     return render(request, 'reports/track_case.html', context)
+
+
+def refresh_report_workflow(report, request=None):
+    if (
+        request
+        and report.incident_category == 'children_home_support'
+        and not report.assigned_home_id
+    ):
+        home = AssignmentService.find_nearest_home(
+            request.session.get('last_user_lat'),
+            request.session.get('last_user_lng'),
+            request.session.get('last_nearest_home_id'),
+        )
+        if home:
+            report.assigned_home = home
+            report.save(update_fields=['assigned_home', 'updated_at'])
+            AuditLog.objects.create(
+                report=report,
+                user=None,
+                action=f"Nearest children's home automatically assigned: {home.name}."
+            )
+
+    if report.status == 'pending' and (report.assigned_department_id or report.assigned_home_id):
+        report.status = 'under_review'
+        report.save(update_fields=['status', 'updated_at'])
+        AuditLog.objects.create(
+            report=report,
+            user=None,
+            action="Status automatically updated after routing assignment."
+        )
 
 
 def ai_assistant_chat(request):
@@ -181,3 +233,4 @@ def user_dashboard(request):
     """Fetches and feeds user-submitted incidents to render context structures securely."""
     user_reports = IncidentReport.objects.filter(reporter_profile=request.user).order_by('-created_at')
     return render(request, 'reports/dashboard.html', {'reports': user_reports})
+

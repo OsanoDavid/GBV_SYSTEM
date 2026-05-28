@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 # --- Infrastructure ---
 class Department(models.Model):
-    name = models.CharField(max_length=100, unique=True) # e.g., Police, Children's Officer
+    name = models.CharField(max_length=100, unique=True)
     email = models.EmailField()
 
     def __str__(self):
@@ -13,13 +13,13 @@ class Department(models.Model):
 
 class ChildrensHome(models.Model):
     name = models.CharField(max_length=200)
-    contact_number = models.CharField(max_length=20)
-    address = models.TextField()
-    latitude = models.DecimalField(max_digits=9, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    phone = models.CharField(max_length=20)
+    address = models.TextField(blank=True, null=True)
+    lat = models.DecimalField(max_digits=9, decimal_places=6)
+    lng = models.DecimalField(max_digits=9, decimal_places=6)
 
     def __str__(self):
-        return f"{self.name} ({self.address})"
+        return f"{self.name} ({self.phone})"
 
 # --- Incident Management ---
 class IncidentReport(models.Model):
@@ -29,6 +29,7 @@ class IncidentReport(models.Model):
         ('impersonation', 'Impersonation & Identity Theft'),
         ('threats', 'Online Threats & Hate Speech'),
         ('other', 'Other Forms of Online Abuse'),
+        ('children_home_support', 'Children\'s Home Support'),
     ]
 
     STATUS_CHOICES = [
@@ -52,24 +53,24 @@ class IncidentReport(models.Model):
         (3, 'Resolved')
     ]
 
-    # --- Core Tracking Infrastructure ---
+    # --- Core Tracking ---
     reference_number = models.CharField(max_length=14, unique=True, editable=False, db_index=True)
-    case_access_pin = models.CharField(max_length=6, editable=False, help_text="Secure one-time viewer access pin.")
-    
-    # --- Dual Mode Login Association ---
-    reporter_profile = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, help_text="Optional link to authenticated user profile.")
+    case_access_pin = models.CharField(max_length=6, editable=False)
+    reporter_profile = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
 
     # --- Incident Telemetry ---
     incident_category = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
     description = models.TextField()
     incident_date = models.DateField(null=True, blank=True)
-    platform_used = models.CharField(max_length=100, help_text="e.g., WhatsApp, X, Facebook, Email")
+    platform_used = models.CharField(max_length=100)
     evidence_attachment = models.FileField(upload_to='evidence/%Y/%m/%d/', blank=True, null=True)
     
     # --- Workflow & Assignment ---
     level = models.IntegerField(choices=LEVEL_CHOICES, default=0)
     assigned_department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
     assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_cases')
+    # Integration of Children's Home logic
+    assigned_home = models.ForeignKey(ChildrensHome, on_delete=models.SET_NULL, null=True, blank=True)
     
     # --- Metadata ---
     reporter_type = models.CharField(max_length=20, default='self')

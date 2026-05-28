@@ -49,6 +49,8 @@
         
         <form id="report-form-start" method="POST" enctype="multipart/form-data" class="flex-grow flex flex-col p-6 sm:p-8 justify-between space-y-8">
             {% csrf_token %}
+            <input type="hidden" name="user_lat" id="user_lat">
+            <input type="hidden" name="user_lng" id="user_lng">
             
             <div class="flex-grow">
                 <div id="wizard-step-1" class="space-y-6 transition-all duration-300">
@@ -149,7 +151,7 @@
 
                             <label class="p-4 border border-gray-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-gray-50 hover:border-violet-300 transition group sm:col-span-2" 
                                    onclick="checkLocationTrigger(this)">
-                                <input type="radio" name="incident_category" value="childrens_home" onclick="toggleOtherCategoryField(false)" class="text-violet-600 focus:ring-violet-500 w-4 h-4">
+                                <input type="radio" name="incident_category" value="children_home_support" onclick="toggleOtherCategoryField(false)" class="text-violet-600 focus:ring-violet-500 w-4 h-4">
                                 <div class="text-xs">
                                     <span class="font-bold text-gray-800 block">Children's Home Support</span>
                                     <span class="text-gray-400 text-[10px]">Find nearest emergency protection/shelter.</span>
@@ -257,16 +259,20 @@
 
     // Location Capture Logic
     function checkLocationTrigger(element) {
-        if (element.querySelector('input').value === 'childrens_home') {
+        if (element.querySelector('input').value === 'children_home_support') {
             if (confirm("To find the nearest children's home, we need to access your current location. Allow?")) {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition((position) => {
                         const lat = position.coords.latitude;
-                        const lon = position.coords.longitude;
-                        window.location.href = `{% url 'find_homes' %}?lat=${lat}&lon=${lon}`;
+                        const lng = position.coords.longitude;
+                        document.getElementById('user_lat').value = lat;
+                        document.getElementById('user_lng').value = lng;
+                        window.open(`{% url 'find_homes' %}?lat=${encodeURIComponent(lat)}&lng=${encodeURIComponent(lng)}`, '_blank', 'noopener');
                     }, (err) => {
                         alert("We couldn't access your location. Please check your browser permissions.");
                     });
+                } else {
+                    alert("Your browser does not support location access.");
                 }
             }
         }
@@ -370,6 +376,14 @@
             document.getElementById('id_reporter_name').value = '';
             document.getElementById('id_reporter_email').value = '';
             corePhoneInput.value = '';
+        }
+    }
+    function captureLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((pos) => {
+                document.getElementById('user_lat').value = pos.coords.latitude;
+                document.getElementById('user_lng').value = pos.coords.longitude;
+            });
         }
     }
 </script>

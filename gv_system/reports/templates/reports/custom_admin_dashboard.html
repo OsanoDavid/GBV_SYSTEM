@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="mb-8 flex justify-between items-center">
+        <div>
+            <h1 class="text-3xl font-black text-purple-950">System Command Center</h1>
+            <p class="text-purple-700">Full administrative oversight of all reported incidents.</p>
+        </div>
+        <a href="/admin/" class="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-slate-800">Switch to Native Admin</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100">
+            <h3 class="text-[10px] font-black text-purple-400 uppercase tracking-widest">Total Reports</h3>
+            <p class="text-3xl font-black text-purple-900">{{ total_reports }}</p>
+        </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 mb-8">
+        <h2 class="text-lg font-bold text-purple-950 mb-4">All Incident Records</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+                <thead>
+                    <tr class="text-left text-purple-400 border-b uppercase">
+                        <th class="p-3">Reference</th>
+                        <th class="p-3">PIN</th>
+                        <th class="p-3">Reporter Info</th>
+                        <th class="p-3">Category</th>
+                        <th class="p-3">Status</th>
+                        <th class="p-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for report in recent_reports %}
+                    <tr class="border-b hover:bg-purple-50 transition">
+                        <td class="p-3 font-bold text-purple-900">
+                            <a href="{% url 'friendly_edit' report.id %}" class="hover:underline">{{ report.reference_number }}</a>
+                        </td>
+                        <td class="p-3 font-mono font-bold text-green-700">{{ report.case_access_pin }}</td>
+                        <td class="p-3">
+                            <div class="font-bold">{{ report.reporter_name|default:"Anonymous" }}</div>
+                            <div class="text-[10px] text-gray-500">{{ report.reporter_email|default:"No Email" }}</div>
+                            <div class="text-[10px] text-gray-500">{{ report.reporter_phone|default:"No Phone" }}</div>
+                        </td>
+                        <td class="p-3">{{ report.incident_category|default:"---" }}</td>
+                        <td class="p-3">
+                            <form action="{% url 'update_status' report.id %}" method="POST" class="flex gap-2">
+                                {% csrf_token %}
+                                <select name="status" class="border rounded px-2 py-1 bg-white">
+                                    <option value="pending" {% if report.status == 'pending' %}selected{% endif %}>Pending</option>
+                                    <option value="under_review" {% if report.status == 'under_review' %}selected{% endif %}>Under Review</option>
+                                    <option value="resolved" {% if report.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                                </select>
+                                <button type="submit" class="bg-purple-600 text-white px-2 py-1 rounded">Update</button>
+                            </form>
+                        </td>
+                        <td class="p-3">
+                            <a href="{% url 'friendly_edit' report.id %}" class="text-purple-600 font-bold hover:underline">Full View / Edit</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

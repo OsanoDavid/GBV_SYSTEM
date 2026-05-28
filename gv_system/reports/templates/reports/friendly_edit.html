@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+            <a href="{% url 'custom_admin' %}" class="text-purple-600 font-bold hover:underline mb-2 block">← Back to Command Center</a>
+            <h1 class="text-3xl font-black text-purple-950">Editing Case: {{ report.reference_number }}</h1>
+        </div>
+        <div class="flex gap-3">
+            <a href="{% url 'send_case_sms' report.id %}" class="bg-green-50 text-green-700 font-bold py-2 px-6 rounded-xl border border-green-200 hover:bg-green-100 transition shadow-sm">Send SMS</a>
+            <button type="button" onclick="confirmDelete()" class="bg-red-50 text-red-600 font-bold py-2 px-6 rounded-xl border border-red-200 hover:bg-red-100 transition shadow-sm">Delete Case</button>
+        </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
+                <span class="block text-[10px] font-black text-gray-400 uppercase tracking-wider">Reference Code</span>
+                <span class="block mt-1 font-mono text-lg font-black text-purple-900 select-all">{{ report.reference_number }}</span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
+                <span class="block text-[10px] font-black text-gray-400 uppercase tracking-wider">Access PIN</span>
+                <span class="block mt-1 font-mono text-lg font-black text-green-700 select-all">{{ report.case_access_pin }}</span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
+                <span class="block text-[10px] font-black text-gray-400 uppercase tracking-wider">Created</span>
+                <span class="block mt-1 text-sm font-bold text-gray-700">{{ report.created_at|date:"M d, Y H:i" }}</span>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-purple-100">
+                <span class="block text-[10px] font-black text-gray-400 uppercase tracking-wider">Last Updated</span>
+                <span class="block mt-1 text-sm font-bold text-gray-700">{{ report.updated_at|date:"M d, Y H:i" }}</span>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-purple-100">
+            <h2 class="text-lg font-bold text-purple-900 mb-6 border-b pb-2">Workflow Assignment</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Status</label>
+                    <select name="status" class="w-full p-3 bg-white border border-purple-200 rounded-lg text-sm">
+                        {% for value, label in report.STATUS_CHOICES %}
+                            <option value="{{ value }}" {% if report.status == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Assigned Department</label>
+                    <select name="assigned_department" class="w-full p-3 bg-white border border-purple-200 rounded-lg text-sm">
+                        <option value="">Unassigned</option>
+                        {% for department in departments %}
+                            <option value="{{ department.id }}" {% if report.assigned_department_id == department.id %}selected{% endif %}>{{ department.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Assigned Home</label>
+                    <select name="assigned_home" class="w-full p-3 bg-white border border-purple-200 rounded-lg text-sm">
+                        <option value="">Not assigned</option>
+                        {% for home in homes %}
+                            <option value="{{ home.id }}" {% if report.assigned_home_id == home.id %}selected{% endif %}>{{ home.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Level</label>
+                    <select name="level" class="w-full p-3 bg-white border border-purple-200 rounded-lg text-sm">
+                        {% for value, label in report.LEVEL_CHOICES %}
+                            <option value="{{ value }}" {% if report.level == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-amber-50 p-6 rounded-2xl border-2 border-amber-200 shadow-sm">
+            <h2 class="text-md font-black text-amber-900 mb-3 uppercase tracking-wider">Admin Internal Notes</h2>
+            <textarea name="admin_notes" class="w-full p-4 border border-amber-300 rounded-xl focus:ring-4 focus:ring-amber-200 outline-none transition" rows="3" placeholder="Add confidential notes for staff here...">{{ report.admin_notes|default_if_none:"" }}</textarea>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-purple-100">
+            <h2 class="text-lg font-bold text-purple-900 mb-6 border-b pb-2">Incident Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Description</label>
+                    {{ form.description }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Category</label>
+                    {{ form.incident_category }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Date</label>
+                    {{ form.incident_date }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Platform</label>
+                    {{ form.platform_used }}
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Evidence Attachment</label>
+                    {{ form.evidence_attachment }}
+                    {% if report.evidence_attachment %}
+                        <a href="{{ report.evidence_attachment.url }}" target="_blank" class="inline-block mt-2 text-xs font-bold text-purple-700 hover:underline">Open uploaded evidence</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-purple-100">
+            <h2 class="text-lg font-bold text-purple-900 mb-6 border-b pb-2">Demographics & Anonymity</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div><label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Type</label>{{ form.reporter_type }}</div>
+                <div><label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Gender</label>{{ form.gender }}</div>
+                <div><label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Age Group</label>{{ form.age_group }}</div>
+                <div><label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Disability</label>{{ form.disability }}</div>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-purple-100">
+            <h2 class="text-lg font-bold text-purple-900 mb-6 border-b pb-2">Reporter Identity</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div><label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Name</label>{{ form.reporter_name }}</div>
+                <div><label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Email</label>{{ form.reporter_email }}</div>
+                <div><label class="block text-xs font-bold text-gray-500 mb-1 uppercase">Phone</label>{{ form.reporter_phone }}</div>
+            </div>
+        </div>
+
+        <button type="submit" class="w-full bg-purple-600 text-white font-black py-4 rounded-xl hover:bg-purple-700 transition shadow-lg text-lg uppercase tracking-wide">Save All Changes</button>
+    </form>
+
+    <div class="bg-white p-8 rounded-2xl shadow-sm border border-purple-100 mt-6 overflow-hidden">
+        <h2 class="text-lg font-bold text-purple-900 mb-4 border-b pb-2">System Audit Trail</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left">
+                <thead>
+                    <tr class="text-gray-400">
+                        <th class="p-2">User</th>
+                        <th class="p-2">Action</th>
+                        <th class="p-2">Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in report.audit_logs.all %}
+                    <tr class="border-t">
+                        <td class="p-2 font-medium">{{ log.user }}</td>
+                        <td class="p-2">{{ log.action }}</td>
+                        <td class="p-2 text-gray-500">{{ log.timestamp }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="p-4 text-gray-400">No logs available for this case.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete() {
+        if (confirm("Are you sure? This action cannot be undone.")) {
+            window.location.href = "{% url 'delete_report' report.id %}";
+        }
+    }
+</script>
+{% endblock %}

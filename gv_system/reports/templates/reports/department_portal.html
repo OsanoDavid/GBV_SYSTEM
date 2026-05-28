@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Department Portal | SafeSpace{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-black text-violet-900 mb-6">Assigned Incident Cases</h1>
+    
+    <div class="space-y-4">
+        {% for report in reports %}
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span class="text-xs font-bold text-violet-600 bg-violet-50 px-2 py-1 rounded-lg">
+                        {{ report.reference_number }}
+                    </span>
+                    <h2 class="text-lg font-bold text-gray-900 mt-2">{{ report.incident_category }}</h2>
+                </div>
+                <span class="text-sm font-medium text-gray-500">{{ report.created_at|date:"M d, Y" }}</span>
+            </div>
+            
+            <p class="text-gray-600 text-sm mt-3 line-clamp-2">{{ report.description }}</p>
+            
+            <div class="mt-6 pt-4 border-t border-gray-50 flex items-center justify-between">
+                <span class="text-xs font-bold {% if report.status == 'new' %}text-amber-600{% else %}text-green-600{% endif %} uppercase tracking-wider">
+                    Status: {{ report.get_status_display }}
+                </span>
+                
+                <form action="{% url 'update_status' report.id %}" method="POST" class="flex gap-2">
+                    {% csrf_token %}
+                    <select name="status" class="text-xs border-gray-200 rounded-lg">
+                        <option value="new">New</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="action_taken">Resolved</option>
+                    </select>
+                    <button type="submit" class="bg-violet-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-violet-700">
+                        Update
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-12">
+            <p class="text-gray-400">No active cases assigned to your department currently.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

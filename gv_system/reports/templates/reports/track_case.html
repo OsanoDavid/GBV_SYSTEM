@@ -60,6 +60,8 @@
                     <div class="grid grid-cols-2 gap-3 text-xs bg-white p-3 rounded-xl border border-gray-100 font-medium text-gray-600">
                         <div><span class="text-gray-400 block text-[10px] uppercase font-mono">Incident Date</span>{{ report.incident_date|date:"F d, Y" }}</div>
                         <div><span class="text-gray-400 block text-[10px] uppercase font-mono">Platform Used</span>{{ report.platform_used }}</div>
+                        <div><span class="text-gray-400 block text-[10px] uppercase font-mono">Assigned Department</span>{{ report.assigned_department|default:"Auto-routing in progress" }}</div>
+                        <div><span class="text-gray-400 block text-[10px] uppercase font-mono">Assigned Home</span>{{ report.assigned_home|default:"Not assigned" }}</div>
                     </div>
 
                     <div class="space-y-1 bg-gray-50 p-4 rounded-xl border border-gray-100">
@@ -75,6 +77,18 @@
                         {% endif %}
                     </div>
 
+                    <div class="space-y-2 bg-white p-4 rounded-xl border border-gray-100">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500">Automatic System Updates</h3>
+                        {% for log in report.audit_logs.all|slice:":4" %}
+                            <div class="text-xs text-gray-600 border-t border-gray-100 first:border-t-0 pt-2 first:pt-0">
+                                <span class="block font-mono text-[10px] text-gray-400">{{ log.timestamp|date:"M d, Y H:i" }}</span>
+                                {{ log.action }}
+                            </div>
+                        {% empty %}
+                            <p class="text-xs text-gray-400 italic">No automated workflow updates have been recorded yet.</p>
+                        {% endfor %}
+                    </div>
+
                     <div class="pt-2">
                         <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">Case Milestone Timeline</h3>
                         <div class="space-y-3 font-semibold text-xs">
@@ -87,7 +101,7 @@
                                 <span class="w-5 h-5 rounded-full flex items-center justify-center font-bold {% if report.status != 'pending' %}bg-green-100{% else %}bg-gray-100{% endif %}">
                                     {% if report.status != 'pending' %}✓{% else %}2{% endif %}
                                 </span>
-                                <span>Reviewed by administrator & safety response dispatch.</span>
+                                <span>Automatically routed to safety response queue.</span>
                             </div>
 
                             <div class="flex items-center space-x-3 {% if report.status == 'action_taken' or report.status == 'closed' %}text-green-600{% else %}text-gray-400{% endif %}">

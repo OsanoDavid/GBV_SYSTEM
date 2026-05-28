@@ -33,77 +33,84 @@
 </head>
 <body class="bg-purple-50 text-purple-950 flex flex-col min-h-screen font-sans antialiased">
 
-    <nav class="bg-purple-900 text-white shadow-lg sticky top-0 z-50" role="navigation" aria-label="Main Security Directory">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
+<nav class="bg-purple-900 text-white shadow-lg sticky top-0 z-50" role="navigation" aria-label="Main Security Directory">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            
+            <div class="flex items-center space-x-2">
+                <a href="{% url 'landing' %}" class="text-2xl font-black tracking-tight text-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-600 rounded p-1" aria-label="SafeSpace Home Brand Link">
+                    Safe<span class="text-purple-600">Space</span>
+                </a>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-3">
+                <a href="{% url 'landing' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">Home</a>
+                <a href="{% url 'file_report' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">File Report</a>
+                <a href="{% url 'track_case' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">Track Report</a>
                 
-                <div class="flex items-center space-x-2">
-                    <a href="{% url 'landing' %}" class="text-2xl font-black tracking-tight text-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-600 rounded p-1" aria-label="SafeSpace Home Brand Link">
-                        Safe<span class="text-purple-600">Space</span>
-                    </a>
-                </div>
+{% if user.is_authenticated %}
+        <a href="{% url 'user_dashboard' %}" class="text-sm text-purple-300 font-bold px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:outline-none">
+            My Dashboard
+        </a>
+        
+        {% if user.is_staff %}
+            <a href="{% url 'department_portal' %}" class="text-sm font-bold text-amber-300 px-3 py-1.5 border border-amber-300 rounded-lg transition-all hover:bg-amber-600 hover:text-white">
+                Portal
+            </a>
+        {% endif %}
+        
+        {% if user.is_superuser %}
+            <a href="{% url 'custom_admin' %}" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black px-2.5 py-1.5 rounded uppercase tracking-wider transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">
+                Command Center
+            </a>
+        {% endif %}
+    
+    <form action="{% url 'logout' %}" method="POST" class="inline m-0">
+        {% csrf_token %}
+        <button type="submit" class="text-purple-200 text-sm font-medium px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-red-400 hover:border-red-400 focus:outline-none">
+            Log Out
+        </button>
+                </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">Log In</a>
+                    <a href="{% url 'register_user' %}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500">Sign Up</a>
+                {% endif %}
                 
-                <div class="hidden md:flex items-center space-x-3">
-                    <a href="{% url 'landing' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">
-                        Home
-                    </a>
-                    <a href="{% url 'file_report' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">
-                        File Report
-                    </a>
-                    <a href="{% url 'track_case' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">
-                        Track Report
-                    </a>
-                    
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'user_dashboard' %}" class="text-sm text-purple-300 font-bold px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:outline-none">
-                            My Dashboard
-                        </a>
-                        {% if user.is_superuser %}
-                            <a href="/admin/" target="_blank" rel="noopener noreferrer" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-black px-2.5 py-1.5 rounded uppercase tracking-wider transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500">Admin Panel</a>
-                        {% endif %}
-                        <form action="{% url 'logout' %}" method="POST" class="inline m-0">
-                            {% csrf_token %}
-                            <button type="submit" class="text-purple-200 text-sm font-medium px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-red-400 hover:border-red-400 focus:outline-none">Log Out</button>
-                        </form>
-                    {% else %}
-                        <a href="{% url 'login' %}" class="text-sm font-medium text-purple-200 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-white hover:bg-purple-600 focus:text-white focus:outline-none">
-                            Log In
-                        </a>
-                        <a href="{% url 'register_user' %}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-md focus:outline-none focus:ring-2 focus:ring-purple-500">Sign Up</a>
-                    {% endif %}
-                    
-                    <button onclick="quickEscape()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl shadow-md transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 ml-2" aria-label="Instantly leave page to conceal browse metrics">
-                        QUICK ESCAPE (ESC)
-                    </button>
-                </div>
+                <button onclick="quickEscape()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl shadow-md transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 ml-2" aria-label="Instantly leave page">ESC</button>
+            </div>
 
-                <div class="flex items-center md:hidden">
-                    <button id="mobile-menu-btn" class="text-purple-200 hover:text-white focus:outline-none p-1">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
+            <div class="flex items-center md:hidden">
+                <button id="mobile-menu-btn" class="text-purple-200 hover:text-white focus:outline-none p-1">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
             </div>
         </div>
+    </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-purple-950 px-4 pt-2 pb-4 space-y-2 border-t border-purple-800">
-            <a href="{% url 'landing' %}" class="block text-sm text-purple-200 py-2">Home</a>
-            <a href="{% url 'file_report' %}" class="block text-sm text-purple-200 py-2">File Report</a>
-            <a href="{% url 'track_case' %}" class="block text-sm text-purple-200 py-2">Track Report</a>
-            {% if user.is_authenticated %}
-                <a href="{% url 'user_dashboard' %}" class="block text-sm text-purple-200 py-2">My Dashboard</a>
-                <form action="{% url 'logout' %}" method="POST" class="block py-2">
-                    {% csrf_token %}
-                    <button type="submit" class="text-red-400 text-sm font-medium">Log Out</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}" class="block text-sm text-purple-200 py-2">Log In</a>
-                <a href="{% url 'register_user' %}" class="block bg-purple-600 text-white text-center py-2 rounded-xl text-sm font-semibold mt-2">Sign Up</a>
-            {% endif %}
-            <button onclick="quickEscape()" class="w-full bg-red-600 text-white text-center py-2 rounded-xl text-xs font-bold uppercase tracking-wider mt-2">QUICK ESCAPE</button>
-        </div>
-    </nav>
+    <div id="mobile-menu" class="hidden md:hidden bg-purple-950 px-4 pt-2 pb-4 space-y-2 border-t border-purple-800">
+    <a href="{% url 'landing' %}" class="block text-sm text-purple-200 py-2">Home</a>
+    <a href="{% url 'file_report' %}" class="block text-sm text-purple-200 py-2">File Report</a>
+    <a href="{% url 'track_case' %}" class="block text-sm text-purple-200 py-2">Track Report</a>
+    
+    {% if user.is_authenticated %}
+        <a href="{% url 'user_dashboard' %}" class="block text-sm text-purple-200 py-2">My Dashboard</a>
+        
+        {% if user.is_staff %}
+            <a href="{% url 'department_portal' %}" class="block text-sm text-amber-300 font-bold py-2">Department Portal</a>
+        {% endif %}
+        
+        <form action="{% url 'logout' %}" method="POST" class="block py-2">
+            {% csrf_token %}
+            <button type="submit" class="text-red-400 text-sm font-medium">Log Out</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}" class="block text-sm text-purple-200 py-2">Log In</a>
+        <a href="{% url 'register_user' %}" class="block bg-purple-600 text-white text-center py-2 rounded-xl text-sm font-semibold mt-2">Sign Up</a>
+    {% endif %}
+    
+    <button onclick="quickEscape()" class="w-full bg-red-600 text-white text-center py-2 rounded-xl text-xs font-bold uppercase tracking-wider mt-2">EXIT</button>
+</div>
+</nav>
 
     <main class="flex-grow focus:outline-none" id="main-content" tabindex="-1">
         {% block content %}{% endblock %}
@@ -239,11 +246,12 @@
                 return response.json();
             })
             .then(data => {
+                const botReply = data.reply || data.message || "I am here, but I could not understand that response. Please try again.";
                 const botBubble = document.createElement('div');
                 botBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
                 botBubble.innerHTML = `
                     <div class="bg-white border border-purple-100 text-gray-800 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-purple-50/30">
-                        ${data.reply || data.message}
+                        ${escapeHtml(botReply)}
                     </div>
                     <span class="text-[9px] text-gray-400 px-1 font-mono">System • Agent Active</span>
                 `;
@@ -252,6 +260,16 @@
             })
             .catch(error => {
                 console.error("AJAX Application tracking error:", error);
+                const errorBubble = document.createElement('div');
+                errorBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
+                errorBubble.innerHTML = `
+                    <div class="bg-red-50 border border-red-100 text-red-800 p-3 rounded-2xl rounded-tl-none shadow-sm">
+                        I could not connect to the assistant just now. Please try again.
+                    </div>
+                    <span class="text-[9px] text-gray-400 px-1 font-mono">System • Connection Error</span>
+                `;
+                scrollArea.appendChild(errorBubble);
+                scrollArea.scrollTop = scrollArea.scrollHeight;
             });
         }
 

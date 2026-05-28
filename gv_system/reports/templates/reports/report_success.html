@@ -22,15 +22,16 @@
             <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 space-y-2 relative group">
                 <div class="flex justify-between items-center">
                     <span class="text-[10px] text-gray-400 font-mono uppercase tracking-wider font-bold">Unique Reference Code (Case ID)</span>
-                    {% if reference %}
-                    <button onclick="copyToClipboard('{{ reference }}', 'copy-btn-ref')" id="copy-btn-ref" class="text-[10px] bg-white border border-gray-200 text-gray-500 hover:text-violet-600 px-2 py-0.5 rounded shadow-sm transition font-medium">
+                    {% firstof reference ref as case_reference %}
+                    {% if case_reference %}
+                    <button onclick="copyToClipboard('{{ case_reference }}', 'copy-btn-ref')" id="copy-btn-ref" class="text-[10px] bg-white border border-gray-200 text-gray-500 hover:text-violet-600 px-2 py-0.5 rounded shadow-sm transition font-medium">
                         Copy
                     </button>
                     {% endif %}
                 </div>
                 <div class="font-mono text-sm sm:text-base font-black text-violet-700 select-all tracking-wide break-all">
-                    {% if reference %}
-                        {{ reference }}
+                    {% if case_reference %}
+                        {{ case_reference }}
                     {% else %}
                         <span class="text-gray-400 font-sans font-normal text-xs">Token configuration delayed...</span>
                     {% endif %}

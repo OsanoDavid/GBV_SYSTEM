@@ -20,10 +20,18 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # 2. READ SECRET KEY FROM THE VAULT (With a secure fallback)
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-42n35)3u$7s*_hr_b2z$lop*z-(3%u!)0hd_*qia27=*r(%2zk')
 
-# 3. READ DEBUG STATUS FROM THE VAULT (Defaults to True if not specified)
-#DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
-DEBUG = True
-ALLOWED_HOSTS = ['*']  # Or ['127.0.0.1', 'localhost']
+def env_bool(name, default=False):
+    return os.getenv(name, str(default)).lower() in ('1', 'true', 'yes', 'on')
+
+
+def env_list(name, default=''):
+    return [item.strip() for item in os.getenv(name, default).split(',') if item.strip()]
+
+
+# 3. READ DEBUG STATUS FROM THE VAULT
+DEBUG = env_bool('DJANGO_DEBUG', False)
+ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost')
+CSRF_TRUSTED_ORIGINS = env_list('DJANGO_CSRF_TRUSTED_ORIGINS')
 
 # 4. ALLOW LOCAL CONNECTIONS TO ACCESS THE ENVIRONMENT Safely
 #ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
@@ -140,3 +148,25 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = env_bool('EMAIL_USE_TLS', True)
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'SafeSpace System <no-reply@safespace.org>')
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = env_bool('SECURE_SSL_REDIRECT', True)
+    SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', '0'))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool('SECURE_HSTS_INCLUDE_SUBDOMAINS', False)
+    SECURE_HSTS_PRELOAD = env_bool('SECURE_HSTS_PRELOAD', False)
+
+# settings.py
+
+LOGIN_REDIRECT_URL = 'user_dashboard'
+LOGOUT_REDIRECT_URL = 'landing'  # Or whatever your home page name is

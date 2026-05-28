@@ -1,0 +1,1 @@
+web: gunicorn gv_system.wsgi:application
