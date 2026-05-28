@@ -2,6 +2,16 @@
 {% load static %}
 
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
     /* Central Hero Layout Wrapper */
     .hero-banner {
         position: relative;
@@ -19,7 +29,10 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     /* Confidential Platform Subheader Badge */
@@ -49,9 +62,193 @@
     .hero-footer-note {
         color: rgba(245, 243, 255, 0.55);
     }
-    .text-3xl md{
-        color: red;
 
+    /* Mobile Responsive Typography */
+    @media (max-width: 640px) {
+        .hero-bg-section {
+            min-height: 400px;
+            padding: 20px;
+        }
+
+        .hero-bg-section h1 {
+            font-size: 1.75rem !important;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .hero-bg-section p {
+            font-size: 0.95rem !important;
+            line-height: 1.4;
+        }
+
+        .btn-group {
+            flex-direction: column !important;
+            gap: 12px !important;
+        }
+
+        .btn-group a {
+            width: 100% !important;
+            padding: 12px 16px !important;
+            font-size: 0.9rem !important;
+        }
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .hero-bg-section h1 {
+            font-size: 2.5rem !important;
+        }
+
+        .hero-bg-section p {
+            font-size: 1rem !important;
+        }
+    }
+
+    /* Category Cards Responsive */
+    .category-grid {
+        display: grid;
+        gap: 24px;
+    }
+
+    @media (max-width: 640px) {
+        .category-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .category-card {
+            padding: 16px !important;
+        }
+
+        .category-card h3 {
+            font-size: 1rem !important;
+        }
+
+        .category-card p {
+            font-size: 0.85rem !important;
+        }
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .category-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1025px) {
+        .category-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    /* Emergency Cards Responsive */
+    .emergency-grid {
+        display: grid;
+        gap: 24px;
+    }
+
+    @media (max-width: 640px) {
+        .emergency-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .emergency-grid button {
+            padding: 12px !important;
+        }
+
+        .emergency-grid h3 {
+            font-size: 1rem !important;
+        }
+
+        .emergency-grid .text-3xl {
+            font-size: 2rem !important;
+        }
+    }
+
+    @media (min-width: 641px) and (max-width: 1024px) {
+        .emergency-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    /* FAQ Responsive */
+    @media (max-width: 640px) {
+        #faqs {
+            padding: 12px !important;
+        }
+
+        #faqs h2 {
+            font-size: 1.5rem !important;
+        }
+
+        .faq-item button {
+            padding: 12px !important;
+            font-size: 0.9rem !important;
+        }
+
+        .faq-item .faq-content {
+            padding: 12px !important;
+            font-size: 0.85rem !important;
+        }
+    }
+
+    /* Modal Responsive */
+    @media (max-width: 640px) {
+        #callModal {
+            padding: 16px;
+        }
+
+        #callModal .bg-white {
+            max-width: 90vw;
+            padding: 20px !important;
+        }
+
+        #callModal h3 {
+            font-size: 1.1rem !important;
+        }
+
+        #callModal button,
+        #callModal a {
+            padding: 12px !important;
+            font-size: 0.9rem !important;
+        }
+    }
+
+    /* General Padding Adjustments for Mobile */
+    @media (max-width: 640px) {
+        .max-w-7xl,
+        .max-w-5xl,
+        .max-w-4xl {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+        }
+
+        h2 {
+            font-size: 1.5rem !important;
+        }
+
+        p {
+            font-size: 0.9rem !important;
+        }
+    }
+
+    /* Image Compatibility */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Button Consistency */
+    button {
+        cursor: pointer;
+        border: none;
+    }
+
+    /* Accessibility */
+    a:focus,
+    button:focus {
+        outline: 2px solid #7c3aed;
+        outline-offset: 2px;
     }
 </style>
 
@@ -62,23 +259,21 @@
             Secure & Confidential Platform
         </span>-->
         <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-['Times_New_Roman',_Times,_serif] relative left-[50px]" tabindex="0">
-            Combat Online  <br>Harassment <!--& <span class="text-purple-300">Technology-Facilitated Abuse</span>-->
+            Combat Online <br>Harassment
         </h1>
-        <p class="text-base md:text-xl max-w-3xl mx-auto font-medium hero-description font-['Times_New_Roman',_Times,_serif]  relative left-[50px] text-white" tabindex="0">
+        <p class="text-base md:text-xl max-w-3xl mx-auto font-medium hero-description font-['Times_New_Roman',_Times,_serif] relative left-[50px] text-white" tabindex="0">
             Report incidents safely, track responses securely, and get access to expert legal and psychological care. Your safety is our absolute priority.
         </p>
         
-        <div class="pt-4 flex flex-col sm:flex-row justify-center items-center gap-4">
+        <div class="pt-4 btn-group flex flex-col sm:flex-row justify-center items-center gap-4">
             <a href="{% url 'file_report' %}" 
                class="w-full sm:w-auto bg-white/20 backdrop-blur-md text-black font-bold text-lg px-8 py-4 rounded-xl border border-white shadow-lg transition-all 
                duration-200 hover:bg-red-600 hover:text-white hover:shadow-red-600/20 active:scale-95 text-center focus:outline-none focus:ring-2 focus:ring-purple-500 relative left-[50px]">
-               
-                 File a Secure Report
+               File a Secure Report
             </a>
             
             <a href="{% url 'track_case' %}" 
-               class="w-full sm:w-auto bg-white/20 backdrop-blur-md text-purple-950 font-bold text-lg px-8 py-4 rounded-xl border border-white shadow-lg transition-all duration-200 hover:bg-emerald-600 hover:text-white hover:shadow-emerald-600/20 active:scale-95 text-center focus:outline-none focus:ring-2 
-               focus:ring-purple-500 relative left-[50px]">
+               class="w-full sm:w-auto bg-white/20 backdrop-blur-md text-purple-950 font-bold text-lg px-8 py-4 rounded-xl border border-white shadow-lg transition-all duration-200 hover:bg-emerald-600 hover:text-white hover:shadow-emerald-600/20 active:scale-95 text-center focus:outline-none focus:ring-2 focus:ring-purple-500 relative left-[50px]">
                 Track Existing Report
             </a>
         </div>
@@ -92,7 +287,7 @@
         Technology-facilitated gender-based violence manifests in various forms. Select a category during reporting to help the triage team react swiftly.
     </p>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="category-grid">
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100/70 category-card" tabindex="0">
             <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-4 border border-purple-100/50">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -142,7 +337,7 @@
         <h2 class="text-3xl font-bold text-center text-purple-900 mb-2" tabindex="0">Immediate Crisis & Emergency Helplines</h2>
         <p class="text-center text-gray-600 mb-8" tabindex="0">If you are in immediate physical danger, click these options to establish a direct emergency line.</p>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div class="emergency-grid text-center">
             <button onclick="openModal('1195', 'National Gender Helpline')" class="p-6 bg-red-50 rounded-2xl border border-red-200 hover:bg-red-100/70 hover:scale-[1.02] transition-all block focus:ring-4 focus:ring-red-500 group">
                 <h3 class="font-bold text-red-900 text-lg group-hover:underline">National Gender Helpline</h3>
                 <p class="text-3xl font-black text-red-600 my-2 tracking-wide">1195</p>
