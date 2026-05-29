@@ -168,6 +168,16 @@
     .emergency-grid {
         display: grid;
         gap: 24px;
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .emergency-grid button {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
     }
 
     @media (max-width: 640px) {
@@ -191,13 +201,13 @@
 
     @media (min-width: 641px) and (max-width: 1024px) {
         .emergency-grid {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
     @media (min-width: 1025px) {
         .emergency-grid {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
     }
 
