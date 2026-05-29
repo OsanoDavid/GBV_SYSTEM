@@ -31,9 +31,28 @@ def send_tracking_sms(report):
     message = tracking_credentials_message(report)
     twilio_sid = os.getenv("TWILIO_ACCOUNT_SID")
     twilio_token = os.getenv("TWILIO_AUTH_TOKEN")
-    twilio_from = os.getenv("TWILIO_FROM_NUMBER")
+    twilio_from = (
+        os.getenv("TWILIO_FROM_NUMBER")
+        or os.getenv("TWILIO_FROM")
+        or os.getenv("TWILIO_PHONE_NUMBER")
+    )
 
-    if twilio_sid and twilio_token and twilio_from:
+    if twilio_sid or twilio_token or twilio_from:
+        missing_twilio = [
+            name for name, value in [
+                ("TWILIO_ACCOUNT_SID", twilio_sid),
+                ("TWILIO_AUTH_TOKEN", twilio_token),
+                ("TWILIO_FROM_NUMBER or TWILIO_FROM or TWILIO_PHONE_NUMBER", twilio_from),
+            ]
+            if not value
+        ]
+        if missing_twilio:
+            return False, (
+                "Twilio SMS configuration incomplete. "
+                f"Missing: {', '.join(missing_twilio)}. "
+                "Set all required Twilio vars or use SMS_API_URL/SMS_API_KEY instead."
+            )
+
         endpoint = f"https://api.twilio.com/2010-04-01/Accounts/{twilio_sid}/Messages.json"
         try:
             response = requests.post(
@@ -51,7 +70,21 @@ def send_tracking_sms(report):
     sms_api_key = os.getenv("SMS_API_KEY")
     sms_sender_id = os.getenv("SMS_SENDER_ID", "SafeSpace")
 
-    if sms_api_url and sms_api_key:
+    if sms_api_url or sms_api_key:
+        missing_custom = [
+            name for name, value in [
+                ("SMS_API_URL", sms_api_url),
+                ("SMS_API_KEY", sms_api_key),
+            ]
+            if not value
+        ]
+        if missing_custom:
+            return False, (
+                "Custom SMS provider configuration incomplete. "
+                f"Missing: {', '.join(missing_custom)}. "
+                "Set both SMS_API_URL and SMS_API_KEY to enable this path."
+            )
+
         try:
             response = requests.post(
                 sms_api_url,
