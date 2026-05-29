@@ -14,6 +14,17 @@ def normalize_phone_number(phone):
     return cleaned
 
 
+def normalize_twilio_number(phone):
+    cleaned = re.sub(r"[\s\-()]", "", phone or "")
+    if cleaned.startswith("+"):
+        return cleaned
+    if cleaned.startswith("0") and len(cleaned) >= 10:
+        return "+254" + cleaned[1:]
+    if cleaned.startswith("254"):
+        return "+" + cleaned
+    return cleaned
+
+
 def tracking_credentials_message(report):
     return (
         "SafeSpace report received. "
@@ -31,7 +42,7 @@ def send_tracking_sms(report):
     message = tracking_credentials_message(report)
     twilio_sid = os.getenv("TWILIO_ACCOUNT_SID")
     twilio_token = os.getenv("TWILIO_AUTH_TOKEN")
-    twilio_from = (
+    twilio_from = normalize_twilio_number(
         os.getenv("TWILIO_FROM_NUMBER")
         or os.getenv("TWILIO_FROM")
         or os.getenv("TWILIO_PHONE_NUMBER")
@@ -63,6 +74,16 @@ def send_tracking_sms(report):
             )
             response.raise_for_status()
             return True, "Tracking credentials SMS sent via Twilio."
+        except requests.HTTPError as exc:
+            try:
+                error_body = response.json()
+                error_message = error_body.get("message") or error_body.get("error_message")
+                error_code = error_body.get("code")
+                if error_message:
+                    return False, f"SMS failed via Twilio: {error_message} (code {error_code})"
+            except ValueError:
+                pass
+            return False, f"SMS failed via Twilio: {exc}"
         except requests.RequestException as exc:
             return False, f"SMS failed via Twilio: {exc}"
 
