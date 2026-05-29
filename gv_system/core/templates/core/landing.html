@@ -143,6 +143,15 @@
         }
     }
 
+    .category-card button .text-xl {
+        display: inline-flex;
+        transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .category-card button .text-xl.rotate {
+        transform: rotate(45deg);
+    }
+
     @media (min-width: 641px) and (max-width: 1024px) {
         .category-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -181,6 +190,12 @@
     }
 
     @media (min-width: 641px) and (max-width: 1024px) {
+        .emergency-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (min-width: 1025px) {
         .emergency-grid {
             grid-template-columns: repeat(3, 1fr);
         }
@@ -323,7 +338,7 @@
                     <span class="text-xl text-purple-900">+</span>
                 </div>
             </button>
-            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed" tabindex="0">
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed category-panel" tabindex="0">
                 Cyberstalking happens when someone repeatedly follows, monitors, or harasses you online. This includes continual messages, fake accounts, location tracking, photo tagging without consent, or constant monitoring of your social activity.
             </div>
         </div>
@@ -343,7 +358,7 @@
                     <span class="text-xl text-purple-900">+</span>
                 </div>
             </button>
-            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed" tabindex="0">
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed category-panel" tabindex="0">
                 Doxing or intimate leaks is when someone shares your private details or images without permission. This includes posting your address, phone number, workplace details, or private photos to shame, threaten, or pressure you.
             </div>
         </div>
@@ -363,7 +378,7 @@
                     <span class="text-xl text-purple-900">+</span>
                 </div>
             </button>
-            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed" tabindex="0">
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed category-panel" tabindex="0">
                 Impersonation is when someone pretends to be you online. This includes cloned accounts, fake profiles, or messages sent in your name to damage your reputation, steal money, or deceive your contacts.
             </div>
         </div>
@@ -383,7 +398,7 @@
                     <span class="text-xl text-purple-900">+</span>
                 </div>
             </button>
-            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed" tabindex="0">
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed category-panel" tabindex="0">
                 Threats and hate speech include messages that insult, threaten, or encourage violence because of your gender, religion, race, or identity. It also covers public campaigns meant to humiliate, intimidate, or pressure you to stay silent.
             </div>
         </div>
@@ -474,18 +489,22 @@
     }
 
     function toggleCategory(button) {
-        const targetPanel = button.parentElement.querySelector('div.hidden');
+        const targetPanel = button.parentElement.querySelector('.category-panel');
         const iconIndicator = button.querySelector('span.text-xl');
         const isExpanded = button.getAttribute('aria-expanded') === 'true';
 
         button.setAttribute('aria-expanded', !isExpanded);
 
+        if (!targetPanel) {
+            return;
+        }
+
         if (targetPanel.classList.contains('hidden')) {
             targetPanel.classList.remove('hidden');
-            iconIndicator.textContent = '−';
+            iconIndicator.classList.add('rotate');
         } else {
             targetPanel.classList.add('hidden');
-            iconIndicator.textContent = '+';
+            iconIndicator.classList.remove('rotate');
         }
     }
 
