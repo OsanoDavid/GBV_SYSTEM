@@ -106,11 +106,16 @@
     }
 
     function stepWizardNavigationEngine(delta) {
+        const nextStep = activeStepCursor + delta;
+        if (nextStep < 1 || nextStep > boundaryTerminalStep) {
+            return;
+        }
+
         if (activeStepCursor === 1 && delta === 1) {
             const type = document.getElementById('id_reporter_type').value;
             const age = document.getElementById('id_age_group').value;
             const consent = document.getElementById('id_guardian_consent');
-            if ((type === 'child' || age === 'U18') && !consent.checked) {
+            if ((type === 'child' || age === 'U18') && consent && !consent.checked) {
                 alert("Please confirm guardian authorization to proceed.");
                 return;
             }
@@ -121,13 +126,29 @@
             return;
         }
 
-        document.getElementById(`wizard-step-${activeStepCursor}`).classList.add('hidden');
-        activeStepCursor += delta;
-        document.getElementById(`wizard-step-${activeStepCursor}`).classList.remove('hidden');
+        const currentStep = document.getElementById(`wizard-step-${activeStepCursor}`);
+        const nextStepElement = document.getElementById(`wizard-step-${nextStep}`);
+        if (!currentStep || !nextStepElement) {
+            return;
+        }
+
+        currentStep.classList.add('hidden');
+        activeStepCursor = nextStep;
+        nextStepElement.classList.remove('hidden');
         
-        document.getElementById('step-indicator-tag').textContent = `Step ${activeStepCursor} of ${boundaryTerminalStep}`;
-        document.getElementById('back-step-btn').classList.toggle('invisible', activeStepCursor === 1);
-        document.getElementById('next-step-btn').textContent = (activeStepCursor === boundaryTerminalStep) ? "Transmit Report" : "Continue Forward";
+        const stepTag = document.getElementById('step-indicator-tag');
+        const backBtn = document.getElementById('back-step-btn');
+        const nextBtn = document.getElementById('next-step-btn');
+
+        if (stepTag) {
+            stepTag.textContent = `Step ${activeStepCursor} of ${boundaryTerminalStep}`;
+        }
+        if (backBtn) {
+            backBtn.classList.toggle('invisible', activeStepCursor === 1);
+        }
+        if (nextBtn) {
+            nextBtn.textContent = (activeStepCursor === boundaryTerminalStep) ? "Transmit Report" : "Continue Forward";
+        }
     }
 </script>
 {% endblock %}
