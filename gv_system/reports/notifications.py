@@ -89,6 +89,7 @@ def send_tracking_sms(report):
 
     sms_api_url = os.getenv("SMS_API_URL")
     sms_api_key = os.getenv("SMS_API_KEY")
+    sms_api_username = os.getenv("SMS_API_USERNAME")
     sms_sender_id = os.getenv("SMS_SENDER_ID", "SafeSpace")
 
     if sms_api_url or sms_api_key:
@@ -107,16 +108,35 @@ def send_tracking_sms(report):
             )
 
         try:
-            response = requests.post(
-                sms_api_url,
-                json={
-                    "to": phone,
-                    "message": message,
-                    "from": sms_sender_id,
-                },
-                headers={"Authorization": f"Bearer {sms_api_key}"},
-                timeout=20,
-            )
+            if sms_api_url and "africastalking.com" in sms_api_url:
+                # Africa's Talking requires API key in the apiKey header and form-encoded body.
+                sms_api_username = sms_api_username or os.getenv("AFRICASTALKING_USERNAME") or "sandbox"
+                response = requests.post(
+                    sms_api_url,
+                    data={
+                        "username": sms_api_username,
+                        "to": phone,
+                        "message": message,
+                        "from": sms_sender_id,
+                    },
+                    headers={
+                        "apiKey": sms_api_key,
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    timeout=20,
+                )
+            else:
+                response = requests.post(
+                    sms_api_url,
+                    json={
+                        "to": phone,
+                        "message": message,
+                        "from": sms_sender_id,
+                    },
+                    headers={"Authorization": f"Bearer {sms_api_key}"},
+                    timeout=20,
+                )
+
             response.raise_for_status()
             return True, "Tracking credentials SMS sent."
         except requests.RequestException as exc:
