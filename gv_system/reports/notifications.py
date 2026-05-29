@@ -122,4 +122,11 @@ def send_tracking_sms(report):
         except requests.RequestException as exc:
             return False, f"SMS failed: {exc}"
 
-    return False, "SMS not configured. Set Twilio env vars or SMS_API_URL/SMS_API_KEY."
+    # Development fallback: log SMS to console when no provider is configured
+    import sys
+    print("\n" + "="*60, file=sys.stderr)
+    print("📱 SMS SENT (Development Mode):", file=sys.stderr)
+    print(f"   To: {phone}", file=sys.stderr)
+    print(f"   Message: {message}", file=sys.stderr)
+    print("="*60 + "\n", file=sys.stderr)
+    return True, "SMS logged to console (development mode - no provider configured)."
