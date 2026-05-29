@@ -164,12 +164,11 @@
         }
     }
 
-    /* Emergency Cards Responsive */
+    /* Emergency Cards Responsive: mobile-first (stack on phone), inline on desktop */
     .emergency-grid {
         display: grid;
         gap: 24px;
-        grid-template-columns: 1fr;
-        grid-auto-rows: 1fr;
+        grid-template-columns: 1fr; /* single column by default (mobile) */
         align-items: stretch;
     }
 
@@ -179,7 +178,6 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: stretch;
-        min-height: 190px;
     }
 
     @media (max-width: 640px) {
@@ -201,15 +199,19 @@
         }
     }
 
-    @media (min-width: 641px) and (max-width: 1024px) {
+    @media (min-width: 641px) and (max-width: 1023px) {
         .emergency-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 1024px) {
         .emergency-grid {
             grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .emergency-grid button {
+            min-height: 190px;
         }
     }
 
@@ -422,8 +424,8 @@
         <h2 class="text-3xl font-bold text-center text-purple-900 mb-2" tabindex="0">Immediate Crisis & Emergency Helplines</h2>
         <p class="text-center text-gray-600 mb-8" tabindex="0">If you are in immediate physical danger, click these options to establish a direct emergency line.</p>
         
-        <div class="emergency-grid text-center" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
-            <button onclick="openModal('1195', 'National Gender Helpline')" class="p-6 bg-red-50 rounded-2xl border border-red-200 hover:bg-red-100/70 hover:scale-[1.02] transition-all block focus:ring-4 focus:ring-red-500 group" style="min-height: 190px;">
+        <div class="emergency-grid text-center">
+            <button onclick="openModal('1195', 'National Gender Helpline')" class="p-6 bg-red-50 rounded-2xl border border-red-200 hover:bg-red-100/70 hover:scale-[1.02] transition-all block focus:ring-4 focus:ring-red-500 group">
                 <h3 class="font-bold text-red-900 text-lg group-hover:underline">National Gender Helpline</h3>
                 <p class="text-3xl font-black text-red-600 my-2 tracking-wide">1195</p>
                 <p class="text-xs text-red-700/90">Free, confidential 24/7 medical & psychosocial crisis response infrastructure.</p>
