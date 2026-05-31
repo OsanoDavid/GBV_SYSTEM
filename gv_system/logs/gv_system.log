@@ -59,3 +59,9 @@
 2026-05-31 23:15:06,764 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-05-31 23:19:28,675 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-05-31 23:26:12,848 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 23:59:41,902 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-01 00:12:43,936 [ERROR] reports.views: Gemini API Error: 403 Client Error: Forbidden for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-06-01 00:38:55,899 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-01 00:39:14,607 [ERROR] reports.views: Gemini API Error: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-06-01 00:49:12,035 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-01 00:50:31,839 [INFO] reports.views: Saved Report ID 32 | Ref: GBV-G8ZG-KH0D | PIN: 198501
