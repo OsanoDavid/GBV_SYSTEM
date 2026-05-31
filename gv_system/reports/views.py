@@ -1,6 +1,7 @@
-import os, json, random, string
+import os, json, random, string, logging
 import requests
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -16,6 +17,7 @@ from reports.notifications import send_tracking_sms
 from reports.services import AssignmentService
 
 load_dotenv()
+logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
@@ -32,46 +34,52 @@ def file_report_view(request):
     if request.method == 'POST':
         form = SecureIncidentReportForm(request.POST, request.FILES)
         if form.is_valid():
-            incident = form.save(commit=False)
-            
-            # 1. Generate new values
-            ref = f"GBV-{''.join(random.choices(string.ascii_uppercase + string.digits, k=4))}-{''.join(random.choices(string.ascii_uppercase + string.digits, k=4))}"
-            pin = ''.join(random.choices(string.digits, k=6))
-            
-            # 2. Assign to instance
-            incident.reference_number = ref
-            incident.case_access_pin = pin
-            
-            if request.user.is_authenticated:
-                incident.reporter_profile = request.user
-            
-            incident.save()
-            
-            # 3. DEBUG PRINT: Look at your terminal!
-            print(f"DEBUG: Saved Report ID {incident.id} | Ref: {incident.reference_number} | PIN: {incident.case_access_pin}")
-            
-            user_lat = request.POST.get('user_lat') or request.session.get('last_user_lat')
-            user_lng = request.POST.get('user_lng') or request.session.get('last_user_lng')
-            nearest_home_id = request.session.get('last_nearest_home_id')
-            AssignmentService.auto_route_report(
-                incident.id,
-                user=request.user if request.user.is_authenticated else None,
-                user_lat=user_lat,
-                user_lng=user_lng,
-                nearest_home_id=nearest_home_id,
-            )
-            sms_sent, sms_status = send_tracking_sms(incident)
-            AuditLog.objects.create(
-                report=incident,
-                user=request.user if request.user.is_authenticated else None,
-                action=sms_status
-            )
-            
-            # 4. Explicit Context
-            return render(request, 'reports/report_success.html', {
-                'reference': incident.reference_number,
-                'pin': incident.case_access_pin
-            })
+            try:
+                incident = form.save(commit=False)
+
+                # 1. Generate new values
+                ref = f"GBV-{''.join(random.choices(string.ascii_uppercase + string.digits, k=4))}-{''.join(random.choices(string.ascii_uppercase + string.digits, k=4))}"
+                pin = ''.join(random.choices(string.digits, k=6))
+
+                # 2. Assign to instance
+                incident.reference_number = ref
+                incident.case_access_pin = pin
+
+                if request.user.is_authenticated:
+                    incident.reporter_profile = request.user
+
+                incident.save()
+
+                # 3. DEBUG PRINT: Look at your terminal!
+                logger.info("Saved Report ID %s | Ref: %s | PIN: %s", incident.id, incident.reference_number, incident.case_access_pin)
+
+                user_lat = request.POST.get('user_lat') or request.session.get('last_user_lat')
+                user_lng = request.POST.get('user_lng') or request.session.get('last_user_lng')
+                nearest_home_id = request.session.get('last_nearest_home_id')
+                AssignmentService.auto_route_report(
+                    incident.id,
+                    user=request.user if request.user.is_authenticated else None,
+                    user_lat=user_lat,
+                    user_lng=user_lng,
+                    nearest_home_id=nearest_home_id,
+                )
+                sms_sent, sms_status = send_tracking_sms(incident)
+                AuditLog.objects.create(
+                    report=incident,
+                    user=request.user if request.user.is_authenticated else None,
+                    action=sms_status
+                )
+
+                # 4. Explicit Context
+                return render(request, 'reports/report_success.html', {
+                    'reference': incident.reference_number,
+                    'pin': incident.case_access_pin
+                })
+            except Exception as e:
+                # Log full traceback and show a friendly message
+                logger.exception("Unhandled exception while processing report submission")
+                messages.error(request, "We encountered an error processing your report. Please try again later or contact support.")
+                # Fall through to re-render the form with the filled data
     else:
         form = SecureIncidentReportForm()
     return render(request, 'reports/file_report.html', {'form': form})
