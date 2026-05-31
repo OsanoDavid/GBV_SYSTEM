@@ -66,19 +66,37 @@ def file_report_view(request):
                 user_lat = request.POST.get('user_lat') or request.session.get('last_user_lat')
                 user_lng = request.POST.get('user_lng') or request.session.get('last_user_lng')
                 nearest_home_id = request.session.get('last_nearest_home_id')
-                AssignmentService.auto_route_report(
-                    incident.id,
-                    user=request.user if request.user.is_authenticated else None,
-                    user_lat=user_lat,
-                    user_lng=user_lng,
-                    nearest_home_id=nearest_home_id,
-                )
-                sms_sent, sms_status = send_tracking_sms(incident)
-                AuditLog.objects.create(
-                    report=incident,
-                    user=request.user if request.user.is_authenticated else None,
-                    action=sms_status
-                )
+                
+                try:
+                    AssignmentService.auto_route_report(
+                        incident.id,
+                        user=request.user if request.user.is_authenticated else None,
+                        user_lat=user_lat,
+                        user_lng=user_lng,
+                        nearest_home_id=nearest_home_id,
+                    )
+                except Exception as e:
+                    logger.warning("Assignment service failed: %s", str(e))
+                    AuditLog.objects.create(
+                        report=incident,
+                        user=request.user if request.user.is_authenticated else None,
+                        action=f"Assignment service error: {str(e)}"
+                    )
+                
+                try:
+                    sms_sent, sms_status = send_tracking_sms(incident)
+                    AuditLog.objects.create(
+                        report=incident,
+                        user=request.user if request.user.is_authenticated else None,
+                        action=sms_status
+                    )
+                except Exception as e:
+                    logger.warning("SMS sending failed: %s", str(e))
+                    AuditLog.objects.create(
+                        report=incident,
+                        user=request.user if request.user.is_authenticated else None,
+                        action=f"SMS error: {str(e)}"
+                    )
 
                 # 4. Explicit Context
                 return render(request, 'reports/report_success.html', {
