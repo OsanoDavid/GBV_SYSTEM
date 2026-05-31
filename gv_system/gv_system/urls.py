@@ -23,18 +23,13 @@ from reports import views as report_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    # Core app handles landing and basic pages
-    path('', include('core.urls')), 
-    
-    # Reports app handles filing, tracking, and portals
-    path('', include('reports.urls')), 
-    
-    # Specific dashboard and admin mappings
-    # Using 'user_dashboard_view' as defined in your views.py
-    path('dashboard/', report_views.user_dashboard_view, name='user_dashboard'),
-    
-    # Using 'custom_admin_dashboard' as defined in your views.py
-    path('command-center/', report_views.custom_admin_dashboard, name='custom_admin'),
+    # Reports app handles filing, tracking, and portals.
+    # Make reports routes take precedence for /report/, /dashboard/, /portal/, etc.
+    path('', include('reports.urls')),
 
-   path('', include('reports.urls')), # This is the only place 'include' belongs
+    # Core app handles landing and other base pages.
+    path('', include('core.urls')),
+
+    # Specific admin command center mapping.
+    path('command-center/', report_views.custom_admin_dashboard, name='custom_admin'),
 ]
