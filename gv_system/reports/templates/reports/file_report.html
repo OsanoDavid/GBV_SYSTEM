@@ -142,7 +142,7 @@
                             </label>
 
                             <label class="p-4 border border-gray-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-gray-50 hover:border-violet-300 transition group">
-                                <input type="radio" name="incident_category" value="threats" onclick="toggleOtherCategoryField(false)" class="text-violet-600 focus:ring-violet-500 w-4 h-4">
+                                <input type="radio" name="incident_category" value="hate_speech" onclick="toggleOtherCategoryField(false)" class="text-violet-600 focus:ring-violet-500 w-4 h-4">
                                 <div class="text-xs">
                                     <span class="font-bold text-gray-800 block">Targeted Hate Campaigns</span>
                                     <span class="text-gray-400 text-[10px]">Harassment strings via coordinated swarm accounts.</span>
@@ -292,14 +292,9 @@
     }
 
     function stepWizardNavigationEngine(directionDelta) {
-        const nextStep = activeStepCursor + directionDelta;
-        if (nextStep < 1 || nextStep > boundaryTerminalStep) {
-            return;
-        }
-
         if (activeStepCursor === 2 && directionDelta === 1) {
             const platformNode = document.getElementById('id_platform_used').value.trim();
-            if (!platformNode) {
+            if(!platformNode) {
                 alert("Please declare the targeted platform deployment environment (e.g., WhatsApp, Web Messenger) before forwarding.");
                 return;
             }
@@ -313,7 +308,7 @@
         
         if (activeStepCursor === 3 && directionDelta === 1) {
             const descriptiveArea = document.getElementById('id_description').value.trim();
-            if (descriptiveArea.length < 15) {
+            if(descriptiveArea.length < 15) {
                 alert("Please append a comprehensive descriptive overview to allow automated processing routines to execute cleanly.");
                 return;
             }
@@ -321,47 +316,37 @@
             return;
         }
 
-        const currentStep = document.getElementById(`wizard-step-${activeStepCursor}`);
-        const nextStepElement = document.getElementById(`wizard-step-${nextStep}`);
-        if (!currentStep || !nextStepElement) {
-            return;
-        }
-
-        currentStep.classList.add('hidden');
-        activeStepCursor = nextStep;
-        nextStepElement.classList.remove('hidden');
+        document.getElementById(`wizard-step-${activeStepCursor}`).classList.add('hidden');
+        activeStepCursor += directionDelta;
+        document.getElementById(`wizard-step-${activeStepCursor}`).classList.remove('hidden');
 
         const btnBack = document.getElementById('back-step-btn');
         const btnNext = document.getElementById('next-step-btn');
         const markerBadge = document.getElementById('step-indicator-tag');
         const guestBanner = document.getElementById('guest-advisory-banner');
 
-        if (markerBadge) {
-            markerBadge.textContent = `Step ${activeStepCursor} of ${boundaryTerminalStep}`;
-        }
+        markerBadge.textContent = `Step ${activeStepCursor} of ${boundaryTerminalStep}`;
         
-        if (guestBanner) {
-            if (activeStepCursor > 1) {
-                guestBanner.classList.add('hidden');
-            } else {
-                guestBanner.classList.remove('hidden');
-            }
+        if (activeStepCursor > 1) {
+            guestBanner.classList.add('hidden');
+        } else {
+            guestBanner.classList.remove('hidden');
         }
 
-        if (btnBack) {
-            btnBack.classList.toggle('invisible', activeStepCursor === 1);
+        if (activeStepCursor === 1) { 
+            btnBack.classList.add('invisible'); 
+        } else { 
+            btnBack.classList.remove('invisible'); 
         }
 
-        if (btnNext) {
-            if (activeStepCursor === boundaryTerminalStep) {
-                btnNext.textContent = "Transmit Encrypted Report";
-                btnNext.classList.remove('bg-violet-600', 'hover:bg-violet-700');
-                btnNext.classList.add('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-600');
-            } else {
-                btnNext.textContent = "Continue Forward";
-                btnNext.classList.add('bg-violet-600', 'hover:bg-violet-700');
-                btnNext.classList.remove('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-600');
-            }
+        if (activeStepCursor === boundaryTerminalStep) {
+            btnNext.textContent = "Transmit Encrypted Report";
+            btnNext.classList.remove('bg-violet-600', 'hover:bg-violet-700');
+            btnNext.classList.add('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-600');
+        } else {
+            btnNext.textContent = "Continue Forward";
+            btnNext.classList.add('bg-violet-600', 'hover:bg-violet-700');
+            btnNext.classList.remove('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-600');
         }
     }
 
