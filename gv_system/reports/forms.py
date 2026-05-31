@@ -2,6 +2,16 @@ from django import forms
 from .models import IncidentReport
 
 class SecureIncidentReportForm(forms.ModelForm):
+    # Add a non-model field to capture custom category when "other" is selected
+    custom_category = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:ring-2 focus:ring-violet-600 outline-none',
+            'placeholder': 'e.g., Cyber blackmail, Online scamming'
+        })
+    )
+
     class Meta:
         model = IncidentReport
         # Only list fields that exist in your models.py

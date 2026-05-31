@@ -37,6 +37,16 @@ def file_report_view(request):
             try:
                 incident = form.save(commit=False)
 
+                # Handle custom category if "other" was selected
+                if incident.incident_category == 'other':
+                    custom_cat = form.cleaned_data.get('custom_category', '').strip()
+                    if custom_cat:
+                        incident.incident_category = custom_cat
+                    else:
+                        # If no custom category provided, reject the form
+                        messages.error(request, "Please specify a custom incident type when selecting 'Other'.")
+                        return render(request, 'reports/file_report.html', {'form': form})
+
                 # 1. Generate new values
                 ref = f"GBV-{''.join(random.choices(string.ascii_uppercase + string.digits, k=4))}-{''.join(random.choices(string.ascii_uppercase + string.digits, k=4))}"
                 pin = ''.join(random.choices(string.digits, k=6))
@@ -80,6 +90,12 @@ def file_report_view(request):
                 logger.exception("Unhandled exception while processing report submission")
                 messages.error(request, "We encountered an error processing your report. Please try again later or contact support.")
                 # Fall through to re-render the form with the filled data
+        else:
+            # Form validation failed - log the errors
+            logger.warning("Form validation failed: %s", form.errors)
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
     else:
         form = SecureIncidentReportForm()
     return render(request, 'reports/file_report.html', {'form': form})
