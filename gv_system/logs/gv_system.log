@@ -10,3 +10,52 @@
 2026-05-31 19:34:00,317 [WARNING] django.request: Not Found: /favicon.ico
 2026-05-31 19:44:28,174 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-05-31 19:45:11,843 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 21:29:28,686 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 21:29:32,677 [WARNING] django.request: Not Found: /favicon.ico
+2026-05-31 21:33:09,640 [WARNING] django.request: Not Found: /favicon.ico
+2026-05-31 21:38:11,146 [WARNING] django.request: Not Found: /favicon.ico
+2026-05-31 21:38:49,481 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\core\urls.py changed, reloading.
+2026-05-31 21:38:50,603 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 21:38:59,630 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-05-31 21:39:00,395 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 21:40:43,222 [WARNING] django.request: Not Found: /favicon.ico
+2026-05-31 21:40:53,166 [ERROR] reports.views: Gemini API Error: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 21:40:53,270 [ERROR] reports.views: Gemini API Error: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 21:41:44,408 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-05-31 21:41:45,853 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 21:42:45,846 [ERROR] reports.views: Gemini API Error: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 21:49:29,023 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 21:49:48,594 [ERROR] reports.views: Gemini API Error: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 21:52:05,793 [ERROR] reports.views: Gemini API Error: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:02:21,531 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:02:54,496 [ERROR] reports.views: Gemini API Error: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=20)
+2026-05-31 22:04:51,412 [ERROR] reports.views: Gemini API Error: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=20)
+2026-05-31 22:10:39,128 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-05-31 22:10:40,825 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:14:47,374 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:17:03,888 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:25:00,705 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-05-31 22:25:01,794 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:26:01,238 [ERROR] reports.views: Gemini API Error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:26:26,101 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:26:38,904 [ERROR] reports.views: Gemini API Error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:30:15,716 [ERROR] reports.views: Gemini API Error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:30:46,224 [ERROR] reports.views: Gemini API Error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:30:52,657 [ERROR] reports.views: Gemini API Error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:31:05,979 [ERROR] reports.views: Gemini API Error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:31:16,140 [ERROR] reports.views: Gemini API Error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:31:21,424 [ERROR] reports.views: Gemini API Error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:34:34,737 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-05-31 22:34:36,113 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:36:07,692 [ERROR] reports.views: Gemini API Error: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:36:41,588 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:40:32,607 [ERROR] reports.views: Gemini API Error: 503 Server Error: Service Unavailable for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE
+2026-05-31 22:42:29,332 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:50:24,238 [INFO] reports.views: Saved Report ID 30 | Ref: GBV-P0GG-DB67 | PIN: 768633
+2026-05-31 22:55:35,652 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-05-31 22:55:36,630 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 22:57:00,125 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 23:02:05,313 [INFO] reports.views: Saved Report ID 31 | Ref: GBV-WLIT-7W56 | PIN: 817381
+2026-05-31 23:15:06,764 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 23:19:28,675 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-05-31 23:26:12,848 [INFO] django.utils.autoreload: Watching for file changes with StatReloader

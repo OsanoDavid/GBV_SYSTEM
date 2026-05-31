@@ -12,7 +12,7 @@
             <p class="text-xs text-gray-500 mt-1">Access your secure case records management dashboard.</p>
         </div>
         
-        <form method="POST" class="space-y-5">
+        <form method="POST" class="space-y-5" id="login-form">
             {% csrf_token %}
             
             {% if form.errors or form.non_field_errors %}
@@ -23,13 +23,18 @@
             {% endif %}
 
             {% for field in form %}
-                <div class="space-y-1.5">
+                <div class="space-y-1.5 relative">
                     <label for="{{ field.id_for_label }}" class="block text-xs font-bold uppercase tracking-wider text-gray-700">
                         {{ field.label }}
                     </label>
                     
-                    <div class="django-field-wrapper">
+                    <div class="django-field-wrapper relative">
                         {{ field }}
+                        {% if "password" in field.id_for_label %}
+                            <button type="button" onclick="togglePasswordVisibility('{{ field.id_for_label }}')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-violet-600 transition focus:outline-none" aria-label="Toggle password visibility">
+                                <i class="fas fa-eye" id="icon-{{ field.id_for_label }}"></i>
+                            </button>
+                        {% endif %}
                     </div>
                     
                     {% if field.errors %}
@@ -40,23 +45,46 @@
                 </div>
             {% endfor %}
             
-            <button type="submit" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-black text-xs uppercase tracking-widest py-4 rounded-xl shadow-[0_10px_20px_rgba(124,58,237,0.15)] hover:shadow-[0_15px_25px_rgba(124,58,237,0.25)] transition duration-200 transform active:scale-[0.98]">
-                Secure Log In
+            <button type="submit" id="submit-btn" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-black text-xs uppercase tracking-widest py-4 rounded-xl shadow-[0_10px_20px_rgba(124,58,237,0.15)] hover:shadow-[0_15px_25px_rgba(124,58,237,0.25)] transition duration-200 transform active:scale-[0.98] flex items-center justify-center space-x-2">
+                <span id="btn-text">Secure Log In</span>
+                <div id="loader" class="hidden w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
             </button>
         </form>
     </div>
 </div>
 
 <script>
+    function togglePasswordVisibility(fieldId) {
+        const input = document.getElementById(fieldId);
+        const icon = document.getElementById('icon-' + fieldId);
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
-        // High-contrast clean input styles for white background theme setup
-        const cleanLightInputStyles = "w-full p-3.5 bg-gray-50/80 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm font-medium text-gray-900 placeholder-gray-400 transition duration-150 shadow-sm";
+        const form = document.getElementById('login-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const loader = document.getElementById('loader');
+
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            btnText.textContent = "Verifying...";
+            loader.classList.remove('hidden');
+        });
+
+        const cleanLightInputStyles = "w-full p-3.5 bg-gray-50/80 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm font-medium text-gray-900 placeholder-gray-400 transition duration-150 shadow-sm pr-10";
         
-        // Map elements programmatically
         document.querySelectorAll('.django-field-wrapper input').forEach(inputField => {
             inputField.className = cleanLightInputStyles;
-            
-            // Apply contextual placeholders dynamically
             if (inputField.name === "username") {
                 inputField.placeholder = "Enter your anonymous username";
             } else if (inputField.type === "password") {

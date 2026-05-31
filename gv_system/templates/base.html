@@ -30,6 +30,7 @@
     </script>
     <link rel="stylesheet" href="{% static 'images/custom.css' %}?v=3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 </head>
 <body class="bg-purple-50 text-purple-950 flex flex-col min-h-screen font-sans antialiased">
 
@@ -154,36 +155,27 @@
         </button>
     </div>
 
-    <footer class="bg-purple-950 text-purple-100 py-8 border-t border-purple-800" role="contentinfo">
-        <div class="max-w-7xl mx-auto px-4 text-center md:flex md:justify-between md:items-center text-xs sm:text-sm">
-            <p class="text-purple-100/70">&copy; 2026 SafeSpace Initiative. All communication tracks are encrypted securely.</p>
-            <p class="text-purple-100/40 mt-2 md:mt-0">Built under strict institutional protection layouts.</p>
-        </div>
-        <footer class="bg-purple-950 text-purple-100 py-12 border-t border-purple-800" role="contentinfo">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col items-center space-y-6">
-        
-        <div class="text-center">
-            <p class="text-sm font-semibold text-purple-300 mb-6 uppercase tracking-widest">Connect With Us</p>
-            <div class="flex space-x-8 text-2xl">
-                <a href="https://wa.me/254108383799" target="_blank" class="hover:text-green-400 transition-all hover:scale-110">
-                <i class="fab fa-whatsapp"></i>
-                </a>
-                <a href="https://facebook.com/YOUR_PAGE" target="_blank" class="hover:text-blue-500 transition-all hover:scale-110"><i class="fab fa-facebook"></i></a>
-                <a href="https://instagram.com/YOUR_HANDLE" target="_blank" class="hover:text-pink-500 transition-all hover:scale-110"><i class="fab fa-instagram"></i></a>
-                <a href="https://twitter.com/YOUR_HANDLE" target="_blank" class="hover:text-sky-400 transition-all hover:scale-110"><i class="fab fa-twitter"></i></a>
+    <footer class="bg-purple-950 text-purple-100 py-12 border-t border-purple-800" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center space-y-6">
+            <div class="text-center">
+                <p class="text-sm font-semibold text-purple-300 mb-6 uppercase tracking-widest">Connect With Us</p>
+                <div class="flex space-x-8 text-2xl">
+                    <a href="https://wa.me/254108383799" target="_blank" class="hover:text-green-400 transition-all hover:scale-110">
+                    <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" target="_blank" class="hover:text-blue-500 transition-all hover:scale-110"><i class="fab fa-facebook"></i></a>
+                    <a href="#" target="_blank" class="hover:text-pink-500 transition-all hover:scale-110"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank" class="hover:text-sky-400 transition-all hover:scale-110"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="w-full border-t border-purple-800 pt-8 text-center text-xs sm:text-sm">
+                <p class="text-purple-100/70">&copy; 2026 SafeSpace Initiative. All communication tracks are encrypted securely.</p>
+                <p class="text-purple-100/40 mt-2">Built under strict institutional protection layouts.</p>
             </div>
         </div>
-
-        <div class="w-full border-t border-purple-800 pt-8 text-center text-xs sm:text-sm">
-            <p class="text-purple-100/70">&copy; 2026 SafeSpace Initiative. All communication tracks are encrypted securely.</p>
-            <p class="text-purple-100/40 mt-2">Built under strict institutional protection layouts.</p>
-        </div>
-    </div>
-</footer>
     </footer>
 
     <script>
-        // Toggle mobile drawer visibility state
         document.getElementById('mobile-menu-btn').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
@@ -232,7 +224,18 @@
             input.value = '';
             scrollArea.scrollTop = scrollArea.scrollHeight;
 
-            // UPDATED: Changed targeting path string from "#" to match your application's chat view routing
+            // Typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.id = "typing-indicator";
+            typingIndicator.className = "flex flex-col items-start space-y-1 max-w-[85%]";
+            typingIndicator.innerHTML = `
+                <div class="bg-white border border-purple-100 text-gray-400 p-3 rounded-2xl rounded-tl-none shadow-sm italic animate-pulse">
+                    SafeSpace is typing...
+                </div>
+            `;
+            scrollArea.appendChild(typingIndicator);
+            scrollArea.scrollTop = scrollArea.scrollHeight;
+
             fetch("{% url 'ai_assistant_chat' %}", {
                 method: "POST",
                 headers: {
@@ -242,11 +245,13 @@
                 body: JSON.stringify({ message: messageText })
             })
             .then(response => {
-                if (!response.ok) throw new Error('Network transaction error caught');
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) indicator.remove();
+                if (!response.ok) throw new Error('Network timeout or error');
                 return response.json();
             })
             .then(data => {
-                const botReply = data.reply || data.message || "I am here, but I could not understand that response. Please try again.";
+                const botReply = data.reply || "I am here, but I could not understand that response. Please try again.";
                 const botBubble = document.createElement('div');
                 botBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
                 botBubble.innerHTML = `
@@ -259,12 +264,13 @@
                 scrollArea.scrollTop = scrollArea.scrollHeight;
             })
             .catch(error => {
-                console.error("AJAX Application tracking error:", error);
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) indicator.remove();
                 const errorBubble = document.createElement('div');
                 errorBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
                 errorBubble.innerHTML = `
                     <div class="bg-red-50 border border-red-100 text-red-800 p-3 rounded-2xl rounded-tl-none shadow-sm">
-                        I could not connect to the assistant just now. Please try again.
+                        The connection timed out or encountered an error. Please try again in a moment.
                     </div>
                     <span class="text-[9px] text-gray-400 px-1 font-mono">System • Connection Error</span>
                 `;
@@ -276,7 +282,7 @@
         function escapeHtml(string) {
             return string.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
-        // Add this to your script to auto-close menu on link click
+
         document.querySelectorAll('#mobile-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 document.getElementById('mobile-menu').classList.add('hidden');

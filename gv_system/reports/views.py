@@ -19,7 +19,7 @@ from reports.services import AssignmentService
 load_dotenv()
 logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
 
 def is_staff(user):
     return user.is_staff or user.groups.filter(name='DepartmentStaff').exists()
@@ -274,7 +274,7 @@ def ai_assistant_chat_view(request):
         }],
         "generationConfig": {
             "temperature": 0.7,
-            "maxOutputTokens": 280
+            "maxOutputTokens": 2000
         }
     }
 
@@ -283,23 +283,41 @@ def ai_assistant_chat_view(request):
             endpoint,
             params={"key": GEMINI_API_KEY},
             json=payload,
-            timeout=20
+            timeout=60
         )
         response.raise_for_status()
         result = response.json()
-        parts = result["candidates"][0]["content"].get("parts", [])
-        reply = "".join(part.get("text", "") for part in parts).strip()
-    except (requests.RequestException, KeyError, IndexError, TypeError, ValueError):
+        candidates = result.get("candidates", [])
+        if candidates and "content" in candidates[0]:
+            parts = candidates[0]["content"].get("parts", [])
+            reply = "".join(part.get("text", "") for part in parts).strip()
+        else:
+            reply = "I am sorry, but I cannot provide a response to that. How else can I help you?"
+    except Exception as e:
+        logger.error(f"Gemini API Error: {str(e)}")
         reply = (
-            "I could not reach the AI service just now. You can still file a report, track a case, "
-            "or save evidence such as screenshots, usernames, links, dates, and message records."
+            f"I encountered an error connecting to the AI: {str(e)}. "
+            "You can still file a report, track a case, or save evidence such as "
+            "screenshots, usernames, links, dates, and message records."
         )
 
     return JsonResponse({'status': 'success', 'reply': reply or 'I am here. Please try asking that another way.'})
 
 def register_user_view(request):
-    # (Kept your existing logic)
-    return render(request, 'registration/register.html', {'form': UserCreationForm()})
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, f"Registration successful for {user.username}. You can now log in.")
+            return redirect('login')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'registration/register.html', {'form': form})
 
 @login_required
 def user_dashboard_view(request):

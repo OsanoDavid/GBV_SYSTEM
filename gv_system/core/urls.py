@@ -11,7 +11,7 @@ urlpatterns = [
     path('track/', views.track_case, name='track_case'),
     
     # Asynchronous AJAX Support Bot Communication Pipeline
-    path('api/chat/', views.ai_assistant_chat, name='ai_assistant_chat'),
+    path('api/chat/', views.ai_assistant_chat, name='ai_chat_basic'),
     
     # User Account Interfaces
     path('login/', views.login_view, name='login'),
