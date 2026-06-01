@@ -364,8 +364,16 @@ def report_success_view(request):
 @user_passes_test(is_staff)
 def department_portal_view(request):
     """View to show reports assigned to the logged-in staff member's department."""
-    reports = IncidentReport.objects.filter(assigned_department__email=request.user.email)
-    return render(request, 'reports/department_portal.html', {'reports': reports})
+    if request.user.is_superuser:
+        reports = IncidentReport.objects.all().order_by('-created_at')
+        portal_title = 'All Incident Cases'
+    else:
+        reports = IncidentReport.objects.filter(assigned_department__email=request.user.email)
+        portal_title = 'Assigned Incident Cases'
+    return render(request, 'reports/department_portal.html', {
+        'reports': reports,
+        'portal_title': portal_title,
+    })
 @login_required
 def update_case_status(request, report_id):
     from .models import IncidentReport, AuditLog
