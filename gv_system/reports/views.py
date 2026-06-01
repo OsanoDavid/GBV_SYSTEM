@@ -7,7 +7,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
-from django.db.models import F
+from django.db.models import F, Q
 from django.db.models.functions import ACos, Cos, Sin, Radians
 from dotenv import load_dotenv
 
@@ -323,8 +323,13 @@ def register_user_view(request):
     return render(request, 'registration/register.html', {'form': form})
 
 @login_required
+@login_required
 def user_dashboard_view(request):
-    return render(request, 'reports/dashboard.html', {'reports': IncidentReport.objects.filter(reporter_profile=request.user)})
+    query = Q(reporter_profile=request.user)
+    if request.user.email:
+        query |= Q(reporter_email__iexact=request.user.email)
+    reports = IncidentReport.objects.filter(query).order_by('-created_at')
+    return render(request, 'reports/dashboard.html', {'reports': reports})
 
 def report_success_view(request):
     """Placeholder to stop the ImportError; logic is handled in file_report_view."""

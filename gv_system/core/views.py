@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from reports.models import AuditLog, IncidentReport 
 from reports.notifications import send_tracking_sms
 from reports.services import AssignmentService
@@ -231,6 +232,9 @@ def logout_view(request):
 @login_required
 def user_dashboard(request):
     """Fetches and feeds user-submitted incidents to render context structures securely."""
-    user_reports = IncidentReport.objects.filter(reporter_profile=request.user).order_by('-created_at')
+    query = Q(reporter_profile=request.user)
+    if request.user.email:
+        query |= Q(reporter_email__iexact=request.user.email)
+    user_reports = IncidentReport.objects.filter(query).order_by('-created_at')
     return render(request, 'reports/dashboard.html', {'reports': user_reports})
 
