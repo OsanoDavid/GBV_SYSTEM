@@ -2,8 +2,8 @@ import os, json, random, string, logging
 import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
@@ -12,7 +12,7 @@ from django.db.models.functions import ACos, Cos, Sin, Radians
 from dotenv import load_dotenv
 
 from .models import Department, IncidentReport, ChildrensHome, AuditLog
-from .forms import SecureIncidentReportForm
+from .forms import SecureIncidentReportForm, UserRegistrationForm
 from reports.notifications import send_tracking_sms
 from reports.services import AssignmentService
 
@@ -303,14 +303,41 @@ def ai_assistant_chat_view(request):
 
     return JsonResponse({'status': 'success', 'reply': reply or 'I am here. Please try asking that another way.'})
 
+def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('user_dashboard')
+
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                if user.email:
+                    IncidentReport.objects.filter(
+                        reporter_email__iexact=user.email,
+                        reporter_profile__isnull=True
+                    ).update(reporter_profile=user)
+                return redirect('user_dashboard')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'registration/login.html', {'form': form})
+
+
 def register_user_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            # Grant staff status so users can access admin panel
-            user.is_staff = True
+            user = form.save(commit=False)
+            user.email = form.cleaned_data.get('email', '')
             user.save()
+            if user.email:
+                IncidentReport.objects.filter(
+                    reporter_email__iexact=user.email,
+                    reporter_profile__isnull=True
+                ).update(reporter_profile=user)
             messages.success(request, f"Registration successful for {user.username}. You can now log in and access your dashboard.")
             return redirect('login')
         else:
@@ -318,11 +345,10 @@ def register_user_view(request):
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
     else:
-        form = UserCreationForm()
+        form = UserRegistrationForm()
     
     return render(request, 'registration/register.html', {'form': form})
 
-@login_required
 @login_required
 def user_dashboard_view(request):
     query = Q(reporter_profile=request.user)

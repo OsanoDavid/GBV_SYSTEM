@@ -4,9 +4,10 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from reports.forms import UserRegistrationForm
 from reports.models import AuditLog, IncidentReport 
 from reports.notifications import send_tracking_sms
 from reports.services import AssignmentService
@@ -199,6 +200,11 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                if user.email:
+                    IncidentReport.objects.filter(
+                        reporter_email__iexact=user.email,
+                        reporter_profile__isnull=True
+                    ).update(reporter_profile=user)
                 return redirect('user_dashboard')
     else:
         form = AuthenticationForm()
@@ -212,13 +218,20 @@ def register_view(request):
         return redirect('user_dashboard')
         
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.email = form.cleaned_data.get('email', '')
+            user.save()
+            if user.email:
+                IncidentReport.objects.filter(
+                    reporter_email__iexact=user.email,
+                    reporter_profile__isnull=True
+                ).update(reporter_profile=user)
             login(request, user)
             return redirect('user_dashboard')
     else:
-        form = UserCreationForm()
+        form = UserRegistrationForm()
         
     return render(request, 'registration/register.html', {'form': form})
 

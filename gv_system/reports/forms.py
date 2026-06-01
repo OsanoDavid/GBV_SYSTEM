@@ -1,5 +1,21 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .models import IncidentReport
+
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(
+        required=False,
+        widget=forms.EmailInput(attrs={
+            'class': 'w-full p-3 bg-gray-50 border border-velvet-200 rounded-xl text-sm focus:ring-2 focus:ring-velvet-600 outline-none',
+            'placeholder': 'Optional email used to link your past reports'
+        }),
+        help_text='Provide the same email you used when filing past cases so those reports appear in your dashboard.'
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
 
 class SecureIncidentReportForm(forms.ModelForm):
     # Add a non-model field to capture custom category when "other" is selected
