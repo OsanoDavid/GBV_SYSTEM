@@ -391,20 +391,15 @@ def department_portal_view(request):
             Prefetch('incidentreport_set', queryset=home_cases, to_attr='portal_cases')
         ).order_by('name')
     else:
-        reports = IncidentReport.objects.filter(assigned_department__email=request.user.email)
-        portal_title = 'Assigned Incident Cases'
-        departments = Department.objects.filter(email=request.user.email).annotate(case_count=Count('incidentreport')).order_by('name')
-        home_cases = IncidentReport.objects.filter(
-            assigned_home__isnull=False,
-            assigned_department__email=request.user.email,
-        ).order_by('-created_at')
-        childrens_homes = ChildrensHome.objects.filter(
-            incidentreport__assigned_department__email=request.user.email
-        ).annotate(
-            case_count=Count('incidentreport', filter=Q(incidentreport__assigned_department__email=request.user.email))
+        reports = IncidentReport.objects.all().order_by('-created_at')
+        portal_title = 'All Reports'
+        departments = Department.objects.annotate(case_count=Count('incidentreport')).order_by('name')
+        home_cases = IncidentReport.objects.filter(assigned_home__isnull=False).order_by('-created_at')
+        childrens_homes = ChildrensHome.objects.annotate(
+            case_count=Count('incidentreport')
         ).prefetch_related(
             Prefetch('incidentreport_set', queryset=home_cases, to_attr='portal_cases')
-        ).distinct().order_by('name')
+        ).order_by('name')
     return render(request, 'reports/department_portal.html', {
         'reports': reports,
         'portal_title': portal_title,
