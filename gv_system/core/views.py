@@ -3,11 +3,10 @@ import json
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from reports.forms import UserRegistrationForm
+from reports.forms import SavedUserAuthenticationForm, UserRegistrationForm
 from reports.models import AuditLog, IncidentReport 
 from reports.notifications import send_tracking_sms
 from reports.services import AssignmentService
@@ -193,11 +192,9 @@ def login_view(request):
         return redirect('user_dashboard')
         
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = SavedUserAuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = form.get_user()
             if user is not None:
                 login(request, user)
                 if user.email:
@@ -207,7 +204,7 @@ def login_view(request):
                     ).update(reporter_profile=user)
                 return redirect('user_dashboard')
     else:
-        form = AuthenticationForm()
+        form = SavedUserAuthenticationForm()
         
     return render(request, 'registration/login.html', {'form': form})
 

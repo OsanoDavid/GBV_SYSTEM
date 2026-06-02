@@ -1,7 +1,39 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UsernameField
 from django.contrib.auth.models import User
 from .models import IncidentReport
+
+
+class SavedUserAuthenticationForm(AuthenticationForm):
+    username = UsernameField(
+        label='Username or email',
+        widget=forms.TextInput(attrs={'autofocus': True})
+    )
+
+    def clean(self):
+        identifier = self.cleaned_data.get('username', '').strip()
+        password = self.cleaned_data.get('password')
+
+        if identifier and password:
+            user_model = get_user_model()
+            saved_user = (
+                user_model._default_manager.filter(username__iexact=identifier).first()
+                or user_model._default_manager.filter(email__iexact=identifier).first()
+            )
+            auth_username = saved_user.get_username() if saved_user else identifier
+            self.user_cache = authenticate(
+                self.request,
+                username=auth_username,
+                password=password,
+            )
+
+            if self.user_cache is None:
+                raise self.get_invalid_login_error()
+            self.confirm_login_allowed(self.user_cache)
+
+        return self.cleaned_data
+
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(

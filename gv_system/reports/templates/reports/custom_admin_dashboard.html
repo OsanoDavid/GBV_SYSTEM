@@ -15,6 +15,14 @@
             <h3 class="text-[10px] font-black text-purple-400 uppercase tracking-widest">Total Reports</h3>
             <p class="text-3xl font-black text-purple-900">{{ total_reports }}</p>
         </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100">
+            <h3 class="text-[10px] font-black text-purple-400 uppercase tracking-widest">Saved Users</h3>
+            <p class="text-3xl font-black text-purple-900">{{ total_users }}</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 md:col-span-2">
+            <h3 class="text-[10px] font-black text-purple-400 uppercase tracking-widest">Active Database</h3>
+            <p class="text-xs font-mono text-purple-900 break-all mt-3">{{ database_name }}</p>
+        </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

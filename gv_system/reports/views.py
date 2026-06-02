@@ -2,17 +2,18 @@ import os, json, random, string, logging
 import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db.models import Count, F, Prefetch, Q
 from django.db.models.functions import ACos, Cos, Sin, Radians
 from dotenv import load_dotenv
 
 from .models import Department, IncidentReport, ChildrensHome, AuditLog
-from .forms import SecureIncidentReportForm, UserRegistrationForm
+from .forms import SavedUserAuthenticationForm, SecureIncidentReportForm, UserRegistrationForm
 from reports.notifications import send_tracking_sms
 from reports.services import AssignmentService
 
@@ -134,9 +135,12 @@ def track_case_view(request):
 # -------------------------------------------------------------
 @staff_member_required
 def custom_admin_dashboard(request):
+    user_model = get_user_model()
     home_cases = IncidentReport.objects.filter(assigned_home__isnull=False).order_by('-created_at')
     return render(request, 'reports/custom_admin_dashboard.html', {
         'total_reports': IncidentReport.objects.count(),
+        'total_users': user_model.objects.count(),
+        'database_name': settings.DATABASES['default'].get('NAME', 'Unknown'),
         'recent_reports': IncidentReport.objects.all().order_by('-created_at'),
         'departments': Department.objects.annotate(case_count=Count('incidentreport')).order_by('name'),
         'childrens_homes': ChildrensHome.objects.annotate(
@@ -317,11 +321,9 @@ def login_view(request):
         return redirect('user_dashboard')
 
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = SavedUserAuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = form.get_user()
             if user is not None:
                 login(request, user)
                 if user.email:
@@ -333,7 +335,7 @@ def login_view(request):
                     return redirect('department_portal')
                 return redirect('user_dashboard')
     else:
-        form = AuthenticationForm()
+        form = SavedUserAuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
 
 
