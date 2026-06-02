@@ -7,7 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
-from django.db.models import F, Q
+from django.db.models import Count, F, Prefetch, Q
 from django.db.models.functions import ACos, Cos, Sin, Radians
 from dotenv import load_dotenv
 
@@ -134,9 +134,16 @@ def track_case_view(request):
 # -------------------------------------------------------------
 @staff_member_required
 def custom_admin_dashboard(request):
+    home_cases = IncidentReport.objects.filter(assigned_home__isnull=False).order_by('-created_at')
     return render(request, 'reports/custom_admin_dashboard.html', {
         'total_reports': IncidentReport.objects.count(),
         'recent_reports': IncidentReport.objects.all().order_by('-created_at'),
+        'departments': Department.objects.annotate(case_count=Count('incidentreport')).order_by('name'),
+        'childrens_homes': ChildrensHome.objects.annotate(
+            case_count=Count('incidentreport')
+        ).prefetch_related(
+            Prefetch('incidentreport_set', queryset=home_cases, to_attr='portal_cases')
+        ).order_by('name'),
         'recent_logs': AuditLog.objects.all().order_by('-timestamp')[:15],
     })
 
@@ -305,6 +312,8 @@ def ai_assistant_chat_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
+        if is_staff(request.user):
+            return redirect('department_portal')
         return redirect('user_dashboard')
 
     if request.method == 'POST':
@@ -320,6 +329,8 @@ def login_view(request):
                         reporter_email__iexact=user.email,
                         reporter_profile__isnull=True
                     ).update(reporter_profile=user)
+                if is_staff(user):
+                    return redirect('department_portal')
                 return redirect('user_dashboard')
     else:
         form = AuthenticationForm()
@@ -351,6 +362,9 @@ def register_user_view(request):
 
 @login_required
 def user_dashboard_view(request):
+    if is_staff(request.user):
+        return redirect('department_portal')
+
     query = Q(reporter_profile=request.user)
     if request.user.email:
         query |= Q(reporter_email__iexact=request.user.email)
@@ -366,13 +380,34 @@ def department_portal_view(request):
     """View to show reports assigned to the logged-in staff member's department."""
     if request.user.is_superuser:
         reports = IncidentReport.objects.all().order_by('-created_at')
-        portal_title = 'All Incident Cases'
+        portal_title = 'All Reports'
+        departments = Department.objects.annotate(case_count=Count('incidentreport')).order_by('name')
+        home_cases = IncidentReport.objects.filter(assigned_home__isnull=False).order_by('-created_at')
+        childrens_homes = ChildrensHome.objects.annotate(
+            case_count=Count('incidentreport')
+        ).prefetch_related(
+            Prefetch('incidentreport_set', queryset=home_cases, to_attr='portal_cases')
+        ).order_by('name')
     else:
         reports = IncidentReport.objects.filter(assigned_department__email=request.user.email)
         portal_title = 'Assigned Incident Cases'
+        departments = Department.objects.filter(email=request.user.email).annotate(case_count=Count('incidentreport')).order_by('name')
+        home_cases = IncidentReport.objects.filter(
+            assigned_home__isnull=False,
+            assigned_department__email=request.user.email,
+        ).order_by('-created_at')
+        childrens_homes = ChildrensHome.objects.filter(
+            incidentreport__assigned_department__email=request.user.email
+        ).annotate(
+            case_count=Count('incidentreport', filter=Q(incidentreport__assigned_department__email=request.user.email))
+        ).prefetch_related(
+            Prefetch('incidentreport_set', queryset=home_cases, to_attr='portal_cases')
+        ).distinct().order_by('name')
     return render(request, 'reports/department_portal.html', {
         'reports': reports,
         'portal_title': portal_title,
+        'departments': departments,
+        'childrens_homes': childrens_homes,
     })
 @login_required
 def update_case_status(request, report_id):
@@ -380,6 +415,10 @@ def update_case_status(request, report_id):
     report = get_object_or_404(IncidentReport, pk=report_id)
     if request.method == "POST":
         new_status = request.POST.get('status')
+        valid_statuses = {choice[0] for choice in IncidentReport.STATUS_CHOICES}
+        if new_status not in valid_statuses:
+            messages.error(request, "Please choose a valid case status.")
+            return redirect('department_portal')
         report.status = new_status
         report.save()
         AuditLog.objects.create(

@@ -9,9 +9,11 @@
             <h1 class="text-3xl font-black text-velvet-900 tracking-tight">Your Case Dashboard</h1>
             <p class="text-sm text-gray-500">Logged in securely as user: <span class="font-mono text-violet-700 font-bold">@{{ request.user.username }}</span></p>
         </div>
-        <a href="{% url 'file_report' %}" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded-lg text-sm shadow transition shrink-0 text-center">
-            + File a New Incident
-        </a>
+        {% if not request.user.is_staff %}
+            <a href="{% url 'file_report' %}" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded-lg text-sm shadow transition shrink-0 text-center">
+                + File a New Incident
+            </a>
+        {% endif %}
     </div>
 
     <div class="space-y-4">

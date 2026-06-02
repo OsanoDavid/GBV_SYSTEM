@@ -29,6 +29,7 @@
             </div>
         </div>
 
+        {% if not request.user.is_authenticated %}
         <div id="guest-advisory-banner"
             class="bg-amber-50 border-b border-amber-100 p-4 text-sm text-amber-900 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-all duration-300">
             <div class="space-y-1">
@@ -38,7 +39,7 @@
                     before submitting.</p>
             </div>
             <div class="flex space-x-3 shrink-0 items-center">
-                <a href="{% url 'register' %}"
+                <a href="{% url 'register_user' %}"
                     class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm focus:outline-none">Register
                     Account</a>
                 <span class="text-amber-300 font-light hidden sm:inline">|</span>
@@ -47,6 +48,7 @@
                     as Guest ↓</a>
             </div>
         </div>
+        {% endif %}
 
         {% if messages %}
         {% for message in messages %}

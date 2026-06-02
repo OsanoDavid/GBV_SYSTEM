@@ -3,18 +3,73 @@
 {% block title %}Department Portal | SafeSpace{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 py-8">
-    <h1 class="text-2xl font-black text-violet-900 mb-6">{{ portal_title|default:'Assigned Incident Cases' }}</h1>
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="mb-8">
+        <h1 class="text-2xl font-black text-violet-900">{{ portal_title|default:'Assigned Incident Cases' }}</h1>
+        <p class="text-sm text-gray-500 mt-1">Cases are assigned automatically by department and children's home routing.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <section class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-sm font-black text-gray-900 uppercase tracking-wide">Departments</h2>
+                {% if request.user.is_superuser %}
+                    <a href="/admin/reports/department/add/" class="text-xs font-bold text-violet-700 hover:underline">Add department</a>
+                {% endif %}
+            </div>
+            <div class="divide-y divide-gray-100">
+                {% for department in departments %}
+                    <div class="py-3 flex items-center justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-gray-900">{{ department.name }}</p>
+                            <p class="text-xs text-gray-500">{{ department.email }}</p>
+                        </div>
+                        <span class="text-xs font-black text-violet-800 bg-violet-50 px-3 py-1 rounded-full">{{ department.case_count }} cases</span>
+                    </div>
+                {% empty %}
+                    <p class="text-sm text-gray-400 py-4">No departments added yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+            <h2 class="text-sm font-black text-gray-900 uppercase tracking-wide mb-4">Children's Homes</h2>
+            <div class="divide-y divide-gray-100">
+                {% for home in childrens_homes %}
+                    <div class="py-3 flex items-center justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold text-gray-900">{{ home.name }}</p>
+                            <p class="text-xs text-gray-500">{{ home.phone }}</p>
+                            {% if home.portal_cases %}
+                                <div class="mt-2 flex flex-wrap gap-1.5">
+                                    {% for case in home.portal_cases %}
+                                        <span class="text-[10px] font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded">{{ case.reference_number }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <span class="text-xs font-black text-purple-800 bg-purple-50 px-3 py-1 rounded-full">{{ home.case_count }} cases</span>
+                    </div>
+                {% empty %}
+                    <p class="text-sm text-gray-400 py-4">No children's home cases assigned yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
     
     <div class="space-y-4">
         {% for report in reports %}
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
             <div class="flex justify-between items-start">
                 <div>
                     <span class="text-xs font-bold text-violet-600 bg-violet-50 px-2 py-1 rounded-lg">
                         {{ report.reference_number }}
                     </span>
-                    <h2 class="text-lg font-bold text-gray-900 mt-2">{{ report.incident_category }}</h2>
+                    <h2 class="text-lg font-bold text-gray-900 mt-2">{{ report.get_incident_category_display }}</h2>
+                    <p class="text-xs text-gray-500 mt-1">
+                        Department: {{ report.assigned_department|default:"Unassigned" }}
+                        {% if report.assigned_home %} | Children's home: {{ report.assigned_home.name }}{% endif %}
+                    </p>
                 </div>
                 <span class="text-sm font-medium text-gray-500">{{ report.created_at|date:"M d, Y" }}</span>
             </div>
@@ -22,16 +77,17 @@
             <p class="text-gray-600 text-sm mt-3 line-clamp-2">{{ report.description }}</p>
             
             <div class="mt-6 pt-4 border-t border-gray-50 flex items-center justify-between">
-                <span class="text-xs font-bold {% if report.status == 'new' %}text-amber-600{% else %}text-green-600{% endif %} uppercase tracking-wider">
+                <span class="text-xs font-bold {% if report.status == 'pending' %}text-amber-600{% else %}text-green-600{% endif %} uppercase tracking-wider">
                     Status: {{ report.get_status_display }}
                 </span>
                 
                 <form action="{% url 'update_status' report.id %}" method="POST" class="flex gap-2">
                     {% csrf_token %}
                     <select name="status" class="text-xs border-gray-200 rounded-lg">
-                        <option value="new">New</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="action_taken">Resolved</option>
+                        <option value="pending" {% if report.status == 'pending' %}selected{% endif %}>Pending Review</option>
+                        <option value="under_review" {% if report.status == 'under_review' %}selected{% endif %}>Under Investigation</option>
+                        <option value="action_taken" {% if report.status == 'action_taken' %}selected{% endif %}>Action Taken / Resolved</option>
+                        <option value="closed" {% if report.status == 'closed' %}selected{% endif %}>Closed</option>
                     </select>
                     <button type="submit" class="bg-violet-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-violet-700">
                         Update

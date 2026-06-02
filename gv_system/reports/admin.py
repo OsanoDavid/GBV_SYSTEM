@@ -1,25 +1,62 @@
 from django.contrib import admin
-from .models import IncidentReport, Department, ChildrensHome, AuditLog
+from django.db.models import Count
+
+from .models import AuditLog, ChildrensHome, Department, IncidentReport
 from .utils import check_email_connection
 
-# --- Configuration ---
-admin.site.site_header = "SafeSpace Command Center"
-admin.site.index_title = f"System Status: {'✅ SMTP Connected' if check_email_connection() else '❌ SMTP Error'}"
 
-# --- Inlines ---
+admin.site.site_header = "SafeSpace Command Center"
+admin.site.index_title = f"Reports | System Status: {'SMTP Connected' if check_email_connection() else 'SMTP Error'}"
+
+
 class AuditLogInline(admin.TabularInline):
     model = AuditLog
     extra = 0
     readonly_fields = ('user', 'action', 'timestamp')
     can_delete = False
 
-# --- Admin Registrations ---
+
+class AssignedIncidentInline(admin.TabularInline):
+    model = IncidentReport
+    extra = 0
+    fields = ('reference_number', 'incident_category', 'status', 'assigned_home', 'created_at')
+    readonly_fields = fields
+    can_delete = False
+    show_change_link = True
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
+class ChildrensHomeIncidentInline(admin.TabularInline):
+    model = IncidentReport
+    fk_name = 'assigned_home'
+    extra = 0
+    fields = ('reference_number', 'incident_category', 'status', 'assigned_department', 'created_at')
+    readonly_fields = fields
+    can_delete = False
+    show_change_link = True
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+
 @admin.register(IncidentReport)
 class SecureIncidentReportAdmin(admin.ModelAdmin):
-    list_display = ('reference_number', 'case_access_pin', 'reporter_phone', 'incident_category', 'status', 'assigned_home', 'created_at', 'level')
-    list_filter = ('status', 'ai_urgency_score', 'incident_category', 'created_at', 'assigned_department', 'level')
+    list_display = (
+        'reference_number',
+        'case_access_pin',
+        'reporter_phone',
+        'incident_category',
+        'status',
+        'assigned_department',
+        'assigned_home',
+        'created_at',
+        'level',
+    )
+    list_filter = ('status', 'ai_urgency_score', 'incident_category', 'created_at', 'assigned_department', 'assigned_home', 'level')
     search_fields = ('reference_number', 'case_access_pin', 'incident_category', 'description', 'reporter_name', 'reporter_email', 'reporter_phone')
-    
+
     fieldsets = (
         ('Case Tracking Identification', {
             'fields': ('reference_number', 'case_access_pin', 'status', 'admin_notes', 'assigned_department', 'assigned_home', 'assigned_to', 'level')
@@ -42,7 +79,7 @@ class SecureIncidentReportAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
         }),
     )
-    
+
     readonly_fields = ('reference_number', 'case_access_pin', 'ai_classified_category', 'ai_urgency_score', 'ai_research_insights', 'created_at', 'updated_at')
     ordering = ('-created_at',)
     actions = ['mark_as_urgent', 'resolve_case']
@@ -62,14 +99,34 @@ class SecureIncidentReportAdmin(admin.ModelAdmin):
             AuditLog.objects.create(report=report, user=request.user, action="Admin resolved case.")
         self.message_user(request, f"{rows_updated} reports were marked as Resolved.")
 
+
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email')
+    list_display = ('name', 'email', 'assigned_cases')
+    search_fields = ('name', 'email')
+    inlines = [AssignedIncidentInline]
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(assigned_case_count=Count('incidentreport'))
+
+    @admin.display(description='Assigned cases', ordering='assigned_case_count')
+    def assigned_cases(self, obj):
+        return obj.assigned_case_count
+
 
 @admin.register(ChildrensHome)
 class ChildrensHomeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone', 'lat', 'lng', 'address')
-    search_fields = ('name', 'phone')
+    list_display = ('name', 'phone', 'assigned_cases', 'lat', 'lng', 'address')
+    search_fields = ('name', 'phone', 'address')
+    inlines = [ChildrensHomeIncidentInline]
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(assigned_case_count=Count('incidentreport'))
+
+    @admin.display(description='Assigned cases', ordering='assigned_case_count')
+    def assigned_cases(self, obj):
+        return obj.assigned_case_count
+
 
 @admin.register(AuditLog)
 class AuditLogAdmin(admin.ModelAdmin):

@@ -17,6 +17,52 @@
         </div>
     </div>
 
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-sm font-black text-purple-950 uppercase tracking-wide">Departments</h2>
+                <a href="/admin/reports/department/add/" class="text-xs font-bold text-purple-700 hover:underline">Add department</a>
+            </div>
+            <div class="divide-y divide-purple-50">
+                {% for department in departments %}
+                    <div class="py-3 flex items-center justify-between gap-4">
+                        <div>
+                            <p class="font-bold text-sm text-gray-900">{{ department.name }}</p>
+                            <p class="text-xs text-gray-500">{{ department.email }}</p>
+                        </div>
+                        <span class="bg-purple-50 text-purple-800 text-xs font-black px-3 py-1 rounded-full">{{ department.case_count }} cases</span>
+                    </div>
+                {% empty %}
+                    <p class="text-sm text-gray-400">No departments added yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100">
+            <h2 class="text-sm font-black text-purple-950 uppercase tracking-wide mb-4">Children's Home Cases</h2>
+            <div class="divide-y divide-purple-50">
+                {% for home in childrens_homes %}
+                    <div class="py-3 flex items-center justify-between gap-4">
+                        <div>
+                            <p class="font-bold text-sm text-gray-900">{{ home.name }}</p>
+                            <p class="text-xs text-gray-500">{{ home.phone }}</p>
+                            {% if home.portal_cases %}
+                                <div class="mt-2 flex flex-wrap gap-1.5">
+                                    {% for case in home.portal_cases %}
+                                        <span class="text-[10px] font-bold text-gray-700 bg-gray-100 px-2 py-1 rounded">{{ case.reference_number }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <span class="bg-purple-50 text-purple-800 text-xs font-black px-3 py-1 rounded-full">{{ home.case_count }} cases</span>
+                    </div>
+                {% empty %}
+                    <p class="text-sm text-gray-400">No children's home cases assigned yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 mb-8">
         <h2 class="text-lg font-bold text-purple-950 mb-4">All Incident Records</h2>
         <div class="overflow-x-auto">
@@ -59,7 +105,8 @@
                                 <select name="status" class="border rounded px-2 py-1 bg-white">
                                     <option value="pending" {% if report.status == 'pending' %}selected{% endif %}>Pending</option>
                                     <option value="under_review" {% if report.status == 'under_review' %}selected{% endif %}>Under Review</option>
-                                    <option value="resolved" {% if report.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                                    <option value="action_taken" {% if report.status == 'action_taken' %}selected{% endif %}>Resolved</option>
+                                    <option value="closed" {% if report.status == 'closed' %}selected{% endif %}>Closed</option>
                                 </select>
                                 <button type="submit" class="bg-purple-600 text-white px-2 py-1 rounded">Update</button>
                             </form>
