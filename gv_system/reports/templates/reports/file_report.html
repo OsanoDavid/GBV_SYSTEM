@@ -8,22 +8,22 @@
 
     <div class="mb-6">
         <a href="{% url 'landing' %}"
-            class="inline-flex items-center space-x-2 text-sm font-semibold text-violet-700 hover:text-violet-900 transition focus:outline-none focus:underline">
+            class="inline-flex items-center space-x-2 text-sm font-semibold text-purple-700 hover:text-purple-900 transition focus:outline-none focus:underline">
             <span>←</span> <span>Back to Home Screen</span>
         </a>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden min-h-[580px] flex flex-col">
+    <div class="bg-white/95 rounded-3xl shadow-2xl shadow-purple-200/50 border border-purple-200 overflow-hidden min-h-[580px] flex flex-col">
 
-        <div class="bg-violet-900 text-white p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400 text-white p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-bold tracking-tight">Secure Incident Reporting Portal</h1>
-                <p class="text-sm text-violet-200 mt-1">Your report will be processed with strict confidentiality
+                <p class="text-sm text-purple-100 mt-1">Your report will be processed with strict confidentiality
                     metrics.</p>
             </div>
             <div class="shrink-0">
                 <span id="step-indicator-tag"
-                    class="bg-violet-800 px-3 py-1.5 rounded-full font-mono text-xs font-bold border border-violet-700 block text-center">
+                    class="bg-white/20 px-3 py-1.5 rounded-full font-mono text-xs font-bold border border-white/30 block text-center shadow-sm">
                     Step 1 of 3
                 </span>
             </div>
@@ -31,20 +31,20 @@
 
         {% if not request.user.is_authenticated %}
         <div id="guest-advisory-banner"
-            class="bg-amber-50 border-b border-amber-100 p-4 text-sm text-amber-900 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-all duration-300">
+            class="bg-purple-50 border-b border-purple-100 p-4 text-sm text-purple-950 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-all duration-300">
             <div class="space-y-1">
                 <span class="font-bold block text-xs sm:text-sm">Reporting Preference: Guest Mode Active</span>
-                <p class="text-[11px] sm:text-xs text-amber-800 leading-relaxed">You do not need an account to log this
+                <p class="text-[11px] sm:text-xs text-purple-800 leading-relaxed">You do not need an account to log this
                     incident. If you want this case locked to a permanent dashboard profile instead, please register
                     before submitting.</p>
             </div>
             <div class="flex space-x-3 shrink-0 items-center">
                 <a href="{% url 'register_user' %}"
-                    class="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm focus:outline-none">Register
+                    class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm shadow-purple-200 focus:outline-none">Register
                     Account</a>
-                <span class="text-amber-300 font-light hidden sm:inline">|</span>
+                <span class="text-purple-300 font-light hidden sm:inline">|</span>
                 <a href="#report-form-start"
-                    class="bg-white hover:bg-gray-50 text-amber-900 font-bold text-xs px-3 py-2 rounded-xl border border-amber-200 transition text-center shadow-sm focus:outline-none">File
+                    class="bg-white hover:bg-purple-50 text-purple-900 font-bold text-xs px-3 py-2 rounded-xl border border-purple-200 transition text-center shadow-sm focus:outline-none">File
                     as Guest ↓</a>
             </div>
         </div>
@@ -65,7 +65,7 @@
         {% endif %}
 
         <form id="report-form-start" method="POST" enctype="multipart/form-data"
-            class="flex-grow flex flex-col p-6 sm:p-8 justify-between space-y-8">
+            class="flex-grow flex flex-col p-6 sm:p-8 justify-between space-y-8 bg-gradient-to-b from-white to-purple-50/70">
             {% csrf_token %}
             <input type="hidden" name="user_lat" id="user_lat">
             <input type="hidden" name="user_lng" id="user_lng">
@@ -78,7 +78,7 @@
                         <p class="text-xs text-gray-500 leading-normal">Are you reporting this technological tracking
                             hazard for yourself or acting as a proxy representative?</p>
                         <select id="id_reporter_type" name="reporter_type" onchange="evaluateProxyAlert()"
-                            class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-violet-600 transition outline-none font-medium text-gray-800">
+                            class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-purple-500 transition outline-none font-medium text-gray-800">
                             <option value="self">Reporting for Myself</option>
                             <option value="victim_adult">Reporting on behalf of another Adult</option>
                             <option value="child">Reporting on behalf of a Minor/Child</option>
@@ -86,7 +86,7 @@
                     </div>
 
                     <div id="minor-safety-banner"
-                        class="hidden p-4 bg-purple-50 border border-purple-100 rounded-2xl flex items-start space-x-3 transition duration-300">
+                        class="hidden p-4 bg-purple-100 border border-purple-200 rounded-2xl flex items-start space-x-3 transition duration-300">
                         <svg class="w-5 h-5 text-purple-600 shrink-0 mt-0.5" fill="none" stroke="currentColor"
                             stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -105,7 +105,7 @@
                             <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
                                 for="id_gender">Gender Identity</label>
                             <select id="id_gender" name="gender"
-                                class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-violet-600 outline-none">
+                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none">
                                 <option value="P">Prefer not to say</option>
                                 <option value="M">Male</option>
                                 <option value="F">Female</option>
@@ -118,7 +118,7 @@
                             <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
                                 for="id_age_group">Age Category</label>
                             <select id="id_age_group" name="age_group" onchange="evaluateProxyAlert()"
-                                class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-violet-600 outline-none"
+                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none"
                                 required>
                                 <option value="25-34">25 - 34 years</option>
                                 <option value="U18">Under 18 years</option>
@@ -132,7 +132,7 @@
                             <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
                                 for="id_disability">Disability Attribute</label>
                             <select id="id_disability" name="disability"
-                                class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-violet-600 outline-none">
+                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none">
                                 <option value="none">No disability condition</option>
                                 <option value="visual">Visual impairment</option>
                                 <option value="hearing">Hearing impairment</option>
@@ -153,10 +153,10 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <label
-                                class="p-4 border border-gray-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-gray-50 hover:border-violet-300 transition group">
+                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group">
                                 <input type="radio" name="incident_category" value="cyberstalking" checked
                                     onclick="toggleOtherCategoryField(false)"
-                                    class="text-violet-600 focus:ring-violet-500 w-4 h-4">
+                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
                                 <div class="text-xs">
                                     <span class="font-bold text-gray-800 block">Cyberstalking & Tracking</span>
                                     <span class="text-gray-400 text-[10px]">Unwarranted GPS tracking, spyware,
@@ -165,10 +165,10 @@
                             </label>
 
                             <label
-                                class="p-4 border border-gray-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-gray-50 hover:border-violet-300 transition group">
+                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group">
                                 <input type="radio" name="incident_category" value="doxing"
                                     onclick="toggleOtherCategoryField(false)"
-                                    class="text-violet-600 focus:ring-violet-500 w-4 h-4">
+                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
                                 <div class="text-xs">
                                     <span class="font-bold text-gray-800 block">Doxing & Data Leaks</span>
                                     <span class="text-gray-400 text-[10px]">Publishing personally identifying profile
@@ -177,10 +177,10 @@
                             </label>
 
                             <label
-                                class="p-4 border border-gray-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-gray-50 hover:border-violet-300 transition group">
+                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group">
                                 <input type="radio" name="incident_category" value="impersonation"
                                     onclick="toggleOtherCategoryField(false)"
-                                    class="text-violet-600 focus:ring-violet-500 w-4 h-4">
+                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
                                 <div class="text-xs">
                                     <span class="font-bold text-gray-800 block">Profile Impersonation</span>
                                     <span class="text-gray-400 text-[10px]">Fake messaging indices using your images or
@@ -189,10 +189,10 @@
                             </label>
 
                             <label
-                                class="p-4 border border-gray-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-gray-50 hover:border-violet-300 transition group">
+                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group">
                                 <input type="radio" name="incident_category" value="threats"
                                     onclick="toggleOtherCategoryField(false)"
-                                    class="text-violet-600 focus:ring-violet-500 w-4 h-4">
+                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
                                 <div class="text-xs">
                                     <span class="font-bold text-gray-800 block">Targeted Hate Campaigns</span>
                                     <span class="text-gray-400 text-[10px]">Harassment strings via coordinated swarm
@@ -201,11 +201,11 @@
                             </label>
 
                             <label
-                                class="p-4 border border-gray-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-gray-50 hover:border-violet-300 transition group sm:col-span-2"
+                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group sm:col-span-2"
                                 onclick="checkLocationTrigger(this)">
                                 <input type="radio" name="incident_category" value="children_home_support"
                                     onclick="toggleOtherCategoryField(false)"
-                                    class="text-violet-600 focus:ring-violet-500 w-4 h-4">
+                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
                                 <div class="text-xs">
                                     <span class="font-bold text-gray-800 block">Children's Home Support</span>
                                     <span class="text-gray-400 text-[10px]">Find nearest emergency
@@ -214,10 +214,10 @@
                             </label>
 
                             <label
-                                class="p-4 border border-gray-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-gray-50 hover:border-violet-300 transition group sm:col-span-2">
+                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group sm:col-span-2">
                                 <input type="radio" name="incident_category" value="other" id="cat-other-radio"
                                     onclick="toggleOtherCategoryField(true)"
-                                    class="text-violet-600 focus:ring-violet-500 w-4 h-4">
+                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
                                 <div class="text-xs">
                                     <span class="font-bold text-gray-800 block">Other / Not Listed Above</span>
                                     <span class="text-gray-400 text-[10px]">Specify your precise technical
@@ -231,7 +231,7 @@
                                 for="id_custom_category">Specify Incident Type</label>
                             <input type="text" id="id_custom_category" name="custom_category"
                                 placeholder="e.g., Cyber blackmail, Online scamming"
-                                class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:ring-2 focus:ring-violet-600 outline-none">
+                                class="w-full p-3 bg-white border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:ring-2 focus:ring-purple-500 outline-none">
                         </div>
                     </div>
 
@@ -240,14 +240,14 @@
                             <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
                                 for="id_incident_date">Date of Incident</label>
                             <input type="date" id="id_incident_date" name="incident_date"
-                                class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-violet-600 outline-none">
+                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none">
                         </div>
                         <div class="space-y-1.5">
                             <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
                                 for="id_platform_used">Platform Vector Link</label>
                             <input type="text" id="id_platform_used" name="platform_used" list="platform-suggestions"
                                 placeholder="Type or select a platform..."
-                                class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-violet-600 outline-none">
+                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none">
                             <datalist id="platform-suggestions">
                                 <option value="WhatsApp"></option>
                                 <option value="Facebook"></option>
@@ -270,23 +270,23 @@
                             chronological milestones safely below:</p>
                         <textarea id="id_description" name="description" rows="4"
                             placeholder="Please reconstruct event metrics cleanly here..."
-                            class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-violet-600 outline-none resize-none"></textarea>
+                            class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none resize-none"></textarea>
                     </div>
 
                     <div class="space-y-2">
                         <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
                             for="id_evidence_attachment">Secure Evidence Encrypted Uploads</label>
                         <input type="file" id="id_evidence_attachment" name="evidence_attachment"
-                            class="w-full p-2.5 bg-gray-50 border border-dashed border-gray-200 rounded-xl text-xs text-gray-500 cursor-pointer file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 focus:outline-none">
+                            class="w-full p-2.5 bg-purple-50 border border-dashed border-purple-300 rounded-xl text-xs text-gray-500 cursor-pointer file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 focus:outline-none">
                     </div>
 
-                    <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200 space-y-4">
+                    <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 space-y-4">
                         <div class="flex items-center">
                             <label class="text-xs font-bold text-gray-700 flex items-center cursor-pointer select-none"
                                 for="id_allow_contact">
                                 <input type="checkbox" id="id_allow_contact" name="allow_contact"
                                     onchange="toggleContactLayoutStack()"
-                                    class="rounded text-violet-600 focus:ring-violet-500 w-4 h-4 mr-2.5">
+                                    class="rounded text-purple-600 focus:ring-purple-500 w-4 h-4 mr-2.5">
                                 Include alternative authentication contacts (Leave empty to keep report fully anonymous)
                             </label>
                         </div>
@@ -297,34 +297,34 @@
                                     for="id_reporter_name">Your Name</label>
                                 <input type="text" id="id_reporter_name" name="reporter_name"
                                     placeholder="Optional handle"
-                                    class="w-full p-2.5 bg-white border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-violet-600 outline-none">
+                                    class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
                             </div>
                             <div class="space-y-1">
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase"
                                     for="id_reporter_email">Safe Email</label>
                                 <input type="email" id="id_reporter_email" name="reporter_email"
                                     placeholder="Optional secure mail"
-                                    class="w-full p-2.5 bg-white border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-violet-600 outline-none">
+                                    class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
                             </div>
                             <div class="space-y-1">
                                 <label class="block text-[11px] font-bold text-gray-600 uppercase"
                                     for="id_reporter_phone">Phone String</label>
                                 <input type="text" id="id_reporter_phone" name="reporter_phone"
                                     placeholder="Optional phone/sms alerts"
-                                    class="w-full p-2.5 bg-white border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-violet-600 outline-none">
+                                    class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-gray-100 flex justify-between items-center bg-white">
+            <div class="pt-6 border-t border-purple-100 flex justify-between items-center bg-transparent">
                 <button type="button" id="back-step-btn" onclick="stepWizardNavigationEngine(-1)"
-                    class="invisible px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition focus:outline-none focus:ring-2 focus:ring-gray-300">
+                    class="invisible px-5 py-2.5 bg-purple-100 hover:bg-purple-200 text-purple-900 font-bold text-xs rounded-xl transition focus:outline-none focus:ring-2 focus:ring-purple-300">
                     Back
                 </button>
                 <button type="button" id="next-step-btn" onclick="stepWizardNavigationEngine(1)"
-                    class="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white font-bold text-xs rounded-xl shadow transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-600">
+                    class="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow shadow-purple-200 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
                     Next Step
                 </button>
             </div>
@@ -445,11 +445,11 @@
         if (btnNext) {
             if (activeStepCursor === boundaryTerminalStep) {
                 btnNext.textContent = "Finish & Submit";
-                btnNext.classList.remove('bg-violet-600', 'hover:bg-violet-700');
+                btnNext.classList.remove('bg-purple-600', 'hover:bg-purple-700');
                 btnNext.classList.add('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-600');
             } else {
                 btnNext.textContent = "Next Step";
-                btnNext.classList.add('bg-violet-600', 'hover:bg-violet-700');
+                btnNext.classList.add('bg-purple-600', 'hover:bg-purple-700');
                 btnNext.classList.remove('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-600');
             }
         }
