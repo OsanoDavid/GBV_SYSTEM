@@ -30,6 +30,11 @@
         display: grid;
         gap: 24px;
         grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .category-card {
+        align-self: start;
     }
 
     @media (min-width: 768px) {
@@ -276,6 +281,45 @@
             <button
                 class="w-full text-left p-5 font-bold text-purple-900 flex justify-between items-center hover:bg-purple-50 transition focus:outline-none"
                 onclick="toggleFaq(this)">
+                <span>Is my personal information safe?</span>
+                <span class="text-xl font-bold">+</span>
+            </button>
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed">
+                Yes. Reports are handled confidentially, and you can choose to submit anonymously if you do not want to
+                share personal details.
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-purple-100 overflow-hidden">
+            <button
+                class="w-full text-left p-5 font-bold text-purple-900 flex justify-between items-center hover:bg-purple-50 transition focus:outline-none"
+                onclick="toggleFaq(this)">
+                <span>What evidence should I save before filing a report?</span>
+                <span class="text-xl font-bold">+</span>
+            </button>
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed">
+                Save screenshots, usernames, profile links, message records, dates, times, phone numbers, and any threats
+                or blackmail demands. Keep the original messages if it is safe to do so.
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-purple-100 overflow-hidden">
+            <button
+                class="w-full text-left p-5 font-bold text-purple-900 flex justify-between items-center hover:bg-purple-50 transition focus:outline-none"
+                onclick="toggleFaq(this)">
+                <span>What should I do if someone is blackmailing or threatening me online?</span>
+                <span class="text-xl font-bold">+</span>
+            </button>
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed">
+                Do not send money or respond under pressure. Preserve the evidence, file a report, and use the emergency
+                contacts if you feel physically unsafe or need urgent support.
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-purple-100 overflow-hidden">
+            <button
+                class="w-full text-left p-5 font-bold text-purple-900 flex justify-between items-center hover:bg-purple-50 transition focus:outline-none"
+                onclick="toggleFaq(this)">
                 <span>How does the AI Engine help process my report?</span>
                 <span class="text-xl font-bold">+</span>
             </button>
@@ -283,16 +327,59 @@
                 Our AI classifies cases by urgency to ensure critical threats are reviewed first.
             </div>
         </div>
+
+        <div class="bg-white rounded-xl border border-purple-100 overflow-hidden">
+            <button
+                class="w-full text-left p-5 font-bold text-purple-900 flex justify-between items-center hover:bg-purple-50 transition focus:outline-none"
+                onclick="toggleFaq(this)">
+                <span>Can the AI Help Assistant file the report for me?</span>
+                <span class="text-xl font-bold">+</span>
+            </button>
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed">
+                The assistant can guide you, explain what details to include, and point you to the right action. You still
+                submit the official report yourself so you stay in control of what is shared.
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-purple-100 overflow-hidden">
+            <button
+                class="w-full text-left p-5 font-bold text-purple-900 flex justify-between items-center hover:bg-purple-50 transition focus:outline-none"
+                onclick="toggleFaq(this)">
+                <span>How can I track my report after submitting it?</span>
+                <span class="text-xl font-bold">+</span>
+            </button>
+            <div class="p-5 text-gray-600 hidden border-t border-purple-50 text-sm leading-relaxed">
+                Use the Track Report page with the tracking details given after submission. Keep those details private so
+                only you can follow the case progress.
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     function toggleCategory(button) {
-        const panel = button.parentElement.querySelector('.category-panel');
+        const card = button.parentElement;
+        const panel = card.querySelector('.category-panel');
         const icon = button.querySelector('span.text-xl');
+        
+        // Close all other open panels
+        const allCards = document.querySelectorAll('.category-card');
+        allCards.forEach(otherCard => {
+            if (otherCard !== card) {
+                const otherPanel = otherCard.querySelector('.category-panel');
+                const otherIcon = otherCard.querySelector('button span.text-xl');
+                if (!otherPanel.classList.contains('hidden')) {
+                    otherPanel.classList.add('hidden');
+                    otherIcon.textContent = '+';
+                    otherIcon.classList.remove('rotate');
+                }
+            }
+        });
+        
+        // Toggle the clicked panel
         if (panel.classList.contains('hidden')) {
             panel.classList.remove('hidden');
-            icon.textContent = '−';
+            icon.textContent = '-';
             icon.classList.add('rotate');
         } else {
             panel.classList.add('hidden');
@@ -306,7 +393,7 @@
         const icon = button.querySelector('span.text-xl');
         if (panel.classList.contains('hidden')) {
             panel.classList.remove('hidden');
-            icon.textContent = '−';
+            icon.textContent = '-';
         } else {
             panel.classList.add('hidden');
             icon.textContent = '+';
