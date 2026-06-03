@@ -234,6 +234,35 @@ def register_view(request):
 
 
 def logout_view(request):
+        
+    return render(request, 'registration/login.html', {'form': form})
+
+
+def register_view(request):
+    """UPDATED: Process secure onboarding with context injection for glassmorphic elements."""
+    if request.user.is_authenticated:
+        return redirect('user_dashboard')
+        
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.email = form.cleaned_data.get('email', '')
+            user.save()
+            if user.email:
+                IncidentReport.objects.filter(
+                    reporter_email__iexact=user.email,
+                    reporter_profile__isnull=True
+                ).update(reporter_profile=user)
+            login(request, user)
+            return redirect('user_dashboard')
+    else:
+        form = UserRegistrationForm()
+        
+    return render(request, 'registration/register.html', {'form': form})
+
+
+def logout_view(request):
     """Clears explicit login session maps instantly."""
     logout(request)
     return redirect('landing')
@@ -241,10 +270,16 @@ def logout_view(request):
 
 @login_required
 def user_dashboard(request):
-    """Fetches and feeds user-submitted incidents to render context structures securely."""
-    query = Q(reporter_profile=request.user)
-    if request.user.email:
-        query |= Q(reporter_email__iexact=request.user.email)
-    user_reports = IncidentReport.objects.filter(query).order_by('-created_at')
-    return render(request, 'reports/dashboard.html', {'reports': user_reports})
-
+    """Fetches and feeds incident reports for the dashboard.
+    Admin users see all reports; regular users see only their own submissions.
+    """
+    if request.user.is_staff:
+        # Staff/admin can view all incident reports
+        reports = IncidentReport.objects.all().order_by('-created_at')
+    else:
+        # Regular users see reports they submitted or reports linked via email
+        query = Q(reporter_profile=request.user)
+        if request.user.email:
+            query |= Q(reporter_email__iexact=request.user.email)
+        reports = IncidentReport.objects.filter(query).order_by('-created_at')
+    return render(request, 'reports/dashboard.html', {'reports': reports})

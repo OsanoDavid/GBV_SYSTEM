@@ -140,6 +140,7 @@ def custom_admin_dashboard(request):
     return render(request, 'reports/custom_admin_dashboard.html', {
         'total_reports': IncidentReport.objects.count(),
         'total_users': user_model.objects.count(),
+        'users': user_model.objects.all().order_by('-date_joined')[:50],
         'database_name': settings.DATABASES['default'].get('NAME', 'Unknown'),
         'recent_reports': IncidentReport.objects.all().order_by('-created_at'),
         'departments': Department.objects.annotate(case_count=Count('incidentreport')).order_by('name'),
@@ -346,13 +347,21 @@ def register_user_view(request):
             user = form.save(commit=False)
             user.email = form.cleaned_data.get('email', '')
             user.save()
+            # Only attempt to link past anonymous reports when the user supplied an email
             if user.email:
                 IncidentReport.objects.filter(
                     reporter_email__iexact=user.email,
                     reporter_profile__isnull=True
                 ).update(reporter_profile=user)
-            messages.success(request, f"Registration successful for {user.username}. You can now log in and access your dashboard.")
-            return redirect('login')
+            # Log the user in immediately so they see their linked dashboard consistently
+            try:
+                login(request, user)
+            except Exception:
+                # If login fails for any reason, fall back to asking the user to sign in
+                messages.success(request, f"Registration successful for {user.username}. You can now log in and access your dashboard.")
+                return redirect('login')
+            messages.success(request, f"Registration successful for {user.username}. You are now signed in.")
+            return redirect('user_dashboard')
         else:
             for field, errors in form.errors.items():
                 for error in errors:

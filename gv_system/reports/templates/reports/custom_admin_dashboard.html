@@ -71,6 +71,83 @@
         </div>
     </div>
 
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 lg:col-span-2">
+            <h2 class="text-lg font-bold text-purple-950 mb-4">All Incident Records</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs">
+                    <thead>
+                        <tr class="text-left text-purple-400 border-b uppercase">
+                            <th class="p-3">Reference</th>
+                            <th class="p-3">PIN</th>
+                            <th class="p-3">Reporter Info</th>
+                            <th class="p-3">Category</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for report in recent_reports %}
+                        <tr class="border-b hover:bg-purple-50 transition">
+                            <td class="p-3 font-bold text-purple-900">
+                                <a href="{% url 'friendly_edit' report.id %}" class="hover:underline">{{ report.reference_number }}</a>
+                            </td>
+                            <td class="p-3 font-mono font-bold text-green-700">{{ report.case_access_pin }}</td>
+                            <td class="p-3">
+                                <div class="font-bold">{{ report.reporter_name|default:"Anonymous" }}</div>
+                                <div class="text-[10px] text-gray-500">{{ report.reporter_email|default:"No Email" }}</div>
+                                <div class="text-[10px] text-gray-500">{{ report.reporter_phone|default:"No Phone" }}</div>
+                                {% if report.reporter_profile %}
+                                <div class="mt-1 inline-block bg-green-50 text-green-800 text-[10px] px-2 py-1 rounded-full font-bold">
+                                    Linked: {{ report.reporter_profile.username }}
+                                </div>
+                                {% else %}
+                                <div class="mt-1 inline-block bg-amber-50 text-amber-800 text-[10px] px-2 py-1 rounded-full font-bold">
+                                    Guest Report
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td class="p-3">{{ report.incident_category|default:"---" }}</td>
+                            <td class="p-3">
+                                <form action="{% url 'update_status' report.id %}" method="POST" class="flex gap-2">
+                                    {% csrf_token %}
+                                    <select name="status" class="border rounded px-2 py-1 bg-white">
+                                        <option value="pending" {% if report.status == 'pending' %}selected{% endif %}>Pending</option>
+                                        <option value="under_review" {% if report.status == 'under_review' %}selected{% endif %}>Under Review</option>
+                                        <option value="action_taken" {% if report.status == 'action_taken' %}selected{% endif %}>Resolved</option>
+                                        <option value="closed" {% if report.status == 'closed' %}selected{% endif %}>Closed</option>
+                                    </select>
+                                    <button type="submit" class="bg-purple-600 text-white px-2 py-1 rounded">Update</button>
+                                </form>
+                            </td>
+                            <td class="p-3">
+                                <a href="{% url 'friendly_edit' report.id %}" class="text-purple-600 font-bold hover:underline">Full View / Edit</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <aside class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100">
+            <h3 class="text-sm font-black text-purple-950 uppercase tracking-wide mb-4">Recent Users</h3>
+            <div class="divide-y divide-purple-50">
+                {% for u in users %}
+                <div class="py-2 flex items-center justify-between">
+                    <div>
+                        <p class="font-bold text-sm text-gray-900">{{ u.username }}</p>
+                        <p class="text-xs text-gray-500">{{ u.email|default:'No Email' }}</p>
+                    </div>
+                    <a href="/admin/auth/user/{{ u.id }}/change/" class="text-xs text-purple-700 font-bold hover:underline">Manage</a>
+                </div>
+                {% empty %}
+                <p class="text-sm text-gray-400 py-4">No users found.</p>
+                {% endfor %}
+            </div>
+        </aside>
+    </div>
+
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-purple-100 mb-8">
         <h2 class="text-lg font-bold text-purple-950 mb-4">All Incident Records</h2>
         <div class="overflow-x-auto">

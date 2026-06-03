@@ -71,3 +71,24 @@
 2026-06-02 13:16:28,315 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-06-03 08:54:15,252 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-06-03 09:00:58,872 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:29:54,378 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:35:43,800 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\core\views.py changed, reloading.
+2026-06-03 09:35:43,850 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\core\views.py changed, reloading.
+2026-06-03 09:35:45,317 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:35:45,360 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:40:59,867 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-06-03 09:40:59,988 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-06-03 09:41:02,429 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:41:02,432 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:43:35,367 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-06-03 09:43:35,384 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-06-03 09:43:37,247 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:43:37,281 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:45:26,138 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-06-03 09:45:26,145 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-06-03 09:45:29,160 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:45:29,160 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:46:14,961 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-06-03 09:46:15,123 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-06-03 09:46:17,153 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-03 09:46:17,186 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
