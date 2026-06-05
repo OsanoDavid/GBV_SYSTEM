@@ -59,28 +59,28 @@
     }
 
     .hero-bg-section {
-        background-image:
-        /*linear-gradient(rgba(49, 13, 85, 0.45), rgba(21, 4, 38, 0.55)), */
-        url("{% static 'images/bac.jpg' %}");
+        background-image: url("{% static 'images/bac.jpg' %}");
         background-size: cover;
-        background-position: center;
+        background-position: center center;
         background-repeat: no-repeat;
-        min-height: 500px;
+        min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
+        position: relative;
+        overflow: hidden;
     }
 
-    @media (max-width: 767px) {
-        .hero-bg-section {
-            background-size: contain;
-            background-position: top center;
-            min-height: 420px;
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }
+    .hero-bg-section::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        /*background: linear-gradient(180deg, rgba(49,13,85,0.38) 0%, rgba(21,4,38,0.45) 55%, rgba(245,245,250,0.05) 100%);*/
+        mix-blend-mode: multiply;
+        z-index: 0;
+        pointer-events: none;
     }
 
     .hero-description {
@@ -89,13 +89,13 @@
 </style>
 
 <div class="relative py-20 px-4 text-center hero-bg-section" role="banner">
-    <div class="max-w-4xl mx-auto space-y-6">
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-['Times_New_Roman',_Times,_serif] sm:relative sm:left-[87px]"
+    <div class="max-w-4xl mx-auto space-y-6 relative z-10">
+        <h1 class="text-4xl md:text-5xl lg:text-5xl font-extrabold tracking-tight text-white font-['Times_New_Roman',_Times,_serif] sm:relative sm:left-[87px] drop-shadow-[0_8px_18px_rgba(0,0,0,0.6)]"
             tabindex="0">
             Combat Online <br>Harassment
         </h1>
         <p class="text-base md:text-xl max-w-3xl mx-auto font-medium hero-description font-['Times_New_Roman',_Times,_serif] sm:relative sm:left-[50px] text-white" 
-        style="text-shadow: 2px 2px 8px rgba(0,0,0,0.8); font-weight: bold;" 
+        style="text-shadow: 2px 2px 10px rgba(0,0,0,0.85); font-weight: 700;" 
         tabindex="0">
         Report incidents safely, track responses securely, and get access to expert legal and psychological care. Your safety is our absolute priority.
         </p>
