@@ -61,7 +61,7 @@
     .hero-bg-section {
         background-image:
         /*linear-gradient(rgba(49, 13, 85, 0.45), rgba(21, 4, 38, 0.55)), */
-        url("{% static 'images/bac.jpeg' %}");
+        url("{% static 'images/bac.jpg' %}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -69,6 +69,18 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    @media (max-width: 767px) {
+        .hero-bg-section {
+            background-size: contain;
+            background-position: top center;
+            min-height: 420px;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
     }
 
     .hero-description {
@@ -78,7 +90,7 @@
 
 <div class="relative py-20 px-4 text-center hero-bg-section" role="banner">
     <div class="max-w-4xl mx-auto space-y-6">
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-['Times_New_Roman',_Times,_serif] sm:relative sm:left-[50px]"
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-['Times_New_Roman',_Times,_serif] sm:relative sm:left-[87px]"
             tabindex="0">
             Combat Online <br>Harassment
         </h1>

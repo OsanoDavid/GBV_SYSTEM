@@ -38,7 +38,7 @@ html {
 /* FIXED: Using direct sibling path since bac.png is in the same folder as custom.css */
 .hero-bg-section {
     background-image: /*linear-gradient(rgba(49, 13, 85, 0.333), rgba(21, 4, 38, 0.233)), **/
-                      url("bac.jpeg");
+                      url("bac.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -47,8 +47,7 @@ html {
     margin:auto ;
     height: 100vh;
     margin-top: 0px;
-    border-left: 1px solid rgba(99, 78, 99, 0.733);
-    border-right: 1px solid rgb(110, 79, 110);
+   
     box-shadow: 0 0 10px whitesmoke;
 
 }
