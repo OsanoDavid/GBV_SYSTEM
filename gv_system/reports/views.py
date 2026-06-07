@@ -12,9 +12,9 @@ from django.db.models import Count, F, Prefetch, Q
 from django.db.models.functions import ACos, Cos, Sin, Radians
 from dotenv import load_dotenv
 
-from .models import Department, IncidentReport, ChildrensHome, AuditLog
+from .models import Department, IncidentReport, ChildrensHome, AuditLog, AdminProfile
 from .forms import SavedUserAuthenticationForm, SecureIncidentReportForm, UserRegistrationForm
-from reports.notifications import send_tracking_sms
+from reports.notifications import normalize_phone_number, send_tracking_sms
 from reports.services import AssignmentService
 
 load_dotenv()
@@ -22,8 +22,41 @@ logger = logging.getLogger(__name__)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
 
+# --- MULTI-ADMIN PERMISSION HELPERS ---
+
 def is_staff(user):
+    """Check if user has staff/admin privileges"""
     return user.is_staff or user.groups.filter(name='DepartmentStaff').exists()
+
+
+def is_superadmin(user):
+    """Check if user is a superadmin with full system access"""
+    if user.is_superuser:
+        return True
+    try:
+        return user.admin_profile.admin_level == 'superadmin' and user.admin_profile.is_active
+    except AdminProfile.DoesNotExist:
+        return False
+
+
+def can_manage_all_reports(user):
+    """Check if user can view/manage all reports (superadmin or admin)"""
+    if user.is_superuser:
+        return True
+    try:
+        return user.admin_profile.admin_level in ['superadmin', 'admin'] and user.admin_profile.is_active
+    except AdminProfile.DoesNotExist:
+        return False
+
+
+def get_admin_departments(user):
+    """Get departments managed by this admin user"""
+    try:
+        if user.is_superuser:
+            return Department.objects.all()
+        return user.admin_profile.manages_departments.all()
+    except AdminProfile.DoesNotExist:
+        return Department.objects.none()
 
 # -------------------------------------------------------------
 # CORE VIEWS
@@ -121,14 +154,52 @@ def file_report_view(request):
 
 def track_case_view(request):
     report = None
+    recovery_status = None
+    recovered_reference = request.POST.get('reference_number', '').strip() if request.method == 'POST' else ''
     if request.method == "POST":
-        ref = request.POST.get('reference_number', '').strip()
-        pin = request.POST.get('case_access_pin', '').strip()
-        if ref and pin:
-            report = IncidentReport.objects.filter(reference_number__iexact=ref, case_access_pin=pin).first()
-            if report:
-                refresh_report_workflow(report, request)
-    return render(request, 'reports/track_case.html', {'report': report})
+        if request.POST.get('recover_pin'):
+            ref = request.POST.get('reference_number', '').strip()
+            recovery_phone = request.POST.get('recovery_phone', '').strip()
+            if ref and recovery_phone:
+                report = IncidentReport.objects.filter(reference_number__iexact=ref).first()
+                if report:
+                    stored_phone = normalize_phone_number(report.reporter_phone)
+                    submitted_phone = normalize_phone_number(recovery_phone)
+                    if stored_phone and submitted_phone and stored_phone == submitted_phone:
+                        success, status_msg = send_tracking_sms(report)
+                        recovery_status = {
+                            'success': success,
+                            'message': status_msg if success else (
+                                status_msg or 'Unable to send PIN SMS at this time. Please contact support.'
+                            )
+                        }
+                    else:
+                        recovery_status = {
+                            'success': False,
+                            'message': 'The phone number does not match our record for this GBV reference code.'
+                        }
+                else:
+                    recovery_status = {
+                        'success': False,
+                        'message': 'No report was found for that GBV reference code.'
+                    }
+            else:
+                recovery_status = {
+                    'success': False,
+                    'message': 'Please provide both your GBV reference code and the phone number registered with your report.'
+                }
+        else:
+            ref = request.POST.get('reference_number', '').strip()
+            pin = request.POST.get('case_access_pin', '').strip()
+            if ref and pin:
+                report = IncidentReport.objects.filter(reference_number__iexact=ref, case_access_pin=pin).first()
+                if report:
+                    refresh_report_workflow(report, request)
+    return render(request, 'reports/track_case.html', {
+        'report': report,
+        'recovery_status': recovery_status,
+        'recovered_reference': recovered_reference
+    })
 
 # -------------------------------------------------------------
 # ADMIN & STAFF

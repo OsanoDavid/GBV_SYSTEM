@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.db.models import Count
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import AuditLog, ChildrensHome, Department, IncidentReport
+from .models import AuditLog, ChildrensHome, Department, IncidentReport, AdminProfile
 from .utils import check_email_connection
 
 
@@ -132,3 +134,58 @@ class ChildrensHomeAdmin(admin.ModelAdmin):
 class AuditLogAdmin(admin.ModelAdmin):
     list_display = ('report', 'action', 'user', 'timestamp')
     readonly_fields = ('timestamp',)
+
+
+# --- MULTI-ADMIN MANAGEMENT ---
+
+class AdminProfileInline(admin.StackedInline):
+    """Inline for managing AdminProfile within User admin"""
+    model = AdminProfile
+    extra = 0
+    fields = ('admin_level', 'manages_departments', 'is_active', 'notes')
+
+
+class CustomUserAdmin(BaseUserAdmin):
+    """Extended User admin with AdminProfile management"""
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'admin_level_display')
+    list_filter = BaseUserAdmin.list_filter + ('admin_profile__admin_level', 'admin_profile__is_active')
+    inlines = [AdminProfileInline]
+
+    def admin_level_display(self, obj):
+        """Display admin level if user has AdminProfile"""
+        try:
+            return obj.admin_profile.get_admin_level_display()
+        except AdminProfile.DoesNotExist:
+            return "Not an Admin"
+    admin_level_display.short_description = "Admin Level"
+
+
+# Unregister the default UserAdmin and use the custom one
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
+
+
+@admin.register(AdminProfile)
+class AdminProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'admin_level', 'is_active', 'department_count', 'created_at')
+    list_filter = ('admin_level', 'is_active', 'created_at')
+    search_fields = ('user__username', 'user__email', 'notes')
+    filter_horizontal = ('manages_departments',)
+    readonly_fields = ('created_at', 'updated_at')
+
+    fieldsets = (
+        ('User Information', {
+            'fields': ('user', 'is_active')
+        }),
+        ('Admin Role & Permissions', {
+            'fields': ('admin_level', 'manages_departments')
+        }),
+        ('Additional Info', {
+            'fields': ('notes', 'created_at', 'updated_at'),
+        }),
+    )
+
+    def department_count(self, obj):
+        """Show number of departments managed"""
+        return obj.manages_departments.count()
+    department_count.short_description = "Departments Managed"

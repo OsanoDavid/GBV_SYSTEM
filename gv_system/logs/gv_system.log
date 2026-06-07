@@ -107,3 +107,24 @@
 2026-06-05 09:19:50,593 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-06-05 10:55:02,795 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-06-05 10:57:49,992 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-05 14:48:30,044 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\models.py changed, reloading.
+2026-06-05 14:48:31,709 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-05 14:48:39,225 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\admin.py changed, reloading.
+2026-06-05 14:48:40,435 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-05 14:48:51,983 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\admin.py changed, reloading.
+2026-06-05 14:48:53,049 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-05 14:49:24,133 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\views.py changed, reloading.
+2026-06-05 14:49:25,313 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-05 14:51:25,807 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\migrations\0007_adminprofile.py changed, reloading.
+2026-06-05 14:51:26,870 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-05 15:00:01,397 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-05 15:03:44,717 [WARNING] django.request: Not Found: /favicon.ico
+2026-06-06 20:01:11,610 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-06 20:01:54,286 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-07 21:05:00,258 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-07 21:13:28,456 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\urls.py changed, reloading.
+2026-06-07 21:13:31,274 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-07 21:16:01,406 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\ICT\gv_system\reports\urls.py changed, reloading.
+2026-06-07 21:16:03,394 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-07 21:23:49,188 [WARNING] django.request: Not Found: /favicon.ico
+2026-06-07 21:34:41,680 [ERROR] reports.views: Gemini API Error: 400 Client Error: Bad Request for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=AIzaSyCtyWxpWgEKL3b1RpeUhV9aI_6jk504BkE

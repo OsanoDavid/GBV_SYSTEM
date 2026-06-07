@@ -112,3 +112,45 @@ class AuditLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     action = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+# --- Admin Management ---
+class AdminProfile(models.Model):
+    """
+    Extended admin profile for multi-admin support with role-based permissions
+    """
+    ADMIN_LEVEL_CHOICES = [
+        ('superadmin', 'Super Admin - Full System Access'),
+        ('admin', 'Admin - Department Management'),
+        ('assistant_admin', 'Assistant Admin - Report Management'),
+        ('department_lead', 'Department Lead - Department-Specific Access'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='admin_profile')
+    admin_level = models.CharField(max_length=20, choices=ADMIN_LEVEL_CHOICES, default='admin')
+    manages_departments = models.ManyToManyField(Department, blank=True, related_name='admin_managers')
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.get_admin_level_display()}"
+
+    @property
+    def can_view_all_reports(self):
+        """Check if admin can view all reports"""
+        return self.admin_level in ['superadmin', 'admin']
+
+    @property
+    def can_manage_admins(self):
+        """Check if admin can manage other admins"""
+        return self.admin_level == 'superadmin'
+
+    @property
+    def can_manage_departments(self):
+        """Check if admin can manage departments"""
+        return self.admin_level in ['superadmin', 'admin', 'department_lead']
