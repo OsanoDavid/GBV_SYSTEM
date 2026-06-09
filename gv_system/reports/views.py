@@ -155,11 +155,12 @@ def file_report_view(request):
 def track_case_view(request):
     report = None
     recovery_status = None
-    recovered_reference = request.POST.get('reference_number', '').strip() if request.method == 'POST' else ''
+    reference_number = request.POST.get('reference_number', '').strip() if request.method == 'POST' else ''
+    recovery_phone = request.POST.get('recovery_phone', '').strip() if request.method == 'POST' else ''
+    recovered_reference = reference_number
     if request.method == "POST":
         if request.POST.get('recover_pin'):
-            ref = request.POST.get('reference_number', '').strip()
-            recovery_phone = request.POST.get('recovery_phone', '').strip()
+            ref = reference_number
             if ref and recovery_phone:
                 report = IncidentReport.objects.filter(reference_number__iexact=ref).first()
                 if report:
@@ -189,7 +190,7 @@ def track_case_view(request):
                     'message': 'Please provide both your GBV reference code and the phone number registered with your report.'
                 }
         else:
-            ref = request.POST.get('reference_number', '').strip()
+            ref = reference_number
             pin = request.POST.get('case_access_pin', '').strip()
             if ref and pin:
                 report = IncidentReport.objects.filter(reference_number__iexact=ref, case_access_pin=pin).first()
@@ -198,7 +199,9 @@ def track_case_view(request):
     return render(request, 'reports/track_case.html', {
         'report': report,
         'recovery_status': recovery_status,
-        'recovered_reference': recovered_reference
+        'recovered_reference': recovered_reference,
+        'reference_number': reference_number,
+        'recovery_phone': recovery_phone,
     })
 
 # -------------------------------------------------------------

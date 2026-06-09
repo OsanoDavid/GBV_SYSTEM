@@ -17,7 +17,7 @@
                     <label class="text-[10px] font-bold uppercase tracking-wider text-purple-400 font-mono">Reference Code</label>
                     <input type="text" 
                            name="reference_number" 
-                           value="{{ request.POST.reference_number }}" 
+                           value="{{ reference_number }}" 
                            placeholder="e.g., GBV-A1B2-C3D4" 
                            required
                            class="w-full p-3 uppercase font-mono text-xs font-bold text-center bg-white/90 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition shadow-sm">
@@ -53,7 +53,7 @@
                         <label class="text-[10px] font-bold uppercase tracking-wider text-purple-400 font-mono">Reference Code</label>
                         <input type="text" 
                                name="reference_number" 
-                               value="{{ recovered_reference|default:request.POST.reference_number }}" 
+                               value="{{ recovered_reference|default:reference_number }}" 
                                placeholder="GBV-A1B2-C3D4" 
                                required
                                class="w-full p-3 uppercase font-mono text-xs font-bold text-center bg-white/90 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition shadow-sm">
@@ -62,7 +62,7 @@
                         <label class="text-[10px] font-bold uppercase tracking-wider text-purple-400 font-mono">Registered Phone</label>
                         <input type="tel"
                                name="recovery_phone"
-                               value="{{ request.POST.recovery_phone }}"
+                               value="{{ recovery_phone }}"
                                placeholder="e.g., 0712345678"
                                required
                                class="w-full p-3 font-mono text-xs font-bold text-center bg-white/90 border border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-600 focus:bg-white transition shadow-sm">
@@ -158,7 +158,7 @@
             {% else %}
                 <div class="p-4 bg-red-50 border border-red-200 rounded-xl text-center text-xs text-red-800 font-medium leading-normal">
                     No matching report structure discovered for reference sequence token 
-                    "<span class="font-mono font-bold">{{ request.POST.reference_number }}</span>" with the specified PIN profile. 
+                    "<span class="font-mono font-bold">{{ reference_number }}</span>" with the specified PIN profile. 
                     Please double-check your cryptographic key credentials and try again.
                 </div>
             {% endif %}
