@@ -537,7 +537,8 @@ html:has(body.dark-mode) {
 body.dark-mode p,
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
 body.dark-mode h4, body.dark-mode h5, body.dark-mode h6,
-body.dark-mode span, body.dark-mode li, body.dark-mode td,
+/* Exclude <i> tags to prevent icon color override */
+body.dark-mode span:not(i), body.dark-mode li, body.dark-mode td,
 body.dark-mode th, body.dark-mode label, body.dark-mode div {
     color: #e9d5ff !important;
 }
