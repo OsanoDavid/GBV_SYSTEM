@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SafeSpace | TFGBV Reporting platform{% endblock %}</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -17,7 +17,7 @@
                             100: '#F3E5FF',
                             200: '#E7CCFF',
                             300: '#D4A3FF',
-                            600: '#9D00FF', 
+                            600: '#9D00FF',
                             700: '#8600DB',
                             800: '#5C0099',
                             900: '#3D0066',
@@ -28,22 +28,239 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="{% static 'images/custom.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'images/custom.css' %}?v=6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
 </head>
-<body class="bg-gradient-to-br from-purple-50 via-white to-purple-100 text-purple-950 flex flex-col min-h-screen font-sans antialiased">
+<body class="bg-gradient-to-br from-purple-50 via-white to-purple-100 text-purple-950 font-sans antialiased">
 
-<nav class="bg-purple-50/95 text-purple-950 shadow-lg shadow-purple-200/40 backdrop-blur sticky top-0 z-50 border-b border-purple-200" role="navigation" aria-label="Main Security Directory">
+<!-- ================================================================
+     ACCESSIBILITY SIDEBAR (Push Layout — fixed left, slides in)
+     ================================================================ -->
+<aside id="accessibility-sidebar" role="complementary" aria-label="Accessibility Settings Panel">
+
+    <!-- Header -->
+    <div class="a11y-sidebar-header">
+        <div class="header-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 8v4m0 4h.01"/>
+            </svg>
+        </div>
+        <div>
+            <h2>Accessibility</h2>
+            <p>Tools for everyone</p>
+        </div>
+        <button onclick="closeA11ySidebar()" aria-label="Close accessibility panel" style="margin-left:auto;background:rgba(255,255,255,0.1);border:none;border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#e9d5ff;font-size:1rem;flex-shrink:0;">✕</button>
+    </div>
+
+    <!-- Vision -->
+    <div class="a11y-section">
+        <div class="a11y-section-title">👁 Vision</div>
+
+        <label class="a11y-toggle-row" for="toggle-dark">
+            <span class="toggle-label">
+                <span class="toggle-icon" style="background:rgba(100,50,200,0.3);">🌙</span>
+                Dark Mode
+            </span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="toggle-dark" onchange="applyDarkMode(this.checked)" aria-label="Toggle dark mode">
+                <span class="toggle-track"></span>
+            </label>
+        </label>
+
+        <label class="a11y-toggle-row" for="toggle-contrast">
+            <span class="toggle-label">
+                <span class="toggle-icon" style="background:rgba(200,180,50,0.3);">🔲</span>
+                High Contrast
+            </span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="toggle-contrast" onchange="applyHighContrast(this.checked)" aria-label="Toggle high contrast">
+                <span class="toggle-track"></span>
+            </label>
+        </label>
+
+        <div style="padding:8px 12px 4px;">
+            <div class="a11y-section-title" style="margin-bottom:6px;">Aa Text Size</div>
+            <div class="font-scale-controls">
+                <button class="font-scale-btn" onclick="setFontSize('sm')" id="fs-sm" aria-label="Small text (13px)">A<small style="display:block;font-size:0.55rem;opacity:0.6;">Small</small></button>
+                <button class="font-scale-btn active" onclick="setFontSize('md')" id="fs-md" aria-label="Default text (16px)">A+<small style="display:block;font-size:0.55rem;opacity:0.6;">Default</small></button>
+                <button class="font-scale-btn" onclick="setFontSize('lg')" id="fs-lg" aria-label="Large text (19px)" style="font-size:0.82rem;">A++<small style="display:block;font-size:0.55rem;opacity:0.6;">Large</small></button>
+                <button class="font-scale-btn" onclick="setFontSize('xl')" id="fs-xl" aria-label="Extra large text (23px)" style="font-size:0.95rem;">A+++<small style="display:block;font-size:0.55rem;opacity:0.6;">Bigger</small></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Font Family -->
+    <div class="a11y-section">
+        <div class="a11y-section-title">🔤 Font Style</div>
+        <p style="font-size:0.62rem;color:rgba(196,181,253,0.5);margin-bottom:8px;padding:0 2px;">Pick a font that's easier for you to read</p>
+        <div class="font-family-controls">
+            <button class="ff-btn active" onclick="setFontFamily('inter')" id="ff-inter" aria-label="Inter font — clean modern">
+                Inter
+                <small>Clean / Modern</small>
+            </button>
+            <button class="ff-btn" onclick="setFontFamily('opensans')" id="ff-opensans" style="font-family:'Open Sans',sans-serif;" aria-label="Open Sans — friendly readable">
+                Open Sans
+                <small>Friendly / Clear</small>
+            </button>
+            <button class="ff-btn" onclick="setFontFamily('lexend')" id="ff-lexend" style="font-family:'Lexend',sans-serif;" aria-label="Lexend — dyslexia friendly">
+                Lexend
+                <small>Dyslexia-friendly</small>
+            </button>
+            <button class="ff-btn" onclick="setFontFamily('serif')" id="ff-serif" style="font-family:Georgia,serif;" aria-label="Georgia serif — warm classic">
+                Georgia
+                <small>Warm / Classic</small>
+            </button>
+        </div>
+    </div>
+
+    <!-- Voice Control -->
+    <div class="a11y-section">
+        <div class="a11y-section-title">🎙 Voice Control</div>
+
+        <label class="a11y-toggle-row" for="toggle-voice">
+            <span class="toggle-label">
+                <span class="toggle-icon" style="background:rgba(50,200,100,0.2);">🎤</span>
+                Voice Assistant
+            </span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="toggle-voice" onchange="toggleVoiceAssistant(this.checked)" aria-label="Toggle voice assistant">
+                <span class="toggle-track"></span>
+            </label>
+        </label>
+
+        <div style="padding:4px 12px 8px;">
+            <p style="font-size:0.63rem;color:rgba(196,181,253,0.55);line-height:1.5;">
+                Say commands like:<br>
+                <span style="color:#c084fc;font-weight:600;">"Go to report"</span> •
+                <span style="color:#c084fc;font-weight:600;">"Go home"</span> •
+                <span style="color:#c084fc;font-weight:600;">"Go to dashboard"</span> •
+                <span style="color:#c084fc;font-weight:600;">"Track my case"</span> •
+                <span style="color:#c084fc;font-weight:600;">"Dark mode"</span> •
+                <span style="color:#c084fc;font-weight:600;">"Read page"</span> •
+                <span style="color:#c084fc;font-weight:600;">"Submit form"</span> •
+                <span style="color:#c084fc;font-weight:600;">"Next step"</span>
+            </p>
+        </div>
+
+        <button onclick="speakPageContent()" class="a11y-nav-btn" aria-label="Read page aloud">
+            <span class="nav-icon">🔊</span>
+            Read Page Aloud
+        </button>
+        <button onclick="speechSynthesis.cancel()" class="a11y-nav-btn" style="border-color:rgba(220,38,38,0.2);" aria-label="Stop reading">
+            <span class="nav-icon" style="background:rgba(220,38,38,0.2);">⏹</span>
+            Stop Reading
+        </button>
+    </div>
+
+    <!-- Quick Navigation -->
+    <div class="a11y-section">
+        <div class="a11y-section-title">🧭 Quick Navigate</div>
+        <a href="{% url 'landing' %}" class="a11y-nav-btn">
+            <span class="nav-icon">🏠</span> Home
+        </a>
+        <a href="{% url 'file_report' %}" class="a11y-nav-btn">
+            <span class="nav-icon">📋</span> File a Report
+        </a>
+        <a href="{% url 'track_case' %}" class="a11y-nav-btn">
+            <span class="nav-icon">🔍</span> Track My Case
+        </a>
+        {% if user.is_authenticated %}
+        <a href="{% if user.is_staff %}{% url 'department_portal' %}{% else %}{% url 'user_dashboard' %}{% endif %}" class="a11y-nav-btn">
+            <span class="nav-icon">📊</span> Dashboard
+        </a>
+        {% else %}
+        <a href="{% url 'login' %}" class="a11y-nav-btn">
+            <span class="nav-icon">🔑</span> Log In
+        </a>
+        <a href="{% url 'register_user' %}" class="a11y-nav-btn">
+            <span class="nav-icon">✍</span> Sign Up
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Motion -->
+    <div class="a11y-section">
+        <div class="a11y-section-title">⚙ Motion & More</div>
+        <label class="a11y-toggle-row" for="toggle-motion">
+            <span class="toggle-label">
+                <span class="toggle-icon" style="background:rgba(100,200,50,0.2);">✨</span>
+                Reduce Motion
+            </span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="toggle-motion" onchange="applyReduceMotion(this.checked)" aria-label="Reduce motion">
+                <span class="toggle-track"></span>
+            </label>
+        </label>
+
+        <button onclick="resetAllSettings()" class="a11y-nav-btn" style="margin-top:6px;border-color:rgba(220,38,38,0.2);" aria-label="Reset all accessibility settings">
+            <span class="nav-icon" style="background:rgba(220,38,38,0.2);">↺</span>
+            Reset All Settings
+        </button>
+    </div>
+
+    <!-- Keyboard Shortcuts -->
+    <div class="a11y-section" style="border-bottom:none;">
+        <div class="a11y-section-title">⌨ Keyboard Shortcuts</div>
+        <div style="font-size:0.62rem;color:rgba(196,181,253,0.6);line-height:2;padding:0 4px;">
+            <div><kbd style="background:rgba(255,255,255,0.1);border-radius:4px;padding:1px 5px;font-family:monospace;">Alt+A</kbd> Open/Close this panel</div>
+            <div><kbd style="background:rgba(255,255,255,0.1);border-radius:4px;padding:1px 5px;font-family:monospace;">Alt+V</kbd> Start / Stop voice</div>
+            <div><kbd style="background:rgba(255,255,255,0.1);border-radius:4px;padding:1px 5px;font-family:monospace;">Alt+R</kbd> Go to File Report</div>
+            <div><kbd style="background:rgba(255,255,255,0.1);border-radius:4px;padding:1px 5px;font-family:monospace;">Esc</kbd> Quick Exit</div>
+        </div>
+    </div>
+
+</aside>
+
+<!-- ================================================================
+     ACCESSIBILITY TOGGLE BUTTON (Left edge, always visible)
+     ================================================================ -->
+<button id="a11y-toggle-btn"
+        onclick="toggleA11ySidebar()"
+        aria-label="Open Accessibility Panel"
+        aria-expanded="false"
+        aria-controls="accessibility-sidebar"
+        title="Accessibility Tools">
+    <span class="btn-icon" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="5" r="1.5"/>
+            <path d="M5 8h14M12 8v13M8 13l4 2 4-2"/>
+        </svg>
+    </span>
+    <span class="btn-text">Access</span>
+</button>
+
+<!-- ================================================================
+     VOICE STATUS BAR (bottom of page when listening)
+     ================================================================ -->
+<div id="voice-status-bar" role="status" aria-live="polite" aria-label="Voice assistant status">
+    <div class="voice-wave" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <span id="voice-status-text">Listening...</span>
+    <span id="voice-transcript-live"></span>
+    <button id="voice-stop-btn" onclick="stopVoiceAssistant()" aria-label="Stop voice assistant">Stop</button>
+</div>
+
+<!-- ================================================================
+     MAIN PAGE CONTENT WRAPPER (gets pushed right on sidebar open)
+     ================================================================ -->
+<div id="page-content-wrapper">
+
+<nav class="bg-purple-50/95 text-purple-950 shadow-lg shadow-purple-200/40 backdrop-blur sticky top-0 z-50 border-b border-purple-200" role="navigation" aria-label="Main navigation">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
-            
+
             <div class="flex items-center space-x-2">
-                <a href="{% url 'landing' %}" class="text-2xl font-black tracking-tight text-purple-950 focus:outline-none focus:ring-2 focus:ring-purple-700 rounded p-1" aria-label="SafeSpace Home Brand Link">
+                <a href="{% url 'landing' %}" class="text-2xl font-black tracking-tight text-purple-950 focus:outline-none focus:ring-2 focus:ring-purple-700 rounded p-1" aria-label="SafeSpace Home">
                     Safe<span class="text-purple-700">Space</span>
                 </a>
             </div>
-            
+
             <div class="hidden md:flex items-center space-x-3">
                 <a href="{% url 'landing' %}" class="text-sm font-semibold text-purple-950 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-purple-800 hover:bg-purple-800 focus:text-white focus:bg-purple-800 focus:outline-none">Home</a>
                 {% if user.is_authenticated %}
@@ -60,27 +277,20 @@
                         {% if user.is_staff %}Reports{% else %}My Dashboard{% endif %}
                     </a>
                     {% if user.is_staff %}
-                        <a href="{% url 'department_portal' %}" class="text-sm font-bold text-purple-800 px-3 py-1.5 border border-purple-300 rounded-lg transition-all hover:bg-purple-600 hover:text-white">
-                            Portal
-                        </a>
+                        <a href="{% url 'department_portal' %}" class="text-sm font-bold text-purple-800 px-3 py-1.5 border border-purple-300 rounded-lg transition-all hover:bg-purple-600 hover:text-white">Portal</a>
                     {% endif %}
                     {% if user.is_superuser %}
-                        <a href="{% url 'custom_admin' %}" class="bg-purple-200 hover:bg-purple-300 text-purple-950 text-xs font-black px-2.5 py-1.5 rounded uppercase tracking-wider transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-400">
-                            Command Center
-                        </a>
+                        <a href="{% url 'custom_admin' %}" class="bg-purple-200 hover:bg-purple-300 text-purple-950 text-xs font-black px-2.5 py-1.5 rounded uppercase tracking-wider transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-400">Command Center</a>
                     {% endif %}
-
                     <form action="{% url 'logout' %}" method="POST" class="inline m-0">
                         {% csrf_token %}
-                        <button type="submit" class="text-purple-950 text-sm font-semibold px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:outline-none">
-                            Log Out
-                        </button>
+                        <button type="submit" class="text-purple-950 text-sm font-semibold px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:bg-red-600 hover:border-red-600 focus:text-white focus:bg-red-600 focus:outline-none">Log Out</button>
                     </form>
                 {% else %}
                     <a href="{% url 'login' %}" class="text-sm font-semibold text-purple-950 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-purple-800 hover:bg-purple-800 focus:text-white focus:bg-purple-800 focus:outline-none">Log In</a>
                     <a href="{% url 'register_user' %}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-md shadow-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-600">Sign Up</a>
                 {% endif %}
-                
+
                 <button onclick="quickEscape()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider px-4 py-2 rounded-xl shadow-md transition active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 ml-2" aria-label="Instantly leave page">EXIT</button>
             </div>
 
@@ -93,40 +303,38 @@
     </div>
 
     <div id="mobile-menu" class="hidden md:hidden bg-purple-50 px-4 pt-2 pb-4 space-y-2 border-t border-purple-200">
-    <a href="{% url 'landing' %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">Home</a>
-    {% if user.is_authenticated %}
-        {% if not user.is_staff %}
+        <a href="{% url 'landing' %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">Home</a>
+        {% if user.is_authenticated %}
+            {% if not user.is_staff %}
+                <a href="{% url 'file_report' %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">File Report</a>
+            {% endif %}
+        {% else %}
             <a href="{% url 'file_report' %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">File Report</a>
         {% endif %}
-    {% else %}
-        <a href="{% url 'file_report' %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">File Report</a>
-    {% endif %}
-    <a href="{% url 'track_case' %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">Track Report</a>
-    
-    {% if user.is_authenticated %}
-        <a href="{% if user.is_staff %}{% url 'department_portal' %}{% else %}{% url 'user_dashboard' %}{% endif %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">{% if user.is_staff %}Reports{% else %}My Dashboard{% endif %}</a>
-        
-        {% if user.is_staff %}
-            <a href="{% url 'department_portal' %}" class="block text-sm text-purple-800 font-bold py-2 px-3 rounded-lg hover:bg-purple-600 hover:text-white">Department Portal</a>
+        <a href="{% url 'track_case' %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">Track Report</a>
+        {% if user.is_authenticated %}
+            <a href="{% if user.is_staff %}{% url 'department_portal' %}{% else %}{% url 'user_dashboard' %}{% endif %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">{% if user.is_staff %}Reports{% else %}My Dashboard{% endif %}</a>
+            {% if user.is_staff %}
+                <a href="{% url 'department_portal' %}" class="block text-sm text-purple-800 font-bold py-2 px-3 rounded-lg hover:bg-purple-600 hover:text-white">Department Portal</a>
+            {% endif %}
+            <form action="{% url 'logout' %}" method="POST" class="block py-2">
+                {% csrf_token %}
+                <button type="submit" class="text-red-700 text-sm font-semibold px-3 py-2 rounded-lg hover:bg-red-600 hover:text-white">Log Out</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">Log In</a>
+            <a href="{% url 'register_user' %}" class="block bg-purple-600 text-white text-center py-2 rounded-xl text-sm font-semibold mt-2 hover:bg-purple-700">Sign Up</a>
         {% endif %}
-        
-        <form action="{% url 'logout' %}" method="POST" class="block py-2">
-            {% csrf_token %}
-            <button type="submit" class="text-red-700 text-sm font-semibold px-3 py-2 rounded-lg hover:bg-red-600 hover:text-white">Log Out</button>
-        </form>
-    {% else %}
-        <a href="{% url 'login' %}" class="block text-sm font-semibold text-purple-950 py-2 px-3 rounded-lg hover:bg-purple-800 hover:text-white">Log In</a>
-        <a href="{% url 'register_user' %}" class="block bg-purple-600 text-white text-center py-2 rounded-xl text-sm font-semibold mt-2 hover:bg-purple-700">Sign Up</a>
-    {% endif %}
-    
-    <button onclick="quickEscape()" class="w-full bg-red-600 text-white text-center py-2 rounded-xl text-xs font-bold uppercase tracking-wider mt-2">EXIT</button>
-</div>
+        <button onclick="quickEscape()" class="w-full bg-red-600 text-white text-center py-2 rounded-xl text-xs font-bold uppercase tracking-wider mt-2">EXIT</button>
+        <button onclick="toggleA11ySidebar()" class="w-full bg-purple-700 text-white text-center py-2 rounded-xl text-xs font-bold uppercase tracking-wider mt-1">♿ Accessibility</button>
+    </div>
 </nav>
 
     <main class="flex-grow focus:outline-none" id="main-content" tabindex="-1">
         {% block content %}{% endblock %}
     </main>
 
+    <!-- AI Chat Widget -->
     <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end space-y-4">
         <div id="chat-window-box" class="hidden w-80 sm:w-96 h-[450px] bg-purple-50/95 backdrop-blur-md rounded-2xl shadow-2xl shadow-purple-300/40 border border-purple-200 flex flex-col overflow-hidden transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right mb-2">
             <div class="bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400 text-white p-4 flex justify-between items-center shadow-md shadow-purple-200/70">
@@ -137,11 +345,10 @@
                         <p class="text-[10px] text-purple-100">Confidential, encrypted assistance</p>
                     </div>
                 </div>
-                <button onclick="toggleChatWindow()" class="text-purple-100 hover:text-white transition focus:outline-none p-1 rounded hover:bg-white/20" aria-label="Close Help Chat Dialog Overlay">
+                <button onclick="toggleChatWindow()" class="text-purple-100 hover:text-white transition focus:outline-none p-1 rounded hover:bg-white/20" aria-label="Close chat">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-
             <div id="chat-messages-scroll" class="flex-grow p-4 overflow-y-auto space-y-3 bg-purple-100/60 text-xs leading-relaxed">
                 <div class="flex flex-col items-start space-y-1 max-w-[85%]">
                     <div class="bg-white border border-purple-200 text-purple-950 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-purple-100/60">
@@ -150,16 +357,15 @@
                     <span class="text-[9px] text-gray-400 px-1 font-mono">System • Just Now</span>
                 </div>
             </div>
-
             <form id="chat-submission-form" onsubmit="sendChatMessage(event)" class="p-3 bg-purple-50 border-t border-purple-200 flex items-center space-x-2">
                 <input type="text" id="chat-input-field" placeholder="Ask a question or type a topic..." autocomplete="off" required class="flex-grow p-2.5 bg-white border border-purple-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white transition">
-                <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white p-2.5 rounded-xl shadow transition shrink-0 focus:outline-none focus:ring-2 focus:ring-purple-400" aria-label="Transmit Message Data String">
+                <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white p-2.5 rounded-xl shadow transition shrink-0 focus:outline-none focus:ring-2 focus:ring-purple-400" aria-label="Send message">
                     <svg class="w-4 h-4 transform rotate-90" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </button>
             </form>
         </div>
 
-        <button id="chat-toggle-btn" onclick="toggleChatWindow()" class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold px-5 py-3 rounded-full shadow-2xl shadow-purple-300/60 flex items-center space-x-2 transition transform hover:-translate-y-0.5 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500" aria-label="Toggle live safety help chat interface window box overlay">
+        <button id="chat-toggle-btn" onclick="toggleChatWindow()" class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold px-5 py-3 rounded-full shadow-2xl shadow-purple-300/60 flex items-center space-x-2 transition transform hover:-translate-y-0.5 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500" aria-label="Open AI Help Chat">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
             <span class="text-sm font-black tracking-wide hidden sm:inline">AI Help Assistant</span>
         </button>
@@ -170,12 +376,10 @@
             <div class="text-center">
                 <p class="text-sm font-semibold text-purple-900 mb-6 uppercase tracking-widest">Connect With Us</p>
                 <div class="flex space-x-8 text-2xl">
-                    <a href="https://wa.me/254108383799" target="_blank" class="hover:text-green-400 transition-all hover:scale-110">
-                    <i class="fab fa-whatsapp"></i>
-                    </a>
-                    <a href="#" target="_blank" class="hover:text-blue-500 transition-all hover:scale-110"><i class="fab fa-facebook"></i></a>
-                    <a href="#" target="_blank" class="hover:text-pink-500 transition-all hover:scale-110"><i class="fab fa-instagram"></i></a>
-                    <a href="#" target="_blank" class="hover:text-sky-400 transition-all hover:scale-110"><i class="fab fa-twitter"></i></a>
+                    <a href="https://wa.me/254108383799" target="_blank" rel="noopener" class="hover:text-green-400 transition-all hover:scale-110" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" target="_blank" rel="noopener" class="hover:text-blue-500 transition-all hover:scale-110" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" target="_blank" rel="noopener" class="hover:text-pink-500 transition-all hover:scale-110" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank" rel="noopener" class="hover:text-sky-400 transition-all hover:scale-110" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
             <div class="w-full border-t border-purple-200 pt-8 text-center text-xs sm:text-sm">
@@ -185,119 +389,508 @@
         </div>
     </footer>
 
-    <script>
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
+</div><!-- END #page-content-wrapper -->
 
-        function quickEscape() {
-            window.location.replace("https://www.google.com/search?q=weather");
-        }
-        
-        window.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') { quickEscape(); }
-        });
+<script>
+/* ================================================================
+   ACCESSIBILITY SIDEBAR
+   ================================================================ */
 
-        function toggleChatWindow() {
-            const box = document.getElementById('chat-window-box');
-            if(box.classList.contains('hidden')) {
-                box.classList.remove('hidden');
-                setTimeout(() => {
-                    box.classList.remove('scale-95', 'opacity-0');
-                    box.classList.add('scale-100', 'opacity-100');
-                }, 10);
+function toggleA11ySidebar() {
+    const sidebar = document.getElementById('accessibility-sidebar');
+    const toggleBtn = document.getElementById('a11y-toggle-btn');
+    const isOpen = sidebar.classList.contains('open');
+
+    if (isOpen) {
+        sidebar.classList.remove('open');
+        document.body.classList.remove('sidebar-open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.setAttribute('aria-label', 'Open Accessibility Panel');
+    } else {
+        sidebar.classList.add('open');
+        document.body.classList.add('sidebar-open');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+        toggleBtn.setAttribute('aria-label', 'Close Accessibility Panel');
+    }
+}
+
+function closeA11ySidebar() {
+    document.getElementById('accessibility-sidebar').classList.remove('open');
+    document.body.classList.remove('sidebar-open');
+    document.getElementById('a11y-toggle-btn').setAttribute('aria-expanded', 'false');
+}
+
+/* ================================================================
+   DARK MODE
+   ================================================================ */
+function applyDarkMode(enabled) {
+    document.body.classList.toggle('dark-mode', enabled);
+    localStorage.setItem('a11y-dark', enabled ? '1' : '0');
+}
+
+/* ================================================================
+   HIGH CONTRAST
+   ================================================================ */
+function applyHighContrast(enabled) {
+    document.body.classList.toggle('high-contrast', enabled);
+    localStorage.setItem('a11y-contrast', enabled ? '1' : '0');
+}
+
+/* ================================================================
+   FONT SCALING — targets <html> so every rem unit scales system-wide
+   ================================================================ */
+function setFontSize(size) {
+    // Apply to <html> element so all rem-based values cascade
+    document.documentElement.classList.remove('font-sm', 'font-md', 'font-lg', 'font-xl');
+    document.documentElement.classList.add('font-' + size);
+    localStorage.setItem('a11y-font', size);
+    // Update active button highlight
+    ['sm','md','lg','xl'].forEach(s => {
+        const btn = document.getElementById('fs-' + s);
+        if (btn) btn.classList.toggle('active', s === size);
+    });
+}
+
+/* ================================================================
+   FONT FAMILY — switch readable typefaces system-wide
+   ================================================================ */
+function setFontFamily(family) {
+    document.documentElement.classList.remove('ff-inter', 'ff-opensans', 'ff-lexend', 'ff-serif');
+    document.documentElement.classList.add('ff-' + family);
+    localStorage.setItem('a11y-family', family);
+    // Update active button highlight
+    ['inter','opensans','lexend','serif'].forEach(f => {
+        const btn = document.getElementById('ff-' + f);
+        if (btn) btn.classList.toggle('active', f === family);
+    });
+}
+
+/* ================================================================
+   REDUCE MOTION
+   ================================================================ */
+function applyReduceMotion(enabled) {
+    if (enabled) {
+        document.head.insertAdjacentHTML('beforeend',
+            '<style id="reduce-motion-style">*{animation:none!important;transition:none!important;}</style>');
+    } else {
+        const el = document.getElementById('reduce-motion-style');
+        if (el) el.remove();
+    }
+    localStorage.setItem('a11y-motion', enabled ? '1' : '0');
+}
+
+/* ================================================================
+   RESET ALL
+   ================================================================ */
+function resetAllSettings() {
+    applyDarkMode(false);
+    applyHighContrast(false);
+    setFontSize('md');
+    setFontFamily('inter');
+    applyReduceMotion(false);
+    document.getElementById('toggle-dark').checked = false;
+    document.getElementById('toggle-contrast').checked = false;
+    document.getElementById('toggle-motion').checked = false;
+    const voiceToggle = document.getElementById('toggle-voice');
+    if (voiceToggle && voiceToggle.checked) {
+        stopVoiceAssistant();
+        voiceToggle.checked = false;
+    }
+    ['dark','contrast','font','family','motion'].forEach(k => localStorage.removeItem('a11y-' + k));
+    speakToUser('All accessibility settings have been reset.');
+}
+
+/* ================================================================
+   RESTORE SAVED PREFERENCES ON LOAD
+   ================================================================ */
+document.addEventListener('DOMContentLoaded', function() {
+    const dark    = localStorage.getItem('a11y-dark')    === '1';
+    const contrast= localStorage.getItem('a11y-contrast')=== '1';
+    const font    = localStorage.getItem('a11y-font')    || 'md';
+    const family  = localStorage.getItem('a11y-family')  || 'inter';
+    const motion  = localStorage.getItem('a11y-motion')  === '1';
+
+    if (dark)    { applyDarkMode(true);    document.getElementById('toggle-dark').checked     = true; }
+    if (contrast){ applyHighContrast(true);document.getElementById('toggle-contrast').checked  = true; }
+    setFontSize(font);
+    setFontFamily(family);
+    if (motion)  { applyReduceMotion(true);document.getElementById('toggle-motion').checked    = true; }
+});
+
+/* ================================================================
+   KEYBOARD SHORTCUTS
+   ================================================================ */
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { quickEscape(); return; }
+    if (e.altKey && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        toggleA11ySidebar();
+    }
+    if (e.altKey && e.key.toLowerCase() === 'v') {
+        e.preventDefault();
+        const tog = document.getElementById('toggle-voice');
+        tog.checked = !tog.checked;
+        toggleVoiceAssistant(tog.checked);
+    }
+    if (e.altKey && e.key.toLowerCase() === 'r') {
+        e.preventDefault();
+        window.location.href = "{% url 'file_report' %}";
+    }
+});
+
+/* ================================================================
+   VOICE ASSISTANT — Web Speech API
+   ================================================================ */
+let voiceRecognition = null;
+let voiceActive = false;
+
+function speakToUser(text) {
+    if ('speechSynthesis' in window) {
+        speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = 'en-US';
+        utt.rate = 0.95;
+        utt.pitch = 1.05;
+        speechSynthesis.speak(utt);
+    }
+}
+
+function speakPageContent() {
+    const main = document.getElementById('main-content');
+    if (main) {
+        const text = main.innerText.replace(/\s+/g, ' ').trim().substring(0, 3000);
+        speakToUser(text);
+    }
+}
+
+function toggleVoiceAssistant(on) {
+    if (on) {
+        startVoiceAssistant();
+    } else {
+        stopVoiceAssistant();
+    }
+}
+
+function startVoiceAssistant() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        speakToUser('Sorry, your browser does not support voice control. Please try Chrome or Edge.');
+        alert('Voice control requires Chrome or Edge browser.');
+        const tog = document.getElementById('toggle-voice');
+        if (tog) tog.checked = false;
+        return;
+    }
+
+    voiceRecognition = new SpeechRecognition();
+    voiceRecognition.lang = 'en-US';
+    voiceRecognition.continuous = true;
+    voiceRecognition.interimResults = true;
+    voiceActive = true;
+
+    const statusBar = document.getElementById('voice-status-bar');
+    const statusText = document.getElementById('voice-status-text');
+    const transcript = document.getElementById('voice-transcript-live');
+    statusBar.classList.add('listening');
+    statusText.textContent = 'Voice Assistant Active — say a command';
+    speakToUser('Voice assistant is now active. Say a command like go to report, go home, or read page.');
+
+    voiceRecognition.onresult = function(event) {
+        let interimText = '';
+        let finalText = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+            const res = event.results[i];
+            if (res.isFinal) {
+                finalText += res[0].transcript;
             } else {
-                box.classList.remove('scale-100', 'opacity-100');
-                box.classList.add('scale-95', 'opacity-0');
-                setTimeout(() => box.classList.add('hidden'), 300);
+                interimText += res[0].transcript;
             }
         }
+        transcript.textContent = '"' + (interimText || finalText) + '"';
+        if (finalText) {
+            processVoiceCommand(finalText.toLowerCase().trim());
+        }
+    };
 
-        function sendChatMessage(event) {
-            event.preventDefault();
-            const input = document.getElementById('chat-input-field');
-            const scrollArea = document.getElementById('chat-messages-scroll');
-            const messageText = input.value.trim();
-            
-            if(!messageText) return;
+    voiceRecognition.onerror = function(event) {
+        if (event.error !== 'no-speech') {
+            statusText.textContent = 'Error: ' + event.error + '. Restarting...';
+            setTimeout(() => {
+                if (voiceActive) voiceRecognition.start();
+            }, 1500);
+        }
+    };
 
-            const userBubble = document.createElement('div');
-            userBubble.className = "flex flex-col items-end space-y-1 max-w-[85%] ml-auto";
-            userBubble.innerHTML = `
-                <div class="bg-purple-600 text-white p-3 rounded-2xl rounded-tr-none shadow-md shadow-purple-200 font-medium">
-                    ${escapeHtml(messageText)}
-                </div>
-                <span class="text-[9px] text-gray-400 px-1 font-mono">You • Just Now</span>
-            `;
-            scrollArea.appendChild(userBubble);
-            input.value = '';
-            scrollArea.scrollTop = scrollArea.scrollHeight;
+    voiceRecognition.onend = function() {
+        if (voiceActive) {
+            setTimeout(() => voiceRecognition.start(), 500);
+        }
+    };
 
-            // Typing indicator
-            const typingIndicator = document.createElement('div');
-            typingIndicator.id = "typing-indicator";
-            typingIndicator.className = "flex flex-col items-start space-y-1 max-w-[85%]";
-            typingIndicator.innerHTML = `
-                <div class="bg-white border border-purple-200 text-purple-400 p-3 rounded-2xl rounded-tl-none shadow-sm italic animate-pulse">
-                    SafeSpace is typing...
-                </div>
-            `;
-            scrollArea.appendChild(typingIndicator);
-            scrollArea.scrollTop = scrollArea.scrollHeight;
+    voiceRecognition.start();
+}
 
-            fetch("{% url 'ai_assistant_chat' %}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": "{{ csrf_token }}"
-                },
-                body: JSON.stringify({ message: messageText })
-            })
-            .then(response => {
-                const indicator = document.getElementById('typing-indicator');
-                if (indicator) indicator.remove();
-                if (!response.ok) throw new Error('Network timeout or error');
-                return response.json();
-            })
-            .then(data => {
-                const botReply = data.reply || "I am here, but I could not understand that response. Please try again.";
-                const botBubble = document.createElement('div');
-                botBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
-                botBubble.innerHTML = `
-                    <div class="bg-white border border-purple-200 text-purple-950 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-purple-100/60">
-                        ${escapeHtml(botReply)}
-                    </div>
-                    <span class="text-[9px] text-gray-400 px-1 font-mono">System • Agent Active</span>
-                `;
-                scrollArea.appendChild(botBubble);
-                scrollArea.scrollTop = scrollArea.scrollHeight;
-            })
-            .catch(error => {
-                const indicator = document.getElementById('typing-indicator');
-                if (indicator) indicator.remove();
-                const errorBubble = document.createElement('div');
-                errorBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
-                errorBubble.innerHTML = `
-                    <div class="bg-red-50 border border-red-100 text-red-800 p-3 rounded-2xl rounded-tl-none shadow-sm">
-                        The connection timed out or encountered an error. Please try again in a moment.
-                    </div>
-                    <span class="text-[9px] text-gray-400 px-1 font-mono">System • Connection Error</span>
-                `;
-                scrollArea.appendChild(errorBubble);
-                scrollArea.scrollTop = scrollArea.scrollHeight;
-            });
+function stopVoiceAssistant() {
+    voiceActive = false;
+    if (voiceRecognition) {
+        voiceRecognition.stop();
+        voiceRecognition = null;
+    }
+    const statusBar = document.getElementById('voice-status-bar');
+    statusBar.classList.remove('listening');
+    const tog = document.getElementById('toggle-voice');
+    if (tog) tog.checked = false;
+    speakToUser('Voice assistant stopped.');
+}
+
+function processVoiceCommand(cmd) {
+    const statusText = document.getElementById('voice-status-text');
+    const announce = (msg) => {
+        statusText.textContent = '✔ ' + msg;
+        speakToUser(msg);
+        setTimeout(() => { statusText.textContent = 'Listening... say a command'; }, 3000);
+    };
+
+    // Navigation commands
+    if (cmd.includes('go home') || cmd.includes('go to home') || cmd.includes('home page')) {
+        announce('Going home.');
+        setTimeout(() => window.location.href = "{% url 'landing' %}", 1200);
+
+    } else if (cmd.includes('file a report') || cmd.includes('go to report') || cmd.includes('report') || cmd.includes('file report')) {
+        announce('Opening the report form.');
+        setTimeout(() => window.location.href = "{% url 'file_report' %}", 1200);
+
+    } else if (cmd.includes('track') || cmd.includes('track case') || cmd.includes('track report') || cmd.includes('track my case')) {
+        announce('Opening case tracker.');
+        setTimeout(() => window.location.href = "{% url 'track_case' %}", 1200);
+
+    } else if (cmd.includes('dashboard') || cmd.includes('my dashboard')) {
+        {% if user.is_authenticated %}
+        announce('Going to dashboard.');
+        setTimeout(() => window.location.href = "{% if user.is_staff %}{% url 'department_portal' %}{% else %}{% url 'user_dashboard' %}{% endif %}", 1200);
+        {% else %}
+        announce('Please log in first.');
+        {% endif %}
+
+    } else if (cmd.includes('log in') || cmd.includes('login') || cmd.includes('sign in')) {
+        announce('Going to login.');
+        setTimeout(() => window.location.href = "{% url 'login' %}", 1200);
+
+    } else if (cmd.includes('register') || cmd.includes('sign up') || cmd.includes('create account')) {
+        announce('Going to registration.');
+        setTimeout(() => window.location.href = "{% url 'register_user' %}", 1200);
+
+    // Page reading
+    } else if (cmd.includes('read page') || cmd.includes('read the page') || cmd.includes('read this page')) {
+        announce('Reading page content.');
+        speakPageContent();
+
+    } else if (cmd.includes('stop reading') || cmd.includes('stop') && cmd.includes('read')) {
+        speechSynthesis.cancel();
+        announce('Stopped reading.');
+
+    // Accessibility toggles
+    } else if (cmd.includes('dark mode') || cmd.includes('turn on dark') || cmd.includes('enable dark')) {
+        const tog = document.getElementById('toggle-dark');
+        tog.checked = true;
+        applyDarkMode(true);
+        announce('Dark mode enabled.');
+
+    } else if (cmd.includes('light mode') || cmd.includes('turn off dark') || cmd.includes('disable dark')) {
+        const tog = document.getElementById('toggle-dark');
+        tog.checked = false;
+        applyDarkMode(false);
+        announce('Light mode enabled.');
+
+    } else if (cmd.includes('high contrast') || cmd.includes('contrast mode')) {
+        const tog = document.getElementById('toggle-contrast');
+        const newState = !tog.checked;
+        tog.checked = newState;
+        applyHighContrast(newState);
+        announce(newState ? 'High contrast enabled.' : 'High contrast disabled.');
+
+    } else if (cmd.includes('larger text') || cmd.includes('increase text') || cmd.includes('bigger text') || cmd.includes('zoom in')) {
+        const sizes = ['sm','md','lg','xl'];
+        const cur = ['font-sm','font-md','font-lg','font-xl'].findIndex(c => document.body.classList.contains(c));
+        const next = Math.min(cur + 1, 3);
+        setFontSize(sizes[next]);
+        announce('Text size increased.');
+
+    } else if (cmd.includes('smaller text') || cmd.includes('decrease text') || cmd.includes('zoom out')) {
+        const sizes = ['sm','md','lg','xl'];
+        const cur = ['font-sm','font-md','font-lg','font-xl'].findIndex(c => document.body.classList.contains(c));
+        const prev = Math.max(cur - 1, 0);
+        setFontSize(sizes[prev]);
+        announce('Text size decreased.');
+
+    // Form interaction on file report page
+    } else if (cmd.includes('next step') || cmd.includes('go to next step') || cmd.includes('next')) {
+        const btn = document.getElementById('next-step-btn');
+        if (btn) { btn.click(); announce('Going to next step.'); }
+        else announce('No next step button found on this page.');
+
+    } else if (cmd.includes('go back') || cmd.includes('previous step') || cmd.includes('back')) {
+        const btn = document.getElementById('back-step-btn');
+        if (btn && !btn.classList.contains('invisible')) { btn.click(); announce('Going back.'); }
+        else announce('Cannot go back from here.');
+
+    } else if (cmd.includes('submit') || cmd.includes('submit form') || cmd.includes('send report') || cmd.includes('finish')) {
+        const form = document.getElementById('report-form-start');
+        if (form) {
+            announce('Submitting your report now.');
+            setTimeout(() => form.submit(), 1500);
+        } else {
+            announce('No report form found on this page. Go to File Report first.');
         }
 
-        function escapeHtml(string) {
-            return string.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
+    } else if (cmd.includes('open accessibility') || cmd.includes('accessibility menu') || cmd.includes('settings')) {
+        toggleA11ySidebar();
+        announce('Accessibility panel opened.');
 
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('mobile-menu').classList.add('hidden');
-            });
-        });
-    </script>
+    } else if (cmd.includes('close accessibility') || cmd.includes('close panel') || cmd.includes('close sidebar')) {
+        closeA11ySidebar();
+        announce('Panel closed.');
+
+    } else if (cmd.includes('open chat') || cmd.includes('chat') || cmd.includes('help chat')) {
+        const box = document.getElementById('chat-window-box');
+        if (box && box.classList.contains('hidden')) toggleChatWindow();
+        announce('Opening help chat.');
+
+    } else if (cmd.includes('scroll down') || cmd.includes('scroll up')) {
+        const dir = cmd.includes('up') ? -400 : 400;
+        window.scrollBy({ top: dir, behavior: 'smooth' });
+        announce(cmd.includes('up') ? 'Scrolled up.' : 'Scrolled down.');
+
+    } else if (cmd.includes('exit') || cmd.includes('leave') || cmd.includes('quick exit')) {
+        announce('Leaving now.');
+        setTimeout(quickEscape, 1500);
+
+    } else if (cmd.includes('stop voice') || cmd.includes('turn off voice') || cmd.includes('disable voice')) {
+        announce('Voice assistant stopping.');
+        setTimeout(stopVoiceAssistant, 1000);
+
+    } else {
+        statusText.textContent = '? Not understood: "' + cmd + '" — try "go to report" or "read page"';
+        setTimeout(() => { statusText.textContent = 'Listening... say a command'; }, 4000);
+    }
+}
+
+/* ================================================================
+   QUICK ESCAPE
+   ================================================================ */
+function quickEscape() {
+    window.location.replace("https://www.google.com/search?q=weather");
+}
+
+/* ================================================================
+   MOBILE MENU
+   ================================================================ */
+document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+document.querySelectorAll('#mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+    });
+});
+
+/* ================================================================
+   AI CHAT WINDOW TOGGLE
+   ================================================================ */
+function toggleChatWindow() {
+    const box = document.getElementById('chat-window-box');
+    if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        setTimeout(() => {
+            box.classList.remove('scale-95', 'opacity-0');
+            box.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    } else {
+        box.classList.remove('scale-100', 'opacity-100');
+        box.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => box.classList.add('hidden'), 300);
+    }
+}
+
+function sendChatMessage(event) {
+    event.preventDefault();
+    const input = document.getElementById('chat-input-field');
+    const scrollArea = document.getElementById('chat-messages-scroll');
+    const messageText = input.value.trim();
+    if (!messageText) return;
+
+    const userBubble = document.createElement('div');
+    userBubble.className = "flex flex-col items-end space-y-1 max-w-[85%] ml-auto";
+    userBubble.innerHTML = `
+        <div class="bg-purple-600 text-white p-3 rounded-2xl rounded-tr-none shadow-md shadow-purple-200 font-medium">
+            ${escapeHtml(messageText)}
+        </div>
+        <span class="text-[9px] text-gray-400 px-1 font-mono">You • Just Now</span>
+    `;
+    scrollArea.appendChild(userBubble);
+    input.value = '';
+    scrollArea.scrollTop = scrollArea.scrollHeight;
+
+    const typingIndicator = document.createElement('div');
+    typingIndicator.id = "typing-indicator";
+    typingIndicator.className = "flex flex-col items-start space-y-1 max-w-[85%]";
+    typingIndicator.innerHTML = `
+        <div class="bg-white border border-purple-200 text-purple-400 p-3 rounded-2xl rounded-tl-none shadow-sm italic animate-pulse">
+            SafeSpace is typing...
+        </div>
+    `;
+    scrollArea.appendChild(typingIndicator);
+    scrollArea.scrollTop = scrollArea.scrollHeight;
+
+    fetch("{% url 'ai_assistant_chat' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({ message: messageText })
+    })
+    .then(response => {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+        if (!response.ok) throw new Error('Network error');
+        return response.json();
+    })
+    .then(data => {
+        const botReply = data.reply || "I am here, but I could not understand that response. Please try again.";
+        const botBubble = document.createElement('div');
+        botBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
+        botBubble.innerHTML = `
+            <div class="bg-white border border-purple-200 text-purple-950 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-purple-100/60">
+                ${escapeHtml(botReply)}
+            </div>
+            <span class="text-[9px] text-gray-400 px-1 font-mono">System • Agent Active</span>
+        `;
+        scrollArea.appendChild(botBubble);
+        scrollArea.scrollTop = scrollArea.scrollHeight;
+    })
+    .catch(() => {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) indicator.remove();
+        const errorBubble = document.createElement('div');
+        errorBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
+        errorBubble.innerHTML = `
+            <div class="bg-red-50 border border-red-100 text-red-800 p-3 rounded-2xl rounded-tl-none shadow-sm">
+                Connection error. Please try again.
+            </div>
+            <span class="text-[9px] text-gray-400 px-1 font-mono">System • Connection Error</span>
+        `;
+        scrollArea.appendChild(errorBubble);
+        scrollArea.scrollTop = scrollArea.scrollHeight;
+    });
+}
+
+function escapeHtml(string) {
+    return string.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+</script>
+
+{% block extra_js %}{% endblock %}
+
 </body>
 </html>
