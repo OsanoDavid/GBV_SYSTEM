@@ -4,492 +4,669 @@
 {% block title %}File Secure Report | SafeSpace{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto px-4 py-12">
+<!-- HEADER: Top Bar with Guest Mode Active Badge -->
+<div class="max-w-7xl mx-auto px-4 mt-6">
+    <div class="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-between p-2.5 text-purple-700">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-sm font-black text-gray-900 tracking-tight">Anonymous Submission Node</h2>
+                <p class="text-xs text-gray-500">Your connection endpoints are completely masked via cryptographic routing.</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-[11px] font-black tracking-wider text-emerald-800 uppercase">Guest Mode Active</span>
+        </div>
+    </div>
+</div>
 
-    <div class="mb-6">
-        <a href="{% url 'landing' %}"
-            class="inline-flex items-center space-x-2 text-sm font-semibold text-purple-700 hover:text-purple-900 transition focus:outline-none focus:underline">
-            <span>←</span> <span>Back to Home Screen</span>
-        </a>
+<!-- Main Grid Workspace Grid Container Layout -->
+<div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+    
+    <!-- LEFT SIDEBAR: Interactive Form Tree Progress Tracker -->
+    <div class="lg:col-span-1 lg:sticky lg:top-6 self-start">
+        <div class="bg-gradient-to-b from-white to-gray-50 rounded-2xl p-5 border border-gray-200 shadow-md space-y-6">
+            <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest border-b pb-2">Report Progress</h2>
+            <nav class="space-y-4" id="sidebar-progress-nav">
+                
+                <!-- Section 1 -->
+                <div id="side-sec-1" class="step-group active-group">
+                    <div class="text-xs font-bold px-3 py-2 bg-blue-600 text-white rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm">
+                        <span>Personal Information</span>
+                        <span class="status-icon hidden">✓</span>
+                    </div>
+                    <ul class="mt-2 ml-4 space-y-2 border-l-2 border-gray-200 pl-3 text-[11px] font-medium transition-all">
+                        <li id="side-item-name" class="flex justify-between items-center text-red-500 font-bold"><span>Full Name</span><span class="indicator">*</span></li>
+                        <li id="side-item-gender" class="flex justify-between items-center text-red-500 font-bold"><span>Gender</span><span class="indicator">*</span></li>
+                        <li id="side-item-id" class="flex justify-between items-center text-red-500 font-bold"><span>ID / Passport</span><span class="indicator">*</span></li>
+                        <li id="side-item-age" class="flex justify-between items-center text-red-500 font-bold"><span>Age</span><span class="indicator">*</span></li>
+                        <li id="side-item-contact" class="flex justify-between items-center text-red-500 font-bold"><span>Contact Info</span><span class="indicator">*</span></li>
+                        <li id="side-item-disability" class="flex justify-between items-center text-red-500 font-bold"><span>Disability Status</span><span class="indicator">*</span></li>
+                    </ul>
+                </div>
+
+                <!-- Section 2 -->
+                <div id="side-sec-2" class="step-group">
+                    <div class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
+                        <span>Incident Details</span>
+                        <span class="status-icon hidden">✓</span>
+                    </div>
+                    <ul class="mt-2 ml-4 space-y-2 border-l-2 border-gray-200 pl-3 text-[11px] font-medium text-gray-400">
+                        <li id="side-item-category" class="flex justify-between items-center"><span>Type of abuse</span><span class="indicator text-red-400">*</span></li>
+                        <li id="side-item-platform" class="flex justify-between items-center"><span>Platform of Abuse</span><span class="indicator text-red-400">*</span></li>
+                        <li id="side-item-desc" class="flex justify-between items-center"><span>Description</span><span class="indicator text-gray-300"></span></li>
+                    </ul>
+                </div>
+
+                <!-- Section 3 -->
+                <div id="side-sec-3" class="step-group">
+                    <div class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
+                        <span>Evidence & Cases</span>
+                        <span class="status-icon hidden">✓</span>
+                    </div>
+                    <ul class="mt-2 ml-4 space-y-2 border-l-2 border-gray-100 pl-3 text-[11px] font-medium text-gray-400">
+                        <li id="side-item-consents" class="flex justify-between items-center"><span>System Consents</span><span class="indicator text-red-400">*</span></li>
+                    </ul>
+                </div>
+
+                <!-- Section 4 -->
+                <div id="side-sec-4" class="step-group">
+                    <div class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
+                        <span>Location details</span>
+                        <span class="status-icon hidden">✓</span>
+                    </div>
+                    <ul class="mt-2 ml-4 space-y-2 border-l-2 border-gray-100 pl-3 text-[11px] font-medium text-gray-400">
+                        <li id="side-item-county" class="flex justify-between items-center"><span>County</span><span class="indicator text-red-400">*</span></li>
+                        <li id="side-item-constituency" class="flex justify-between items-center"><span>Sub-County</span><span class="indicator text-red-400">*</span></li>
+                        <li id="side-item-ward" class="flex justify-between items-center"><span>Ward</span><span class="indicator text-red-400">*</span></li>
+                    </ul>
+                </div>
+
+                <!-- Section 5 -->
+                <div id="side-sec-5" class="step-group">
+                    <div class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
+                        <span>Final Submission package</span>
+                        <span class="status-icon hidden">✓</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
     </div>
 
-    <div class="bg-white/95 rounded-3xl shadow-2xl shadow-purple-200/50 border border-purple-200 overflow-hidden min-h-[580px] flex flex-col">
-
-        <div class="bg-gradient-to-r from-purple-500 via-purple-600 to-purple-400 text-white p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-                <h1 class="text-2xl font-bold tracking-tight">Secure Incident Reporting Portal</h1>
-                <p class="text-sm text-purple-100 mt-1">Your report will be processed with strict confidentiality
-                    metrics.</p>
-            </div>
-            <div class="shrink-0">
-                <span id="step-indicator-tag"
-                    class="bg-white/20 px-3 py-1.5 rounded-full font-mono text-xs font-bold border border-white/30 block text-center shadow-sm">
-                    Step 1 of 3
-                </span>
-            </div>
-        </div>
-
-        {% if not request.user.is_authenticated %}
-        <div id="guest-advisory-banner"
-            class="bg-purple-50 border-b border-purple-100 p-4 text-sm text-purple-950 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 transition-all duration-300">
-            <div class="space-y-1">
-                <span class="font-bold block text-xs sm:text-sm">Reporting Preference: Guest Mode Active</span>
-                <p class="text-[11px] sm:text-xs text-purple-800 leading-relaxed">You do not need an account to log this
-                    incident. If you want this case locked to a permanent dashboard profile instead, please register
-                    before submitting.</p>
-            </div>
-            <div class="flex space-x-3 shrink-0 items-center">
-                <a href="{% url 'register_user' %}"
-                    class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm shadow-purple-200 focus:outline-none">Register
-                    Account</a>
-                <span class="text-purple-300 font-light hidden sm:inline">|</span>
-                <a href="#report-form-start"
-                    class="bg-white hover:bg-purple-50 text-purple-900 font-bold text-xs px-3 py-2 rounded-xl border border-purple-200 transition text-center shadow-sm focus:outline-none">File
-                    as Guest ↓</a>
-            </div>
-        </div>
-        {% endif %}
-
-        {% if messages %}
-        {% for message in messages %}
-        <div
-            class="p-4 bg-red-50 border-b border-red-100 text-red-900 text-xs font-semibold flex items-center space-x-2">
-            <svg class="w-4 h-4 text-red-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <span>{{ message }}</span>
-        </div>
-        {% endfor %}
-        {% endif %}
-
-        <form id="report-form-start" method="POST" enctype="multipart/form-data"
-            class="flex-grow flex flex-col p-6 sm:p-8 justify-between space-y-8 bg-gradient-to-b from-white to-purple-50/70">
-            {% csrf_token %}
-            <input type="hidden" name="user_lat" id="user_lat">
-            <input type="hidden" name="user_lng" id="user_lng">
-
-            <div class="flex-grow">
-                <div id="wizard-step-1" class="space-y-6 transition-all duration-300">
-                    <div class="space-y-2">
-                        <label class="block text-sm font-black text-gray-900" for="id_reporter_type">1. Intake Filing
-                            Matrix Mode</label>
-                        <p class="text-xs text-gray-500 leading-normal">Are you reporting this technological tracking
-                            hazard for yourself or acting as a proxy representative?</p>
-                        <select id="id_reporter_type" name="reporter_type" onchange="evaluateProxyAlert()"
-                            class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-purple-500 transition outline-none font-medium text-gray-800">
-                            <option value="self">Reporting for Myself</option>
-                            <option value="victim_adult">Reporting on behalf of another Adult</option>
-                            <option value="child">Reporting on behalf of a Minor/Child</option>
-                        </select>
-                    </div>
-
-                    <div id="minor-safety-banner"
-                        class="hidden p-4 bg-purple-100 border border-purple-200 rounded-2xl flex items-start space-x-3 transition duration-300">
-                        <svg class="w-5 h-5 text-purple-600 shrink-0 mt-0.5" fill="none" stroke="currentColor"
-                            stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                        <div class="text-xs space-y-1">
-                            <p class="font-black text-purple-950">Minor Protection Escalation Active</p>
-                            <p class="text-purple-800 leading-relaxed font-medium">This pipeline entry will instantly be
-                                classified under high-severity protocol rules and safely filtered into child
-                                infrastructure protection systems (like Childline Kenya).</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                        <div class="space-y-1.5">
-                            <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
-                                for="id_gender">Gender Identity</label>
-                            <select id="id_gender" name="gender"
-                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none">
-                                <option value="P">Prefer not to say</option>
-                                <option value="M">Male</option>
-                                <option value="F">Female</option>
-                                <option value="NB">Non-Binary</option>
-                                <option value="O">Other</option>
-                            </select>
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
-                                for="id_age_group">Age Category</label>
-                            <select id="id_age_group" name="age_group" onchange="evaluateProxyAlert()"
-                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none"
-                                required>
-                                <option value="25-34">25 - 34 years</option>
-                                <option value="U18">Under 18 years</option>
-                                <option value="18-24">18 - 24 years</option>
-                                <option value="35-44">35 - 44 years</option>
-                                <option value="45+">45 years and above</option>
-                            </select>
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
-                                for="id_disability">Disability Attribute</label>
-                            <select id="id_disability" name="disability"
-                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none">
-                                <option value="none">No disability condition</option>
-                                <option value="visual">Visual impairment</option>
-                                <option value="hearing">Hearing impairment</option>
-                                <option value="mobility">Physical/Mobility impairment</option>
-                                <option value="cognitive">Cognitive/Intellectual impairment</option>
-                                <option value="other">Other constraint variants</option>
-                            </select>
-                        </div>
-                    </div>
+    <!-- RIGHT FORM WORKSPACE -->
+    <div class="lg:col-span-3">
+        <div class="bg-white rounded-3xl border border-gray-200 shadow-2xl overflow-hidden min-h-[580px] flex flex-col">
+            
+            <!-- Dashboard Accent Header Banner -->
+            <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900 text-white p-6 sm:p-8 flex justify-between items-center shadow-md">
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black tracking-tight">Secure Incident Reporting Portal</h1>
+                    <p class="text-xs text-purple-200/80 mt-1">Managed under strict identity cryptographic concealment guidelines.</p>
                 </div>
-
-                <div id="wizard-step-2" class="space-y-6 hidden transition-all duration-300">
-                    <div class="space-y-4">
-                        <label class="block text-sm font-black text-gray-900">2. Incident Category & Core Vector
-                            Mapping</label>
-                        <p class="text-xs text-gray-500">Identify the layout format mapping closest to the harassment
-                            experience:</p>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <label
-                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group">
-                                <input type="radio" name="incident_category" value="cyberstalking" checked
-                                    onclick="toggleOtherCategoryField(false)"
-                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
-                                <div class="text-xs">
-                                    <span class="font-bold text-gray-800 block">Cyberstalking & Tracking</span>
-                                    <span class="text-gray-400 text-[10px]">Unwarranted GPS tracking, spyware,
-                                        monitoring.</span>
-                                </div>
-                            </label>
-
-                            <label
-                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group">
-                                <input type="radio" name="incident_category" value="doxing"
-                                    onclick="toggleOtherCategoryField(false)"
-                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
-                                <div class="text-xs">
-                                    <span class="font-bold text-gray-800 block">Doxing & Data Leaks</span>
-                                    <span class="text-gray-400 text-[10px]">Publishing personally identifying profile
-                                        addresses.</span>
-                                </div>
-                            </label>
-
-                            <label
-                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group">
-                                <input type="radio" name="incident_category" value="impersonation"
-                                    onclick="toggleOtherCategoryField(false)"
-                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
-                                <div class="text-xs">
-                                    <span class="font-bold text-gray-800 block">Profile Impersonation</span>
-                                    <span class="text-gray-400 text-[10px]">Fake messaging indices using your images or
-                                        identity.</span>
-                                </div>
-                            </label>
-
-                            <label
-                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group">
-                                <input type="radio" name="incident_category" value="threats"
-                                    onclick="toggleOtherCategoryField(false)"
-                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
-                                <div class="text-xs">
-                                    <span class="font-bold text-gray-800 block">Targeted Hate Campaigns</span>
-                                    <span class="text-gray-400 text-[10px]">Harassment strings via coordinated swarm
-                                        accounts.</span>
-                                </div>
-                            </label>
-
-                            <label
-                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group sm:col-span-2"
-                                onclick="checkLocationTrigger(this)">
-                                <input type="radio" name="incident_category" value="children_home_support"
-                                    onclick="toggleOtherCategoryField(false)"
-                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
-                                <div class="text-xs">
-                                    <span class="font-bold text-gray-800 block">Children's Home Support</span>
-                                    <span class="text-gray-400 text-[10px]">Find nearest emergency
-                                        protection/shelter.</span>
-                                </div>
-                            </label>
-
-                            <label
-                                class="p-4 bg-white border border-purple-200 rounded-2xl flex items-center space-x-3 cursor-pointer hover:bg-purple-50 hover:border-purple-400 transition group sm:col-span-2">
-                                <input type="radio" name="incident_category" value="other" id="cat-other-radio"
-                                    onclick="toggleOtherCategoryField(true)"
-                                    class="text-purple-600 focus:ring-purple-500 w-4 h-4">
-                                <div class="text-xs">
-                                    <span class="font-bold text-gray-800 block">Other / Not Listed Above</span>
-                                    <span class="text-gray-400 text-[10px]">Specify your precise technical
-                                        classification below.</span>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div id="custom-category-wrapper" class="hidden space-y-1.5">
-                            <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
-                                for="id_custom_category">Specify Incident Type</label>
-                            <input type="text" id="id_custom_category" name="custom_category"
-                                placeholder="e.g., Cyber blackmail, Online scamming"
-                                class="w-full p-3 bg-white border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:ring-2 focus:ring-purple-500 outline-none">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                        <div class="space-y-1.5">
-                            <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
-                                for="id_incident_date">Date of Incident</label>
-                            <input type="date" id="id_incident_date" name="incident_date"
-                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none">
-                        </div>
-                        <div class="space-y-1.5">
-                            <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
-                                for="id_platform_used">Platform Vector Link</label>
-                            <input type="text" id="id_platform_used" name="platform_used" list="platform-suggestions"
-                                placeholder="Type or select a platform..."
-                                class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs font-medium text-gray-700 focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none">
-                            <datalist id="platform-suggestions">
-                                <option value="WhatsApp"></option>
-                                <option value="Facebook"></option>
-                                <option value="Instagram"></option>
-                                <option value="X (Twitter)"></option>
-                                <option value="TikTok"></option>
-                                <option value="Telegram"></option>
-                                <option value="Email"></option>
-                                <option value="SMS Message"></option>
-                            </datalist>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="wizard-step-3" class="space-y-6 hidden transition-all duration-300">
-                    <div class="space-y-2">
-                        <label class="block text-sm font-black text-gray-900" for="id_description">3. Comprehensive
-                            Narrative Accounts</label>
-                        <p class="text-xs text-gray-500">Provide logs, system interactions, context notes, and event
-                            chronological milestones safely below:</p>
-                        <textarea id="id_description" name="description" rows="4"
-                            placeholder="Please reconstruct event metrics cleanly here..."
-                            class="w-full p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none resize-none"></textarea>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="block text-xs font-bold text-gray-700 tracking-wide uppercase"
-                            for="id_evidence_attachment">Secure Evidence Encrypted Uploads</label>
-                        <input type="file" id="id_evidence_attachment" name="evidence_attachment"
-                            class="w-full p-2.5 bg-purple-50 border border-dashed border-purple-300 rounded-xl text-xs text-gray-500 cursor-pointer file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 focus:outline-none">
-                    </div>
-
-                    <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 space-y-4">
-                        <div class="flex items-center">
-                            <label class="text-xs font-bold text-gray-700 flex items-center cursor-pointer select-none"
-                                for="id_allow_contact">
-                                <input type="checkbox" id="id_allow_contact" name="allow_contact"
-                                    onchange="toggleContactLayoutStack()"
-                                    class="rounded text-purple-600 focus:ring-purple-500 w-4 h-4 mr-2.5">
-                                Include alternative authentication contacts (Leave empty to keep report fully anonymous)
-                            </label>
-                        </div>
-
-                        <div id="identity-input-fields" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                            <div class="space-y-1">
-                                <label class="block text-[11px] font-bold text-gray-600 uppercase"
-                                    for="id_reporter_name">Your Name</label>
-                                <input type="text" id="id_reporter_name" name="reporter_name"
-                                    placeholder="Optional handle"
-                                    class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-[11px] font-bold text-gray-600 uppercase"
-                                    for="id_reporter_email">Safe Email</label>
-                                <input type="email" id="id_reporter_email" name="reporter_email"
-                                    placeholder="Optional secure mail"
-                                    class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
-                            </div>
-                            <div class="space-y-1">
-                                <label class="block text-[11px] font-bold text-gray-600 uppercase"
-                                    for="id_reporter_phone">Phone String</label>
-                                <input type="text" id="id_reporter_phone" name="reporter_phone"
-                                    placeholder="Optional phone/sms alerts"
-                                    class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
-                            </div>
-                        </div>
-                    </div>
+                <div class="shrink-0">
+                    <span id="step-indicator-tag" class="bg-white/10 px-3 py-1.5 rounded-xl font-mono text-xs font-bold border border-white/20">
+                        Step 1 of 5
+                    </span>
                 </div>
             </div>
 
-            <div class="pt-6 border-t border-purple-100 flex justify-between items-center bg-transparent">
-                <button type="button" id="back-step-btn" onclick="stepWizardNavigationEngine(-1)"
-                    class="invisible px-5 py-2.5 bg-purple-100 hover:bg-purple-200 text-purple-900 font-bold text-xs rounded-xl transition focus:outline-none focus:ring-2 focus:ring-purple-300">
-                    Back
-                </button>
-                <button type="button" id="next-step-btn" onclick="stepWizardNavigationEngine(1)"
-                    class="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow shadow-purple-200 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                    Next Step
-                </button>
-            </div>
-        </form>
+            <form id="report-form-start" method="POST" enctype="multipart/form-data" class="flex-grow flex flex-col p-6 sm:p-8 justify-between space-y-8">
+                {% csrf_token %}
+                
+                <div class="flex-grow">
+                    
+                    <!-- STEP 1: PERSONAL INFORMATION -->
+                    <div id="wizard-step-1" class="space-y-6 transition-all duration-300">
+                        <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-4">
+                            <h3 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-purple-600"></span>Identity Metrics
+                            </h3>
+                            
+                            <!-- Full Name Input -->
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-700 uppercase" for="id_reporter_name">Full Name</label>
+                                <input type="text" id="id_reporter_name" name="reporter_name" oninput="validateLiveFields()" placeholder="Enter your complete legal name" class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none transition">
+                            </div>
+
+                            <!-- Gender & ID Dynamic Toggle Subsections -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-gray-700 uppercase">Gender Identity</label>
+                                    <select id="id_gender" name="gender" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Non-Binary">Non-Binary</option>
+                                        <option value="Secret">Prefer not to say</option>
+                                    </select>
+                                </div>
+
+                                <!-- Mini Button Selection: Identification Type -->
+                                <div class="space-y-1.5 flex flex-col justify-end">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="text-xs font-bold text-gray-700 uppercase" id="id_string_label">National ID Number</label>
+                                        <div class="inline-flex gap-1 bg-gray-200/60 p-0.5 rounded-lg border border-gray-300">
+                                            <button type="button" id="btn-id-nat" onclick="setIdentityType('National ID')" class="px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200">ID</button>
+                                            <button type="button" id="btn-id-pass" onclick="setIdentityType('Passport')" class="px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900">Passport</button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="id_type" name="id_type" value="National ID">
+                                    <input type="text" id="id_national_id_number" name="national_id_number" oninput="validateLiveFields()" placeholder="Enter your 8-digit National ID" class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
+                                </div>
+                            </div>
+
+                            <!-- Age Group & Dynamic Contact Selector Group -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-gray-700 uppercase">Age Bracket</label>
+                                    <select id="id_age_group" name="age_group" onchange="validateLiveFields();" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                        <option value="">Select Age Group</option>
+                                        <option value="18-24">18 - 24 years</option>
+                                        <option value="25-34">25 - 34 years</option>
+                                        <option value="35-44">35 - 44 years</option>
+                                        <option value="45+">45 years and above</option>
+                                    </select>
+                                </div>
+
+                                <!-- Mini Button Selection: Contact Mechanism -->
+                                <div class="space-y-1.5 flex flex-col justify-end">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label class="text-xs font-bold text-gray-700 uppercase" id="contact_input_label">Phone Number</label>
+                                        <div class="inline-flex gap-1 bg-gray-200/60 p-0.5 rounded-lg border border-gray-300">
+                                            <button type="button" id="btn-contact-num" onclick="setContactMode('Phone Number')" class="px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200">Phone</button>
+                                            <button type="button" id="btn-contact-email" onclick="setContactMode('Email Address')" class="px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900">Email</button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="id_contact_mode" name="contact_mode" value="Phone Number">
+                                    <input type="text" id="id_contact_info" name="contact_info" oninput="validateLiveFields()" placeholder="e.g. 0712345678" class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <span id="contact-err-msg" class="text-[10px] text-red-500 font-semibold mt-1 hidden block"></span>
+                                </div>
+                            </div>
+
+                            <!-- Disability Info Select -->
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Are you a person with disability?</label>
+                                <select id="id_disability" name="disability" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <option value="">Select Option</option>
+                                    <option value="No condition">No condition</option>
+                                    <option value="Visual Impairment">Visual Impairment</option>
+                                    <option value="Hearing Impairment">Hearing Impairment</option>
+                                    <option value="Mobility Impairment">Physical / Mobility Impairment</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: INCIDENT DETAILS -->
+                    <div id="wizard-step-2" class="space-y-6 hidden transition-all duration-300">
+                        <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-4">
+                            <h3 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-purple-600"></span>Abuse Categorization
+                            </h3>
+                            
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Type of abuse classification</label>
+                                <select id="id_incident_category" name="incident_category" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <option value="">Select Type of abuse</option>
+                                    <option value="Doxing">Doxing</option>
+                                    <option value="Cyber Stalking">Cyber Stalking</option>
+                                    <option value="Cyber Mob">Cyber Mob</option>
+                                    <option value="Cyber Bullying">Cyber Bullying</option>
+                                    <option value="Image-Based Abuse">Image-Based Abuse</option>
+                                    <option value="Defamation">Defamation</option>
+                                    <option value="Gender Trolling">Gender Trolling</option>
+                                    <option value="Cross-Platform Harassment">Cross-Platform Harassment</option>
+                                    <option value="Denial of Access to Technology">Denial of Access to Technology</option>
+                                    <option value="Shock & Grief Trolling">Shock & Grief Trolling</option>
+                                    <option value="Online Impersonation">Online Impersonation</option>
+                                    <option value="Online Harassment">Online Harassment</option>
+                                    <option value="Revenge Porn">Revenge Porn</option>
+                                    <option value="Sextortion">Sextortion</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Platform where the abuse occurred</label>
+                                <select id="id_platform_used" name="platform_used" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <option value="">Select Platform where the abuse occurred</option>
+                                    <option value="x (twitter)">x (twitter)</option>
+                                    <option value="instagram">instagram</option>
+                                    <option value="facebook">facebook</option>
+                                    <option value="tiktok">tiktok</option>
+                                    <option value="telegram">telegram</option>
+                                    <option value="email">email</option>
+                                    <option value="dating apps">dating apps</option>
+                                    <option value="other">other</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Incident Description narrative</label>
+                                <textarea id="id_description" name="description" rows="3" placeholder="Describe chronologically..." class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none resize-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: EVIDENCE AND CONSENTS -->
+                    <div id="wizard-step-3" class="space-y-6 hidden transition-all duration-300">
+                        <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-4">
+                            <h3 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-purple-600"></span>Case Integrity Rules & Clearances
+                            </h3>
+
+                            <div class="p-4 bg-white rounded-xl border border-gray-200 space-y-5 shadow-sm">
+                                <!-- Optional items matching Screenshot 2026-06-30 164810_2.png -->
+                                <div class="space-y-3 border-b border-gray-100 pb-3">
+                                    <span class="block text-[9px] font-black text-gray-400 tracking-wider uppercase">Optional</span>
+                                    <div class="flex items-start space-x-3">
+                                        <input type="checkbox" id="id_report_police" name="report_police" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+                                        <label for="id_report_police" class="text-xs font-bold text-gray-600 uppercase cursor-pointer select-none">Report to police</label>
+                                    </div>
+                                    <div class="flex items-start space-x-3">
+                                        <input type="checkbox" id="id_recommend_counseling" name="recommend_counseling" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+                                        <label for="id_recommend_counseling" class="text-xs font-bold text-gray-600 uppercase cursor-pointer select-none">Recommend counselling center</label>
+                                    </div>
+                                </div>
+
+                                <!-- Required items matching Screenshot 2026-06-30 164810_2.png -->
+                                <div class="space-y-3">
+                                    <span class="block text-[9px] font-black text-red-500 tracking-wider uppercase">Required</span>
+                                    <div class="flex items-start space-x-3">
+                                        <input type="checkbox" id="id_consent_followup" name="allow_contact" onchange="validateLiveFields()" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+                                        <label for="id_consent_followup" class="text-xs font-bold text-gray-700 uppercase cursor-pointer select-none">I consent to being contacted for follow up</label>
+                                    </div>
+                                    <div class="flex items-start space-x-3">
+                                        <input type="checkbox" id="id_consent_investigation" name="consent_investigation" onchange="validateLiveFields()" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+                                        <label for="id_consent_investigation" class="text-xs font-bold text-gray-700 uppercase cursor-pointer select-none">I consent to my information being used for investigation purposes</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: GEOLOCATION ROUTING JURISDICTIONS -->
+                    <div id="wizard-step-4" class="space-y-6 hidden transition-all duration-300">
+                        <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-4">
+                            <h3 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-purple-600"></span>Regional Distribution Parameters
+                            </h3>
+                            
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">County Hub Jurisdiction</label>
+                                <select id="id_county" name="county" onchange="populateConstituency(); validateLiveFields();" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <option value="">-- Select County --</option>
+                                    <!-- Alphabetized Counties mapping screenshots dynamically -->
+                                    <option value="Baringo">Baringo</option>
+                                    <option value="Bomet">Bomet</option>
+                                    <option value="Bungoma">Bungoma</option>
+                                    <option value="Busia">Busia</option>
+                                    <option value="Elgeyo/Marakwet">Elgeyo/Marakwet</option>
+                                    <option value="Garissa">Garissa</option>
+                                    <option value="Homa Bay">Homa Bay</option>
+                                    <option value="Isiolo">Isiolo</option>
+                                    <option value="Kajiado">Kajiado</option>
+                                    <option value="Kakamega">Kakamega</option>
+                                    <option value="Kericho">Kericho</option>
+                                    <option value="Kilifi">Kilifi</option>
+                                    <option value="Kisii">Kisii</option>
+                                    <option value="Kisumu">Kisumu</option>
+                                    <option value="Kwale">Kwale</option>
+                                    <option value="Laikipia">Laikipia</option>
+                                    <option value="Lamu">Lamu</option>
+                                    <option value="Mandera">Mandera</option>
+                                    <option value="Marsabit">Marsabit</option>
+                                    <option value="Meru">Meru</option>
+                                    <option value="Migori">Migori</option>
+                                    <option value="Mombasa">Mombasa</option>
+                                    <option value="Nairobi">Nairobi</option>
+                                    <option value="Nakuru">Nakuru</option>
+                                    <option value="Nandi">Nandi</option>
+                                    <option value="Narok">Narok</option>
+                                    <option value="Nyamira">Nyamira</option>
+                                    <option value="Siaya">Siaya</option>
+                                    <option value="Taita Taveta">Taita Taveta</option>
+                                    <option value="Tana River">Tana River</option>
+                                    <option value="Tharaka-Nithi">Tharaka-Nithi</option>
+                                    <option value="Trans Nzoia">Trans Nzoia</option>
+                                    <option value="Uasin Gishu">Uasin Gishu</option>
+                                    <option value="Vihiga">Vihiga</option>
+                                    <option value="Wajir">Wajir</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Constituency / Sub-County</label>
+                                <select id="id_constituency" name="constituency" onchange="populateWard(); validateLiveFields();" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none" disabled>
+                                    <option value="">-- Select Constituency --</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Administrative Ward Unit</label>
+                                <select id="id_ward" name="ward" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none" disabled>
+                                    <option value="">-- Select Ward Designation --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 5: DYNAMIC REVIEW PANEL WORKSPACE (from image_7f90fa.png) -->
+                    <div id="wizard-step-5" class="space-y-6 hidden transition-all duration-300">
+                        <div id="summary-review-panel" class="bg-gradient-to-tr from-purple-950 via-indigo-950 to-blue-950 border border-indigo-900 p-6 rounded-2xl space-y-4 shadow-xl text-white">
+                            <h4 class="text-xs font-black uppercase tracking-widest border-b border-white/20 pb-2 flex items-center gap-2 text-purple-300">
+                                📋 Live Submission Summary Package
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Reporter Name</span><span id="sm-name" class="font-bold text-white">-</span></div>
+                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Identification Details</span><span id="sm-id" class="font-mono text-white">-</span></div>
+                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Gender & Age</span><span id="sm-demographics" class="font-bold text-white">-</span></div>
+                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Contact Method</span><span id="sm-contact" class="font-medium text-white">-</span></div>
+                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Disability Status</span><span id="sm-disability" class="font-bold text-white">-</span></div>
+                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Abuse Vector Category</span><span id="sm-category" class="font-black text-amber-300">-</span></div>
+                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Platform</span><span id="sm-platform" class="font-bold text-white">-</span></div>
+                                <div class="p-3 bg-white/10 rounded-xl border border-white/10 md:col-span-2 lg:col-span-2"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Assigned Target Regional Matrix</span><span id="sm-location" class="font-bold text-emerald-300">-</span></div>
+                                <div class="p-3 bg-white/10 rounded-xl border border-white/10 md:col-span-2 lg:col-span-3"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Consents & Actions</span><span id="sm-consents" class="font-bold text-white">-</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer Operations Deck Button controls -->
+                <div class="pt-6 border-t border-gray-100 flex justify-between items-center bg-transparent">
+                    <button type="button" id="back-step-btn" onclick="stepWizardNavigationEngine(-1)" class="invisible px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-xs rounded-xl transition shadow-sm uppercase tracking-wider">
+                        ← Back
+                    </button>
+                    <button type="button" id="next-step-btn" onclick="stepWizardNavigationEngine(1)" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition uppercase tracking-wider">
+                        Next Step
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <script>
     let activeStepCursor = 1;
-    const boundaryTerminalStep = 3;
+    const boundaryTerminalStep = 5;
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const dateInput = document.getElementById('id_incident_date');
-        if (dateInput && !dateInput.value) {
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.value = today;
+    // Comprehensive alphabetized county data mapping logic
+    const localLocationGraph = {
+        "Baringo": { "Baringo Central": ["Kabarnet", "Sacho"] },
+        "Bomet": { "Bomet Central": ["Siloam", "Mutarakwa"] },
+        "Bungoma": { "Kanduyi": ["Bukembe", "Musikoma"] },
+        "Busia": { "Matayos": ["Busia Town", "Burumba"] },
+        "Elgeyo/Marakwet": { "Keiyo North": ["Kamarin", "Tambach"] },
+        "Garissa": { "Garissa Township": ["Waberi", "Iftin"] },
+        "Homa Bay": { "Homa Bay Town": ["Central", "Arujo"] },
+        "Isiolo": { "Isiolo North": ["Wabera", "Bulla Pesa"] },
+        "Kajiado": { "Kajiado North": ["Ngong", "Rongai"] },
+        "Kakamega": { "Lurambi": ["Butsotso", "Shirere"] },
+        "Kericho": { "Ainamoi": ["Kapsuser", "Kericho Town"] },
+        "Kilifi": { "Kilifi North": ["Matsangoni", "Mnarani", "Sokoni", "Tezo"], "Malindi": ["Ganda", "Kakuyuni", "Sabaki", "Shella"] },
+        "Kisii": { "Kitutu Chache": ["Mosocho", "Marani"] },
+        "Kisumu": { "Kisumu Central": ["Kondele", "Market", "Milimani", "Nyabera"], "Kisumu East": ["Kajulu", "Kolwa East", "Kolwa West"] },
+        "Kwale": { "Matuga": ["Waa", "Tiwi"] },
+        "Laikipia": { "Laikipia East": ["Nanyuki", "Thingithu"] },
+        "Lamu": { "Lamu West": ["Shella", "Mkomani"] },
+        "Mandera": { "Mandera East": ["Township", "Neboi"] },
+        "Marsabit": { "Saku": ["Township", "Sagante"] },
+        "Meru": { "Imenti Central": ["Mwanganthia", "Abothuguchi"] },
+        "Migori": { "Suna West": ["Wiga", "Wasimbete"] },
+        "Mombasa": { "Mvita": ["Makadara", "Mji Wa Kale", "Shimanzi"], "Nyali": ["Frere Town", "Mkomani", "Ziwa La Ng'ombe"] },
+        "Nairobi": { "Kasarani": ["Clay City", "Mwiki", "Njiru", "Roysambu"], "Starehe": ["Landimawe", "Ngara", "Pangani", "Ziwani"], "Westlands": ["Highridge", "Kangemi", "Kitisuru", "Parklands"] },
+        "Nakuru": { "Naivasha": ["Hell's Gate", "Lake View", "Mai Mahiu"], "Nakuru East": ["Biashara", "Flamingo", "Kivumbini"] },
+        "Nandi": { "Emgwen": ["Kapsabet", "Chepterit"] },
+        "Narok": { "Narok North": ["Township", "Olokurto"] },
+        "Nyamira": { "West Mugirango": ["Nyamira Town", "Bogichora"] },
+        "Siaya": { "Alego Usonga": ["Siaya Town", "Central Alego"] },
+        "Taita Taveta": { "Voi": ["Mbololo", "Kaloleni"] },
+        "Tana River": { "Galole": ["Wayu", "Mikinduni"] },
+        "Tharaka-Nithi": { "Chuka": ["Mariani", "Magumoni"] },
+        "Trans Nzoia": { "Saboti": ["Kitale Town", "Tuwan"] },
+        "Uasin Gishu": { "Ainabkoi": ["Ainabkoi", "Kapsoya", "Kaptagat"], "Turbo": ["Kamagut", "Ngenyilel", "Tapsagoi"] },
+        "Vihiga": { "Sabatia": ["Chavakali", "Wodanga"] },
+        "Wajir": { "Wajir East": ["Township", "Wagberi"] }
+    };
+
+    function setIdentityType(typeString) {
+        document.getElementById('id_type').value = typeString;
+        document.getElementById('id_string_label').textContent = typeString;
+        
+        const btnNat = document.getElementById('btn-id-nat');
+        const btnPass = document.getElementById('btn-id-pass');
+        const inputField = document.getElementById('id_national_id_number');
+        
+        if(typeString === 'National ID') {
+            btnNat.className = "px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200";
+            btnPass.className = "px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900";
+            inputField.placeholder = "Enter your 8-digit National ID";
+        } else {
+            btnPass.className = "px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200";
+            btnNat.className = "px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900";
+            inputField.placeholder = "Enter your Passport identification string";
         }
-    });
+        validateLiveFields();
+    }
 
-    // Location Capture Logic
-    function checkLocationTrigger(element) {
-        if (element.querySelector('input').value === 'children_home_support') {
-            if (confirm("To find the nearest children's home, we need to access your current location. Allow?")) {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition((position) => {
-                        const lat = position.coords.latitude;
-                        const lng = position.coords.longitude;
-                        document.getElementById('user_lat').value = lat;
-                        document.getElementById('user_lng').value = lng;
-                        window.open(`{% url 'find_homes' %}?lat=${encodeURIComponent(lat)}&lng=${encodeURIComponent(lng)}`, '_blank', 'noopener');
-                    }, (err) => {
-                        alert("We couldn't access your location. Please check your browser permissions.");
-                    });
-                } else {
-                    alert("Your browser does not support location access.");
-                }
+    function setContactMode(modeString) {
+        document.getElementById('id_contact_mode').value = modeString;
+        const label = document.getElementById('contact_input_label');
+        const input = document.getElementById('id_contact_info');
+        
+        const btnNum = document.getElementById('btn-contact-num');
+        const btnEmail = document.getElementById('btn-contact-email');
+
+        if(modeString === 'Phone Number') {
+            label.textContent = "Phone Number";
+            input.placeholder = "e.g. 0712345678";
+            btnNum.className = "px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200";
+            btnEmail.className = "px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900";
+        } else {
+            label.textContent = "Email Address";
+            input.placeholder = "username@gmail.com";
+            btnEmail.className = "px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200";
+            btnNum.className = "px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900";
+        }
+        validateLiveFields();
+    }
+
+    function populateConstituency() {
+        const countySel = document.getElementById('id_county').value;
+        const constSel = document.getElementById('id_constituency');
+        const wardSel = document.getElementById('id_ward');
+        
+        constSel.innerHTML = '<option value="">-- Select Constituency --</option>';
+        wardSel.innerHTML = '<option value="">-- Select Ward Designation --</option>';
+        wardSel.disabled = true;
+
+        if (countySel && localLocationGraph[countySel]) {
+            constSel.disabled = false;
+            Object.keys(localLocationGraph[countySel]).sort().forEach(c => {
+                constSel.options.add(new Option(c, c));
+            });
+        } else {
+            constSel.disabled = true;
+        }
+    }
+
+    function populateWard() {
+        const countySel = document.getElementById('id_county').value;
+        const constSel = document.getElementById('id_constituency').value;
+        const wardSel = document.getElementById('id_ward');
+        
+        wardSel.innerHTML = '<option value="">-- Select Ward Designation --</option>';
+
+        if (countySel && constSel && localLocationGraph[countySel][constSel]) {
+            wardSel.disabled = false;
+            localLocationGraph[countySel][constSel].sort().forEach(w => {
+                wardSel.options.add(new Option(w, w));
+            });
+        } else {
+            wardSel.disabled = true;
+        }
+    }
+
+    function validateLiveFields() {
+        const nameVal = document.getElementById('id_reporter_name').value.trim();
+        const genVal = document.getElementById('id_gender').value;
+        const idVal = document.getElementById('id_national_id_number').value.trim();
+        const ageVal = document.getElementById('id_age_group').value;
+        const contactVal = document.getElementById('id_contact_info').value.trim();
+        const contactMode = document.getElementById('id_contact_mode').value;
+        const disVal = document.getElementById('id_disability').value;
+
+        let isContactValid = false;
+        const errNode = document.getElementById('contact-err-msg');
+        errNode.classList.add('hidden');
+
+        if(contactMode === 'Phone Number') {
+            const isNumeric = /^\d+$/.test(contactVal);
+            if(contactVal.length > 0 && (!isNumeric || contactVal.length !== 10)) {
+                errNode.textContent = "⚠️ Form rule error: Must contain exactly 10 numerical digits.";
+                errNode.classList.remove('hidden');
+            }
+            isContactValid = isNumeric && contactVal.length === 10;
+        } else {
+            const hasGmail = contactVal.toLowerCase().includes('@gmail');
+            if(contactVal.length > 0 && !hasGmail) {
+                errNode.textContent = "⚠️ Form rule error: Email address string must contain '@gmail'.";
+                errNode.classList.remove('hidden');
+            }
+            isContactValid = hasGmail && contactVal.length > 5;
+        }
+
+        updateSideItemStatus('side-item-name', nameVal.length > 0);
+        updateSideItemStatus('side-item-gender', genVal !== "");
+        updateSideItemStatus('side-item-id', idVal.length > 2);
+        updateSideItemStatus('side-item-age', ageVal !== "");
+        updateSideItemStatus('side-item-contact', isContactValid);
+        updateSideItemStatus('side-item-disability', disVal !== "");
+
+        const step1Complete = nameVal && genVal && idVal && ageVal && isContactValid && disVal;
+        toggleSectionGroupCompletion(1, step1Complete);
+
+        const catVal = document.getElementById('id_incident_category').value;
+        const platVal = document.getElementById('id_platform_used').value;
+        updateSideItemStatus('side-item-category', catVal !== "");
+        updateSideItemStatus('side-item-platform', platVal !== "");
+        toggleSectionGroupCompletion(2, catVal && platVal);
+
+        const consent1 = document.getElementById('id_consent_followup').checked;
+        const consent2 = document.getElementById('id_consent_investigation').checked;
+        updateSideItemStatus('side-item-consents', consent1 && consent2);
+        toggleSectionGroupCompletion(3, consent1 && consent2);
+
+        const cntVal = document.getElementById('id_county').value;
+        const cstVal = document.getElementById('id_constituency').value;
+        const wrdVal = document.getElementById('id_ward').value;
+        updateSideItemStatus('side-item-county', cntVal !== "");
+        updateSideItemStatus('side-item-constituency', cstVal !== "");
+        updateSideItemStatus('side-item-ward', wrdVal !== "");
+        
+        const step4Complete = cntVal && cstVal && wrdVal;
+        toggleSectionGroupCompletion(4, step4Complete);
+
+        const consents = [];
+        if (document.getElementById('id_report_police').checked) consents.push("Report to Police");
+        if (document.getElementById('id_recommend_counseling').checked) consents.push("Counselling");
+        consents.push(consent1 ? "Contact Follow-up" : "");
+        consents.push(consent2 ? "Information Investigation" : "");
+
+        document.getElementById('sm-name').textContent = nameVal || "-";
+        document.getElementById('sm-id').textContent = idVal ? `[${document.getElementById('id_type').value}] ${idVal}` : "-";
+        document.getElementById('sm-contact').textContent = contactVal ? `${contactMode}: ${contactVal}` : "-";
+        document.getElementById('sm-demographics').textContent = (genVal || ageVal) ? `${genVal || '?'} | ${ageVal || '?'}` : "-";
+        document.getElementById('sm-disability').textContent = disVal || "-";
+        document.getElementById('sm-category').textContent = catVal || "-";
+        document.getElementById('sm-platform').textContent = platVal || "-";
+        document.getElementById('sm-location').textContent = step4Complete ? `${cntVal} County » ${cstVal} » ${wrdVal}` : "Incomplete parameters.";
+        document.getElementById('sm-consents').textContent = consents.filter(Boolean).join(" • ") || "-";
+        
+        return step1Complete && catVal && platVal && consent1 && consent2 && step4Complete;
+    }
+
+    function updateSideItemStatus(elementId, isValid) {
+        const node = document.getElementById(elementId);
+        if (!node) return;
+        const indicator = node.querySelector('.indicator');
+        if (isValid) {
+            node.className = "flex justify-between items-center text-green-600 font-extrabold transition-all duration-200";
+            if(indicator) {
+                indicator.innerHTML = "✓";
+                indicator.className = "indicator text-green-600";
+            }
+        } else {
+            node.className = "flex justify-between items-center text-red-500 font-bold transition-all duration-200";
+            if(indicator) {
+                indicator.innerHTML = "*";
+                indicator.className = "indicator text-red-500 font-black";
             }
         }
     }
 
-    function toggleOtherCategoryField(showField) {
-        const wrapper = document.getElementById('custom-category-wrapper');
-        const input = document.getElementById('id_custom_category');
-        if (showField) {
-            wrapper.classList.remove('hidden');
-            input.setAttribute('required', 'true');
+    function toggleSectionGroupCompletion(stepNum, isComplete) {
+        const groupHeader = document.querySelector(`#side-sec-${stepNum} .status-icon`);
+        const groupDiv = document.querySelector(`#side-sec-${stepNum} > div`);
+        if (!groupHeader) return;
+        if (isComplete) {
+            groupHeader.classList.remove('hidden');
+            if(activeStepCursor !== stepNum) groupDiv.className = "text-xs font-bold px-3 py-2 bg-green-50 text-green-800 border border-green-200 rounded-xl flex items-center justify-between";
         } else {
-            wrapper.classList.add('hidden');
-            input.removeAttribute('required');
-            input.value = '';
+            groupHeader.classList.add('hidden');
+            if(activeStepCursor !== stepNum) groupDiv.className = "text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between";
         }
     }
 
     function stepWizardNavigationEngine(directionDelta) {
-        // 1. Handle Final Step Submission
         if (activeStepCursor === boundaryTerminalStep && directionDelta === 1) {
-            const descriptiveArea = document.getElementById('id_description').value.trim();
-            if (descriptiveArea.length < 15) {
-                alert("Please append a comprehensive descriptive overview to allow automated processing routines to execute cleanly.");
-                return;
-            }
             document.getElementById('report-form-start').submit();
             return;
         }
 
-        // 2. Handle Intermediate Step Validation
-        if (activeStepCursor === 2 && directionDelta === 1) {
-            const platformNode = document.getElementById('id_platform_used').value.trim();
-            if (!platformNode) {
-                alert("Please declare the targeted platform deployment environment (e.g., WhatsApp, Web Messenger) before forwarding.");
-                return;
-            }
-            const isOtherChecked = document.getElementById('cat-other-radio').checked;
-            const customCatVal = document.getElementById('id_custom_category').value.trim();
-            if (isOtherChecked && !customCatVal) {
-                alert("Please specify your customized incident type classification.");
-                return;
-            }
-        }
-
-        // 3. Normal Navigation Logic
         const nextStep = activeStepCursor + directionDelta;
-        if (nextStep < 1 || nextStep > boundaryTerminalStep) {
+        if (nextStep < 1 || nextStep > boundaryTerminalStep) return;
+
+        // Form verification rules block moving forward prematurely
+        if (directionDelta === 1 && nextStep === 5 && !validateLiveFields()) {
+            alert("Please make sure all mandatory field parameters across previous steps are filled correctly before arriving at the review stage.");
             return;
         }
 
-        const currentStep = document.getElementById(`wizard-step-${activeStepCursor}`);
-        const nextStepElement = document.getElementById(`wizard-step-${nextStep}`);
-        if (!currentStep || !nextStepElement) {
-            return;
-        }
+        document.getElementById(`wizard-step-${activeStepCursor}`).classList.add('hidden');
+        document.querySelector(`#side-sec-${activeStepCursor} > div`).className = "text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between";
 
-        currentStep.classList.add('hidden');
         activeStepCursor = nextStep;
-        nextStepElement.classList.remove('hidden');
+        
+        document.getElementById(`wizard-step-${activeStepCursor}`).classList.remove('hidden');
+        document.querySelector(`#side-sec-${activeStepCursor} > div`).className = "text-xs font-bold px-3 py-2 bg-blue-600 text-white rounded-xl flex items-center justify-between shadow-md";
 
-        const btnBack = document.getElementById('back-step-btn');
+        document.getElementById('step-indicator-tag').textContent = `Step ${activeStepCursor} of ${boundaryTerminalStep}`;
+        document.getElementById('back-step-btn').classList.toggle('invisible', activeStepCursor === 1);
+
         const btnNext = document.getElementById('next-step-btn');
-        const markerBadge = document.getElementById('step-indicator-tag');
-        const guestBanner = document.getElementById('guest-advisory-banner');
-
-        if (markerBadge) {
-            markerBadge.textContent = `Step ${activeStepCursor} of ${boundaryTerminalStep}`;
-        }
-
-        if (guestBanner) {
-            if (activeStepCursor > 1) {
-                guestBanner.classList.add('hidden');
-            } else {
-                guestBanner.classList.remove('hidden');
-            }
-        }
-
-        if (btnBack) {
-            btnBack.classList.toggle('invisible', activeStepCursor === 1);
-        }
-
-        if (btnNext) {
-            if (activeStepCursor === boundaryTerminalStep) {
-                btnNext.textContent = "Finish & Submit";
-                btnNext.classList.remove('bg-purple-600', 'hover:bg-purple-700');
-                btnNext.classList.add('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-600');
-            } else {
-                btnNext.textContent = "Next Step";
-                btnNext.classList.add('bg-purple-600', 'hover:bg-purple-700');
-                btnNext.classList.remove('bg-green-600', 'hover:bg-green-700', 'focus:ring-green-600');
-            }
-        }
-    }
-
-    function evaluateProxyAlert() {
-        const structuralType = document.getElementById('id_reporter_type').value;
-        const diagnosticAge = document.getElementById('id_age_group').value;
-        const dynamicBanner = document.getElementById('minor-safety-banner');
-
-        if (structuralType === 'child' || diagnosticAge === 'U18') {
-            dynamicBanner.classList.remove('hidden');
+        
+        if (activeStepCursor === 4) {
+            btnNext.textContent = "FINISH & REVIEW SUBMISSION";
+            btnNext.className = "px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl shadow-md transition tracking-wider uppercase";
+        } else if (activeStepCursor === 5) {
+            toggleSectionGroupCompletion(5, true);
+            btnNext.textContent = "SUBMIT SIGNED REPORT";
+            btnNext.className = "px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-black text-xs rounded-xl shadow-lg transition tracking-wider uppercase";
         } else {
-            dynamicBanner.classList.add('hidden');
+            btnNext.textContent = "Next Step";
+            btnNext.className = "px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition tracking-wider uppercase";
         }
+        validateLiveFields();
     }
 
-    function toggleContactLayoutStack() {
-        const selectionFlag = document.getElementById('id_allow_contact').checked;
-        const interactiveStack = document.getElementById('identity-input-fields');
-        const corePhoneInput = document.getElementById('id_reporter_phone');
-
-        if (selectionFlag) {
-            interactiveStack.classList.remove('hidden');
-            corePhoneInput.setAttribute('required', 'true');
-        } else {
-            interactiveStack.classList.add('hidden');
-            corePhoneInput.removeAttribute('required');
-            document.getElementById('id_reporter_name').value = '';
-            document.getElementById('id_reporter_email').value = '';
-            corePhoneInput.value = '';
-        }
-    }
-    function captureLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((pos) => {
-                document.getElementById('user_lat').value = pos.coords.latitude;
-                document.getElementById('user_lng').value = pos.coords.longitude;
-            });
-        }
-    }
+    window.addEventListener('DOMContentLoaded', () => {
+        validateLiveFields();
+    });
 </script>
 {% endblock %}

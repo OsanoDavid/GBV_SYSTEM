@@ -89,6 +89,14 @@ def file_report_view(request):
                 incident.reference_number = ref
                 incident.case_access_pin = pin
 
+                # Handle Contact mapping
+                contact_mode = request.POST.get('contact_mode', 'Phone Number')
+                contact_info = request.POST.get('contact_info', '').strip()
+                if contact_mode == 'Phone Number':
+                    incident.reporter_phone = contact_info
+                else:
+                    incident.reporter_email = contact_info
+
                 if request.user.is_authenticated:
                     incident.reporter_profile = request.user
 

@@ -1758,3 +1758,46 @@ ValueError: Missing staticfiles manifest entry for 'images/custom.css'
 2026-06-24 23:56:04,529 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-06-25 01:30:04,656 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-06-25 01:49:27,946 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-25 02:36:50,281 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 16:16:35,272 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 16:25:22,425 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 16:29:20,704 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 16:32:56,953 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 16:35:27,565 [WARNING] django.request: Not Found: /portal/log/create/2/
+2026-06-30 16:35:27,665 [WARNING] django.request: Not Found: /favicon.ico
+2026-06-30 16:40:56,422 [WARNING] django.request: Not Found: /portal/dashboard/
+2026-06-30 16:40:56,502 [WARNING] django.request: Not Found: /favicon.ico
+2026-06-30 17:06:11,007 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 20:02:07,116 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 20:03:35,892 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 20:03:45,832 [WARNING] django.request: Not Found: /favicon.ico
+2026-06-30 20:47:37,665 [WARNING] reports.views: Form validation failed: <ul class="errorlist"><li>incident_category<ul class="errorlist" id="id_incident_category_error"><li>Select a valid choice. Shock &amp; Grief Trolling is not one of the available choices.</li></ul></li><li>reporter_type<ul class="errorlist" id="id_reporter_type_error"><li>This field is required.</li></ul></li></ul>
+2026-06-30 20:51:03,977 [WARNING] reports.views: Form validation failed: <ul class="errorlist"><li>incident_category<ul class="errorlist" id="id_incident_category_error"><li>Select a valid choice. Shock &amp; Grief Trolling is not one of the available choices.</li></ul></li><li>reporter_type<ul class="errorlist" id="id_reporter_type_error"><li>This field is required.</li></ul></li></ul>
+2026-06-30 20:56:49,765 [WARNING] reports.views: Form validation failed: <ul class="errorlist"><li>incident_category<ul class="errorlist" id="id_incident_category_error"><li>Select a valid choice. Shock &amp; Grief Trolling is not one of the available choices.</li></ul></li><li>reporter_type<ul class="errorlist" id="id_reporter_type_error"><li>This field is required.</li></ul></li></ul>
+2026-06-30 21:12:56,167 [WARNING] reports.views: Form validation failed: <ul class="errorlist"><li>incident_category<ul class="errorlist" id="id_incident_category_error"><li>Select a valid choice. Shock &amp; Grief Trolling is not one of the available choices.</li></ul></li><li>reporter_type<ul class="errorlist" id="id_reporter_type_error"><li>This field is required.</li></ul></li></ul>
+2026-06-30 21:17:35,372 [WARNING] reports.views: Form validation failed: <ul class="errorlist"><li>incident_category<ul class="errorlist" id="id_incident_category_error"><li>Select a valid choice. Denial of Access to Technology is not one of the available choices.</li></ul></li><li>description<ul class="errorlist" id="id_description_error"><li>This field is required.</li></ul></li><li>reporter_type<ul class="errorlist" id="id_reporter_type_error"><li>This field is required.</li></ul></li></ul>
+2026-06-30 23:40:13,146 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\models.py changed, reloading.
+2026-06-30 23:40:13,663 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\models.py changed, reloading.
+2026-06-30 23:40:14,969 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 23:40:21,501 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\forms.py changed, reloading.
+2026-06-30 23:40:21,539 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\forms.py changed, reloading.
+2026-06-30 23:40:22,444 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 23:40:22,458 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 23:41:11,270 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-06-30 23:41:11,272 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-06-30 23:41:12,094 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 23:42:37,704 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\migrations\0001_initial.py changed, reloading.
+2026-06-30 23:42:37,743 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\migrations\0001_initial.py changed, reloading.
+2026-06-30 23:42:38,708 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 23:42:38,758 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-06-30 23:43:40,488 [ERROR] django.security.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\utils\deprecation.py", line 308, in __call__
+    response = self.process_request(request)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\middleware\common.py", line 48, in process_request
+    host = request.get_host()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\http\request.py", line 206, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.

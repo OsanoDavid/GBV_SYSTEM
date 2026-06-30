@@ -28,12 +28,74 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="{% static 'images/custom.css' %}?v=6">
+    <link rel="stylesheet" href="{% static 'images/custom.css' %}?v=20">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <style>
+        @keyframes pageFadeIn {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .page-transition {
+            animation: pageFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        /* === CRITICAL: Sidebar on RIGHT, button on RIGHT === */
+        #page-content-wrapper {
+            margin-right: 0 !important;
+            transition: margin-right 0.35s cubic-bezier(0.4,0,0.2,1) !important;
+        }
+        body.sidebar-open #page-content-wrapper {
+            margin-right: 300px !important;
+            margin-left: 0 !important;
+        }
+        #accessibility-sidebar {
+            left: auto !important;
+            right: -300px !important;
+            border-left: 1px solid #e2e8f0 !important;
+            border-right: none !important;
+            box-shadow: -4px 0 40px rgba(0,0,0,0.12) !important;
+            transition: right 0.35s cubic-bezier(0.4,0,0.2,1) !important;
+        }
+        #accessibility-sidebar.open {
+            right: 0 !important;
+            left: auto !important;
+        }
+        #a11y-toggle-btn {
+            top: 80px !important;
+            right: 16px !important;
+            left: auto !important;
+            border-radius: 50% !important;
+            width: 48px !important;
+            height: 48px !important;
+        }
+        body.sidebar-open #a11y-toggle-btn {
+            right: 316px !important;
+        }
+        /* === CRITICAL: Fix FontAwesome icons always visible === */
+        i[class*="fa-"], i.fas, i.far, i.fab, i.fa {
+            font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+            color: inherit !important;
+            -webkit-font-smoothing: antialiased;
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+        /* Footer social icons — force visible */
+        footer .fa-brands, footer .fa-x-twitter, footer .fa-instagram,
+        footer .fa-linkedin-in, footer .fa-whatsapp, footer .fa-facebook-f {
+            color: inherit !important;
+            font-family: "Font Awesome 6 Brands" !important;
+        }
+        /* Never override icon font with body dark mode color trick */
+        body.dark-mode i[class*="fa-"] {
+            color: currentColor !important;
+        }
+    </style>
 </head>
 <body class="bg-gradient-to-br from-purple-50 via-white to-purple-100 text-purple-950 font-sans antialiased">
 
@@ -85,11 +147,10 @@
 
         <div style="padding:8px 12px 4px;">
             <div class="a11y-section-title" style="margin-bottom:6px;">Aa Text Size</div>
-            <div class="font-scale-controls">
-                <button class="font-scale-btn" onclick="setFontSize('sm')" id="fs-sm" aria-label="Small text (13px)">A<small style="display:block;font-size:0.55rem;opacity:0.6;">Small</small></button>
-                <button class="font-scale-btn active" onclick="setFontSize('md')" id="fs-md" aria-label="Default text (16px)">A+<small style="display:block;font-size:0.55rem;opacity:0.6;">Default</small></button>
-                <button class="font-scale-btn" onclick="setFontSize('lg')" id="fs-lg" aria-label="Large text (19px)" style="font-size:0.82rem;">A++<small style="display:block;font-size:0.55rem;opacity:0.6;">Large</small></button>
-                <button class="font-scale-btn" onclick="setFontSize('xl')" id="fs-xl" aria-label="Extra large text (23px)" style="font-size:0.95rem;">A+++<small style="display:block;font-size:0.55rem;opacity:0.6;">Bigger</small></button>
+            <div class="flex items-center justify-between bg-[#f8fafc] dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-xl p-1">
+                <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-white/10 border border-gray-200 dark:border-white/20 text-lg font-bold hover:bg-purple-100 dark:hover:bg-purple-900 transition" onclick="adjustFontSize(-1)" aria-label="Decrease text size">-</button>
+                <span class="font-bold text-gray-700 dark:text-purple-200 text-xs" id="current-font-size-label">Default</span>
+                <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-white/10 border border-gray-200 dark:border-white/20 text-lg font-bold hover:bg-purple-100 dark:hover:bg-purple-900 transition" onclick="adjustFontSize(1)" aria-label="Increase text size">+</button>
             </div>
         </div>
     </div>
@@ -217,7 +278,7 @@
 </aside>
 
 <!-- ================================================================
-     ACCESSIBILITY TOGGLE BUTTON (Left edge, always visible)
+     ACCESSIBILITY TOGGLE BUTTON (Right edge, always visible)
      ================================================================ -->
 <button id="a11y-toggle-btn"
         onclick="toggleA11ySidebar()"
@@ -226,12 +287,8 @@
         aria-controls="accessibility-sidebar"
         title="Accessibility Tools">
     <span class="btn-icon" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="5" r="1.5"/>
-            <path d="M5 8h14M12 8v13M8 13l4 2 4-2"/>
-        </svg>
+        <i class="fa-solid fa-universal-access text-xl"></i>
     </span>
-    <span class="btn-text">Access</span>
 </button>
 
 <!-- ================================================================
@@ -255,9 +312,17 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
 
-            <div class="flex items-center space-x-2">
-                <a href="{% url 'landing' %}" class="text-2xl font-black tracking-tight text-purple-950 focus:outline-none focus:ring-2 focus:ring-purple-700 rounded p-1" aria-label="SafeSpace Home">
-                    Safe<span class="text-purple-700">Space</span>
+            <div class="flex items-center space-x-3">
+                <a href="{% url 'landing' %}" aria-label="SafeSpace Home" class="focus:outline-none focus:ring-2 focus:ring-purple-700 rounded p-1 flex items-center space-x-3">
+                    <img src="{% static 'images/logo.png' %}" alt="Shield Logo" class="h-10 w-auto object-contain">
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black tracking-tight text-purple-950 leading-none">
+                            Safe<span class="text-purple-700">Space</span>
+                        </span>
+                        <span class="text-[10px] font-bold text-purple-800 tracking-widest mt-0.5 uppercase">
+                            State Department for Gender
+                        </span>
+                    </div>
                 </a>
             </div>
 
@@ -265,10 +330,14 @@
                 <a href="{% url 'landing' %}" class="text-sm font-semibold text-purple-950 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-purple-800 hover:bg-purple-800 focus:text-white focus:bg-purple-800 focus:outline-none">Home</a>
                 {% if user.is_authenticated %}
                     {% if not user.is_staff %}
-                        <a href="{% url 'file_report' %}" class="text-sm font-semibold text-purple-950 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-purple-800 hover:bg-purple-800 focus:text-white focus:bg-purple-800 focus:outline-none">File Report</a>
+                        <a href="{% url 'file_report' %}" class="relative inline-flex items-center justify-center px-4 py-2 font-black text-white bg-red-600 rounded-xl transition-all duration-300 hover:bg-red-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] shadow-[0_0_15px_rgba(220,38,38,0.6)] group">
+                            <span class="mr-2 group-hover:animate-bounce">🚨</span> File Report
+                        </a>
                     {% endif %}
                 {% else %}
-                    <a href="{% url 'file_report' %}" class="text-sm font-semibold text-purple-950 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-purple-800 hover:bg-purple-800 focus:text-white focus:bg-purple-800 focus:outline-none">File Report</a>
+                    <a href="{% url 'file_report' %}" class="relative inline-flex items-center justify-center px-4 py-2 font-black text-white bg-red-600 rounded-xl transition-all duration-300 hover:bg-red-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] shadow-[0_0_15px_rgba(220,38,38,0.6)] group">
+                        <span class="mr-2 group-hover:animate-bounce">🚨</span> File Report
+                    </a>
                 {% endif %}
                 <a href="{% url 'track_case' %}" class="text-sm font-semibold text-purple-950 px-3 py-1.5 border border-transparent rounded-lg transition-all duration-200 hover:text-white hover:border-purple-800 hover:bg-purple-800 focus:text-white focus:bg-purple-800 focus:outline-none">Track Report</a>
 
@@ -330,7 +399,7 @@
     </div>
 </nav>
 
-    <main class="flex-grow focus:outline-none" id="main-content" tabindex="-1">
+    <main class="flex-grow focus:outline-none page-transition" id="main-content" tabindex="-1">
         {% block content %}{% endblock %}
     </main>
 
@@ -365,31 +434,105 @@
             </form>
         </div>
 
-        <button id="chat-toggle-btn" onclick="toggleChatWindow()" class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold px-5 py-3 rounded-full shadow-2xl shadow-purple-300/60 flex items-center space-x-2 transition transform hover:-translate-y-0.5 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500" aria-label="Open AI Help Chat">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-            <span class="text-sm font-black tracking-wide hidden sm:inline">AI Help Assistant</span>
+        <button id="chat-toggle-btn" onclick="toggleChatWindow()" class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold px-3 py-2 rounded-full shadow-lg shadow-purple-300/60 flex items-center space-x-1.5 transition transform hover:-translate-y-0.5 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 text-xs" aria-label="Open AI Help Chat">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+            <span class="font-bold tracking-wide hidden sm:inline">AI Help</span>
         </button>
     </div>
 
-    <footer class="bg-purple-50 text-purple-950 py-12 border-t border-purple-200" role="contentinfo">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center space-y-6">
-            <div class="text-center">
-                <p class="text-sm font-semibold text-purple-900 mb-6 uppercase tracking-widest">Connect With Us</p>
-                <div class="flex space-x-8 text-2xl">
-                    <a href="https://wa.me/254108383799" target="_blank" rel="noopener" class="hover:text-green-400 transition-all hover:scale-110" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" target="_blank" rel="noopener" class="hover:text-blue-500 transition-all hover:scale-110" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" target="_blank" rel="noopener" class="hover:text-pink-500 transition-all hover:scale-110" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" target="_blank" rel="noopener" class="hover:text-sky-400 transition-all hover:scale-110" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+    <footer class="bg-[#0B0118] text-white pt-16 pb-8 border-t border-[#1a0f2e]" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <!-- Brand & Description -->
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <img src="{% static 'images/logo.png' %}" alt="Shield Logo" class="h-14 w-auto object-contain bg-white rounded p-1">
+                        <div class="flex flex-col">
+                            <span class="text-lg font-black tracking-tight text-white leading-tight">The State Department for Gender<br>and Affirmative action</span>
+                            <span class="text-[10px] font-bold text-purple-500 tracking-widest mt-1 uppercase">SECURE SPACES. SAFE LIVES.</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed font-light">
+                        Dedicated to creating safer digital<br>spaces for everyone, everywhere.
+                    </p>
+                </div>
+                
+                <!-- Resources Column -->
+                <div>
+                    <h3 class="text-xs font-bold text-purple-400 tracking-widest uppercase mb-6">RESOURCES</h3>
+                    <ul class="space-y-4 text-sm font-light text-gray-300">
+                        <li><a href="#" class="hover:text-white transition">Support Services</a></li>
+                        <li><a href="#" class="hover:text-white transition">Emergency Contacts</a></li>
+                        <li><a href="#" class="hover:text-white transition">Legal Resources</a></li>
+                        <li><a href="#" class="hover:text-white transition">Safety Quiz</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Quick Links Column -->
+                <div>
+                    <h3 class="text-xs font-bold text-purple-400 tracking-widest uppercase mb-6">QUICK LINKS</h3>
+                    <ul class="space-y-4 text-sm font-light text-gray-300">
+                        <li><a href="#" class="hover:text-white transition">What We Do</a></li>
+                        <li><a href="#" class="hover:text-white transition">Our Mission</a></li>
+                        <li><a href="{% url 'file_report' %}" class="hover:text-white transition">Report Incident</a></li>
+                        <li><a href="{% url 'track_case' %}" class="hover:text-white transition">Check a reported case</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Legal Column -->
+                <div>
+                    <h3 class="text-xs font-bold text-purple-400 tracking-widest uppercase mb-6">LEGAL</h3>
+                    <ul class="space-y-4 text-sm font-light text-gray-300">
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition">Data Usage</a></li>
+                        <li><a href="#" class="hover:text-white transition">Code of Conduct</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="w-full border-t border-purple-200 pt-8 text-center text-xs sm:text-sm">
-                <p class="text-purple-950/80">&copy; 2026 SafeSpace Initiative. All communication tracks are encrypted securely.</p>
-                <p class="text-purple-950/60 mt-2">Built under strict institutional protection layouts.</p>
+            
+            <!-- Emergency and Social Media -->
+            <div class="mt-8 flex flex-col sm:flex-row justify-between items-center gap-6 pb-6">
+                <a href="tel:1195" class="bg-[#d32f2f] hover:bg-[#b71c1c] text-white font-bold px-6 py-3 rounded-lg flex items-center space-x-3 transition shadow-lg shrink-0 group">
+                    <svg class="w-5 h-5 group-hover:animate-ping" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    <span>Emergency: 1195 or 911</span>
+                </a>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-[#000000] hover:bg-white hover:border-white transition duration-500 hover:rotate-[360deg] shadow hover:shadow-lg" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:border-pink-500 transition duration-500 hover:rotate-[360deg] shadow hover:shadow-lg" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#0077b5] hover:border-[#0077b5] transition duration-500 hover:rotate-[360deg] shadow hover:shadow-lg" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://wa.me/254108383799" target="_blank" class="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#25D366] hover:border-[#25D366] transition duration-500 hover:rotate-[360deg] shadow hover:shadow-lg" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#1877F2] hover:border-[#1877F2] transition duration-500 hover:rotate-[360deg] shadow hover:shadow-lg" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+
+            <!-- Bottom Legal & Copyright -->
+            <div class="border-t border-[#1a0f2e] pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-light text-gray-400">
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition">Data Usage</a>
+                </div>
+                <p>Copyright © 2026 The State Department for Gender and Affirmative Action. All rights reserved.</p>
             </div>
         </div>
     </footer>
-
 </div><!-- END #page-content-wrapper -->
+
+<!-- Global Spinner Overlay -->
+<div id="global-loader" class="fixed inset-0 z-[99999] bg-[#0B0118]/80 backdrop-blur-md hidden flex flex-col items-center justify-center transition-opacity duration-300 opacity-0">
+    <div class="relative w-32 h-32 flex justify-center items-center">
+        <!-- Spinning rings -->
+        <div class="absolute inset-0 rounded-full border-t-4 border-b-4 border-purple-500 animate-[spin_1s_linear_infinite]"></div>
+        <div class="absolute inset-2 rounded-full border-r-4 border-l-4 border-pink-500 animate-[spin_1.5s_linear_infinite_reverse]"></div>
+        <div class="absolute inset-4 rounded-full border-t-4 border-emerald-400 animate-[spin_2s_linear_infinite]"></div>
+        <!-- Inner glowing shield -->
+        <svg class="w-10 h-10 text-white animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z"></path></svg>
+    </div>
+    <div class="mt-12">
+        <button onclick="cancelLoader()" class="px-6 py-2 bg-red-600/90 hover:bg-[#d32f2f] text-white text-xs font-bold rounded-lg tracking-wider uppercase shadow-lg transition">Cancel</button>
+    </div>
+</div>
 
 <script>
 /* ================================================================
@@ -439,16 +582,23 @@ function applyHighContrast(enabled) {
 /* ================================================================
    FONT SCALING — targets <html> so every rem unit scales system-wide
    ================================================================ */
+
+const SIZES = ['sm', 'md', 'lg', 'xl'];
+const SIZE_LABELS = ['Small', 'Default', 'Large', 'Extra Large'];
+
+function adjustFontSize(delta) {
+    const curIdx = SIZES.findIndex(c => document.documentElement.classList.contains('font-' + c));
+    let idx = curIdx === -1 ? 1 : curIdx;
+    idx = Math.max(0, Math.min(SIZES.length - 1, idx + delta));
+    setFontSize(SIZES[idx]);
+    document.getElementById('current-font-size-label').textContent = SIZE_LABELS[idx];
+}
+
 function setFontSize(size) {
     // Apply to <html> element so all rem-based values cascade
     document.documentElement.classList.remove('font-sm', 'font-md', 'font-lg', 'font-xl');
     document.documentElement.classList.add('font-' + size);
     localStorage.setItem('a11y-font', size);
-    // Update active button highlight
-    ['sm','md','lg','xl'].forEach(s => {
-        const btn = document.getElementById('fs-' + s);
-        if (btn) btn.classList.toggle('active', s === size);
-    });
 }
 
 /* ================================================================
@@ -888,6 +1038,45 @@ function sendChatMessage(event) {
 function escapeHtml(string) {
     return string.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 }
+</script>
+
+<script>
+/* ================================================================
+   PAGE FULL LOADING SPINNER
+   ================================================================ */
+let loaderTimeout;
+
+function cancelLoader() {
+    window.stop(); // Stop ongoing request navigation
+    const loader = document.getElementById('global-loader');
+    if(loader) {
+        loader.classList.add('opacity-0');
+        setTimeout(() => loader.classList.add('hidden'), 300);
+    }
+    if (loaderTimeout) clearTimeout(loaderTimeout);
+}
+
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('a');
+    if (link && link.href && !link.href.startsWith('javascript:') && !link.href.includes('#') && link.target !== '_blank') {
+        const loader = document.getElementById('global-loader');
+        if(loader) {
+            e.preventDefault();
+            loader.classList.remove('hidden');
+            setTimeout(() => loader.classList.remove('opacity-0'), 10);
+            loaderTimeout = setTimeout(() => { window.location.href = link.href; }, 800); // reduced from 1200 to not feel overwhelmingly slow
+        }
+    }
+});
+
+document.addEventListener('submit', function(e) {
+    const loader = document.getElementById('global-loader');
+    if(loader && !e.defaultPrevented) {
+        loader.classList.remove('hidden');
+        setTimeout(() => loader.classList.remove('opacity-0'), 10);
+        // Let the form submit natively, just show the spinner while the server processes
+    }
+});
 </script>
 
 {% block extra_js %}{% endblock %}

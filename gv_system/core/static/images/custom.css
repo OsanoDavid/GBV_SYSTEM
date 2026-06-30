@@ -17,15 +17,15 @@
 
 /* The wrapper that holds ALL page content */
 #page-content-wrapper {
-    margin-left: 0;
-    transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    margin-right: 0;
+    transition: margin-right var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
     min-height: 100vh;
     position: relative;
 }
 
-/* When sidebar is open, push content to the right */
+/* When sidebar is open, push content to the left to make room for right sidebar */
 body.sidebar-open #page-content-wrapper {
-    margin-left: var(--sidebar-width);
+    margin-right: var(--sidebar-width);
 }
 
 /* ==========================================================================
@@ -35,31 +35,33 @@ body.sidebar-open #page-content-wrapper {
 #accessibility-sidebar {
     position: fixed;
     top: 0;
-    left: calc(-1 * var(--sidebar-width));
+    right: calc(-1 * var(--sidebar-width));
+    left: auto;
     width: var(--sidebar-width);
     height: 100vh;
     background: #ffffff; /* Light mode bg */
-    border-right: 1px solid #e2e8f0; /* Light mode border */
-    box-shadow: 4px 0 40px rgba(0, 0, 0, 0.08);
+    border-left: 1px solid #e2e8f0; /* Light mode border */
+    box-shadow: -4px 0 40px rgba(0, 0, 0, 0.08);
     z-index: 9999;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
-    transition: left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1), background-color var(--transition-speed), border-color var(--transition-speed);
+    transition: right var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1), background-color var(--transition-speed), border-color var(--transition-speed);
     scrollbar-width: thin;
     scrollbar-color: #d1d5db transparent; /* Light mode scrollbar */
 }
 
 body.dark-mode #accessibility-sidebar {
     background: linear-gradient(160deg, #1e1032 0%, #2d1b4e 60%, #1a0f2e 100%);
-    border-right-color: var(--sidebar-border);
-    box-shadow: 4px 0 40px rgba(157, 0, 255, 0.18);
+    border-left-color: var(--sidebar-border);
+    box-shadow: -4px 0 40px rgba(157, 0, 255, 0.18);
     scrollbar-color: rgba(157,0,255,0.3) transparent;
 }
 
 #accessibility-sidebar.open {
-    left: 0;
+    right: 0;
+    left: auto;
 }
 
 #accessibility-sidebar::-webkit-scrollbar {
@@ -351,36 +353,34 @@ body.dark-mode .a11y-nav-btn .nav-icon {
 
 #a11y-toggle-btn {
     position: fixed;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
+    top: 24px;
+    right: 24px;
+    transform: none;
     z-index: 10000;
-    width: 36px;
-    height: 80px;
+    width: 48px;
+    height: 48px;
     background: linear-gradient(180deg, #9D00FF 0%, #6d28d9 100%);
     border: none;
-    border-radius: 0 12px 12px 0;
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    box-shadow: 3px 0 20px rgba(157, 0, 255, 0.4);
-    transition: left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.2s, width 0.2s;
+    box-shadow: 0 4px 20px rgba(157, 0, 255, 0.4);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
     overflow: hidden;
 }
 
 #a11y-toggle-btn:hover {
-    width: 42px;
-    box-shadow: 4px 0 28px rgba(157, 0, 255, 0.6);
+    transform: scale(1.1);
+    box-shadow: 0 6px 28px rgba(157, 0, 255, 0.6);
 }
 
-/* When sidebar opens, move toggle to edge of sidebar */
+/* When sidebar opens, keep button in same spot visually */
 body.sidebar-open #a11y-toggle-btn {
-    left: var(--sidebar-width);
-    border-radius: 0 12px 12px 0;
+    right: calc(24px + var(--sidebar-width));
+    border-radius: 50%;
 }
 
 #a11y-toggle-btn .btn-icon {
@@ -402,8 +402,8 @@ body.sidebar-open #a11y-toggle-btn {
 
 /* Pulse animation on toggle button */
 @keyframes pulseGlow {
-    0%, 100% { box-shadow: 3px 0 20px rgba(157, 0, 255, 0.4); }
-    50%       { box-shadow: 3px 0 30px rgba(157, 0, 255, 0.7); }
+    0%, 100% { box-shadow: 0 4px 20px rgba(157, 0, 255, 0.4); transform: scale(1); }
+    50%       { box-shadow: 0 4px 30px rgba(157, 0, 255, 0.7); transform: scale(1.05); }
 }
 
 #a11y-toggle-btn {
@@ -537,8 +537,8 @@ html:has(body.dark-mode) {
 body.dark-mode p,
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
 body.dark-mode h4, body.dark-mode h5, body.dark-mode h6,
-/* Exclude <i> tags to prevent icon color override */
-body.dark-mode span:not(i), body.dark-mode li, body.dark-mode td,
+/* Exclude <i> tags to prevent icon color override - this was not specific enough */
+body.dark-mode span, body.dark-mode li, body.dark-mode td,
 body.dark-mode th, body.dark-mode label, body.dark-mode div {
     color: #e9d5ff !important;
 }
@@ -753,19 +753,19 @@ html.font-xl  { font-size: 23px !important; }
 
 /* Default – Inter (system clean) */
 html.ff-inter,
-html.ff-inter * {
+html.ff-inter *:not(i):not([class*="fa-"]) {
     font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
 }
 
 /* Open Sans – friendly, highly legible */
 html.ff-opensans,
-html.ff-opensans * {
+html.ff-opensans *:not(i):not([class*="fa-"]) {
     font-family: 'Open Sans', Arial, sans-serif !important;
 }
 
 /* Lexend – designed for reading ease & dyslexia */
 html.ff-lexend,
-html.ff-lexend * {
+html.ff-lexend *:not(i):not([class*="fa-"]) {
     font-family: 'Lexend', 'Comic Sans MS', cursive !important;
     word-spacing: 0.12em;
     letter-spacing: 0.02em;
@@ -773,7 +773,7 @@ html.ff-lexend * {
 
 /* Georgia – warm readable serif */
 html.ff-serif,
-html.ff-serif * {
+html.ff-serif *:not(i):not([class*="fa-"]) {
     font-family: 'Georgia', 'Times New Roman', serif !important;
     letter-spacing: 0.01em;
 }

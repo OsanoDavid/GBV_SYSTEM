@@ -67,7 +67,10 @@ class SecureIncidentReportForm(forms.ModelForm):
             'incident_category', 'description', 'incident_date', 
             'platform_used', 'evidence_attachment', 'allow_contact', 
             'reporter_type', 'gender', 'age_group', 'disability', 
-            'reporter_name', 'reporter_email', 'reporter_phone'
+            'reporter_name', 'reporter_email', 'reporter_phone',
+            'id_type', 'national_id_number', 'contact_mode', 'county',
+            'constituency', 'ward', 'report_police', 'recommend_counseling',
+            'consent_investigation'
         ]
         
         widgets = {
