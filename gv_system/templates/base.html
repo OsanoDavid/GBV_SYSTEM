@@ -57,22 +57,35 @@
             border-left: 1px solid #e2e8f0 !important;
             border-right: none !important;
             box-shadow: -4px 0 40px rgba(0,0,0,0.12) !important;
-            transition: right 0.35s cubic-bezier(0.4,0,0.2,1) !important;
+            transition: right 0.4s cubic-bezier(0.4,0,0.2,1) !important;
         }
         #accessibility-sidebar.open {
             right: 0 !important;
             left: auto !important;
         }
+        /* Accessibility button — smaller, aligned to right edge bottom area */
         #a11y-toggle-btn {
-            top: 80px !important;
-            right: 16px !important;
+            top: auto !important;
+            bottom: 90px !important;
+            right: 0px !important;
             left: auto !important;
-            border-radius: 50% !important;
-            width: 48px !important;
-            height: 48px !important;
+            border-radius: 50% 0 0 50% !important;
+            width: 36px !important;
+            height: 36px !important;
+            box-shadow: -2px 0 12px rgba(157,0,255,0.35) !important;
         }
         body.sidebar-open #a11y-toggle-btn {
-            right: 316px !important;
+            right: 300px !important;
+        }
+        /* === Footer link hover color — visible purple on dark background === */
+        .footer-link {
+            color: #9ca3af;
+            transition: color 0.25s ease, letter-spacing 0.2s ease;
+            text-decoration: none;
+        }
+        .footer-link:hover {
+            color: #c084fc !important;
+            letter-spacing: 0.01em;
         }
         /* === CRITICAL: Fix FontAwesome icons always visible === */
         i[class*="fa-"], i.fas, i.far, i.fab, i.fa {
@@ -95,6 +108,13 @@
         body.dark-mode i[class*="fa-"] {
             color: currentColor !important;
         }
+        /* === Spinner — slow opening animation === */
+        @keyframes slowSpinCw  { from { transform: rotate(0deg);   } to { transform: rotate(360deg);  } }
+        @keyframes slowSpinCcw { from { transform: rotate(0deg);   } to { transform: rotate(-360deg); } }
+        #global-loader .spin-ring-1 { animation: slowSpinCw  3s linear infinite; }
+        #global-loader .spin-ring-2 { animation: slowSpinCcw 4.5s linear infinite; }
+        #global-loader .spin-ring-3 { animation: slowSpinCw  6s linear infinite; }
+        #global-loader { transition: opacity 0.6s ease !important; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-purple-50 via-white to-purple-100 text-purple-950 font-sans antialiased">
@@ -461,10 +481,10 @@
                 <div>
                     <h3 class="text-xs font-bold text-purple-400 tracking-widest uppercase mb-6">RESOURCES</h3>
                     <ul class="space-y-4 text-sm font-light text-gray-300">
-                        <li><a href="#" class="hover:text-white transition">Support Services</a></li>
-                        <li><a href="#" class="hover:text-white transition">Emergency Contacts</a></li>
-                        <li><a href="#" class="hover:text-white transition">Legal Resources</a></li>
-                        <li><a href="#" class="hover:text-white transition">Safety Quiz</a></li>
+                        <li><a href="{% url 'file_report' %}" class="footer-link">Support Services</a></li>
+                        <li><a href="tel:1195" class="footer-link">Emergency: 1195</a></li>
+                        <li><a href="tel:999" class="footer-link">Police: 999</a></li>
+                        <li><a href="{% url 'track_case' %}" class="footer-link">Track Your Case</a></li>
                     </ul>
                 </div>
                 
@@ -472,10 +492,10 @@
                 <div>
                     <h3 class="text-xs font-bold text-purple-400 tracking-widest uppercase mb-6">QUICK LINKS</h3>
                     <ul class="space-y-4 text-sm font-light text-gray-300">
-                        <li><a href="#" class="hover:text-white transition">What We Do</a></li>
-                        <li><a href="#" class="hover:text-white transition">Our Mission</a></li>
-                        <li><a href="{% url 'file_report' %}" class="hover:text-white transition">Report Incident</a></li>
-                        <li><a href="{% url 'track_case' %}" class="hover:text-white transition">Check a reported case</a></li>
+                        <li><a href="{% url 'landing' %}" class="footer-link">Home</a></li>
+                        <li><a href="{% url 'register_user' %}" class="footer-link">Create Account</a></li>
+                        <li><a href="{% url 'file_report' %}" class="footer-link">Report Incident</a></li>
+                        <li><a href="{% url 'track_case' %}" class="footer-link">Check a Reported Case</a></li>
                     </ul>
                 </div>
                 
@@ -483,10 +503,10 @@
                 <div>
                     <h3 class="text-xs font-bold text-purple-400 tracking-widest uppercase mb-6">LEGAL</h3>
                     <ul class="space-y-4 text-sm font-light text-gray-300">
-                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
-                        <li><a href="#" class="hover:text-white transition">Data Usage</a></li>
-                        <li><a href="#" class="hover:text-white transition">Code of Conduct</a></li>
+                        <li><a href="{% url 'landing' %}#privacy" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="{% url 'landing' %}#terms" class="footer-link">Terms of Service</a></li>
+                        <li><a href="{% url 'landing' %}#data" class="footer-link">Data Usage</a></li>
+                        <li><a href="{% url 'landing' %}#conduct" class="footer-link">Code of Conduct</a></li>
                     </ul>
                 </div>
             </div>
@@ -509,28 +529,29 @@
             <!-- Bottom Legal & Copyright -->
             <div class="border-t border-[#1a0f2e] pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-light text-gray-400">
                 <div class="flex space-x-6">
-                    <a href="#" class="hover:text-white transition">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition">Terms of Service</a>
-                    <a href="#" class="hover:text-white transition">Data Usage</a>
+                    <a href="{% url 'landing' %}#privacy" class="footer-link">Privacy Policy</a>
+                    <a href="{% url 'landing' %}#terms" class="footer-link">Terms of Service</a>
+                    <a href="{% url 'landing' %}#data" class="footer-link">Data Usage</a>
                 </div>
-                <p>Copyright © 2026 The State Department for Gender and Affirmative Action. All rights reserved.</p>
+                <p>Copyright &copy; 2026 The State Department for Gender and Affirmative Action. All rights reserved.</p>
             </div>
         </div>
     </footer>
 </div><!-- END #page-content-wrapper -->
 
 <!-- Global Spinner Overlay -->
-<div id="global-loader" class="fixed inset-0 z-[99999] bg-[#0B0118]/80 backdrop-blur-md hidden flex flex-col items-center justify-center transition-opacity duration-300 opacity-0">
-    <div class="relative w-32 h-32 flex justify-center items-center">
-        <!-- Spinning rings -->
-        <div class="absolute inset-0 rounded-full border-t-4 border-b-4 border-purple-500 animate-[spin_1s_linear_infinite]"></div>
-        <div class="absolute inset-2 rounded-full border-r-4 border-l-4 border-pink-500 animate-[spin_1.5s_linear_infinite_reverse]"></div>
-        <div class="absolute inset-4 rounded-full border-t-4 border-emerald-400 animate-[spin_2s_linear_infinite]"></div>
+<div id="global-loader" class="fixed inset-0 z-[99999] bg-[#0B0118]/90 backdrop-blur-md hidden flex flex-col items-center justify-center opacity-0" style="transition: opacity 0.6s ease;">
+    <div class="relative w-28 h-28 flex justify-center items-center">
+        <!-- Slow-spinning rings -->
+        <div class="spin-ring-1 absolute inset-0 rounded-full border-t-4 border-b-4 border-purple-500"></div>
+        <div class="spin-ring-2 absolute inset-2 rounded-full border-r-4 border-l-4 border-pink-400"></div>
+        <div class="spin-ring-3 absolute inset-4 rounded-full border-t-4 border-emerald-400"></div>
         <!-- Inner glowing shield -->
-        <svg class="w-10 h-10 text-white animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z"></path></svg>
+        <svg class="w-9 h-9 text-white animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
     </div>
-    <div class="mt-12">
-        <button onclick="cancelLoader()" class="px-6 py-2 bg-red-600/90 hover:bg-[#d32f2f] text-white text-xs font-bold rounded-lg tracking-wider uppercase shadow-lg transition">Cancel</button>
+    <p class="mt-6 text-purple-300 text-xs font-semibold tracking-widest uppercase animate-pulse">Processing&hellip;</p>
+    <div class="mt-4">
+        <button onclick="cancelLoader()" class="px-5 py-1.5 bg-red-600/80 hover:bg-red-700 text-white text-xs font-bold rounded-lg tracking-wider uppercase shadow-lg transition">Cancel</button>
     </div>
 </div>
 
@@ -1011,8 +1032,8 @@ function sendChatMessage(event) {
         const botBubble = document.createElement('div');
         botBubble.className = "flex flex-col items-start space-y-1 max-w-[85%]";
         botBubble.innerHTML = `
-            <div class="bg-white border border-purple-200 text-purple-950 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-purple-100/60">
-                ${escapeHtml(botReply)}
+            <div class="bg-white border border-purple-200 text-purple-950 p-3 rounded-2xl rounded-tl-none shadow-sm shadow-purple-100/60 overflow-hidden break-words">
+                ${formatBotReply(botReply)}
             </div>
             <span class="text-[9px] text-gray-400 px-1 font-mono">System • Agent Active</span>
         `;
@@ -1037,6 +1058,39 @@ function sendChatMessage(event) {
 
 function escapeHtml(string) {
     return string.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+
+function formatBotReply(text) {
+    let html = escapeHtml(text);
+    // Convert bold: **text** to styled strong
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-black text-purple-700 bg-purple-50 px-1 rounded-sm">$1</strong>');
+    
+    // Parse list items and paragraphs
+    let lines = html.split('\\n');
+    let inList = false;
+    let formattedLines = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+        let line = lines[i].trim();
+        if (line.match(/^[\*\-]\s/)) {
+            if (!inList) {
+                formattedLines.push('<ul class="list-disc pl-5 mt-1 mb-2 space-y-1 text-purple-900 border-l-2 border-purple-200 ml-1">');
+                inList = true;
+            }
+            line = line.replace(/^[\*\-]\s(.*)/, '<li>$1</li>');
+            formattedLines.push(line);
+        } else {
+            if (inList) {
+                formattedLines.push('</ul>');
+                inList = false;
+            }
+            if (line) {
+                formattedLines.push('<p class="mb-2">' + line + '</p>');
+            }
+        }
+    }
+    if (inList) formattedLines.push('</ul>');
+    return formattedLines.join('');
 }
 </script>
 

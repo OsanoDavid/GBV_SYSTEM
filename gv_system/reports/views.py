@@ -71,13 +71,14 @@ def file_report_view(request):
             try:
                 incident = form.save(commit=False)
 
-                # Handle custom category if "other" was selected
-                if incident.incident_category == 'other':
+                # Handle custom category if "other" was selected. This check is now more robust.
+                if form.cleaned_data.get('incident_category') == 'other':
                     custom_cat = form.cleaned_data.get('custom_category', '').strip()
                     if custom_cat:
                         incident.incident_category = custom_cat
                     else:
-                        # If no custom category provided, reject the form
+                        # This is a critical validation step. If 'other' is selected,
+                        # the custom_category field must not be empty.
                         messages.error(request, "Please specify a custom incident type when selecting 'Other'.")
                         return render(request, 'reports/file_report.html', {'form': form})
 
@@ -153,8 +154,10 @@ def file_report_view(request):
         else:
             # Form validation failed - log the errors
             logger.warning("Form validation failed: %s", form.errors)
-            for field, errors in form.errors.items():
-                for error in errors:
+            # Create a single, clear error message for the user.
+            error_list = []
+            for field, field_errors in form.errors.items():
+                for error in field_errors:
                     messages.error(request, f"{field}: {error}")
     else:
         form = SecureIncidentReportForm()
@@ -357,8 +360,10 @@ def ai_assistant_chat_view(request):
                     "technology-facilitated gender-based violence reporting platform. Give short, "
                     "practical, trauma-informed answers. Help users file reports, track cases, "
                     "preserve evidence, and find emergency resources. If the user may be in "
-                    "immediate danger, tell them to contact emergency services and mention Kenya "
-                    "helplines 999, 116, and 1195. Do not claim to be a lawyer, doctor, or police officer."
+                    "immediate danger, tell them to contact emergency services. IMPORTANT FORMATTING RULES: "
+                    "1. ALWAYS output your sentences and instructions in bullet points for easy reading. "
+                    "2. ALWAYS make emergency numbers bold (e.g., **999**, **116**, **1195**, **911**). "
+                    "Do not claim to be a lawyer, doctor, or police officer."
                 )
             }]
         },

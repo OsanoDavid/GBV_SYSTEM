@@ -1801,3 +1801,21 @@ Traceback (most recent call last):
   File "C:\Users\Admin\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\http\request.py", line 206, in get_host
     raise DisallowedHost(msg)
 django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+2026-07-01 00:24:52,586 [WARNING] reports.views: Form validation failed: <ul class="errorlist"><li>incident_category<ul class="errorlist" id="id_incident_category_error"><li>Select a valid choice. Image-Based Abuse is not one of the available choices.</li></ul></li><li>reporter_type<ul class="errorlist" id="id_reporter_type_error"><li>This field is required.</li></ul></li></ul>
+2026-07-01 08:04:40,849 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 08:10:23,985 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 08:18:31,196 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 08:24:44,450 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-01 08:24:46,025 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 08:28:12,292 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-01 08:28:13,442 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 08:59:59,485 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 09:00:37,712 [WARNING] django.request: Not Found: /favicon.ico
+2026-07-01 09:20:30,477 [INFO] reports.views: Saved Report ID 1 | Ref: GBV-52IX-Z3L5 | PIN: 061886
+2026-07-01 09:29:55,936 [WARNING] reports.views: Form validation failed: <ul class="errorlist"><li>description<ul class="errorlist" id="id_description_error"><li>This field is required.</li></ul></li></ul>
+2026-07-01 09:30:09,472 [WARNING] reports.views: Form validation failed: <ul class="errorlist"><li>description<ul class="errorlist" id="id_description_error"><li>This field is required.</li></ul></li></ul>
+2026-07-01 09:47:12,157 [WARNING] reports.views: Form validation failed: <ul class="errorlist"><li>description<ul class="errorlist" id="id_description_error"><li>This field is required.</li></ul></li></ul>
+2026-07-01 10:32:06,458 [INFO] reports.views: Saved Report ID 2 | Ref: GBV-NJZ2-E7C6 | PIN: 704881
+2026-07-01 10:48:38,494 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-01 10:48:41,346 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 10:54:39,457 [INFO] django.utils.autoreload: Watching for file changes with StatReloader

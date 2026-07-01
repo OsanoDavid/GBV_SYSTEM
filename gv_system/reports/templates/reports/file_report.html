@@ -117,7 +117,20 @@
 
             <form id="report-form-start" method="POST" enctype="multipart/form-data" class="flex-grow flex flex-col p-6 sm:p-8 justify-between space-y-8">
                 {% csrf_token %}
-                
+                <!-- Hidden field for reporter_type with default -->
+                <input type="hidden" name="reporter_type" value="self">
+
+                {% if messages %}
+                <div id="form-messages-block" class="space-y-2">
+                    {% for message in messages %}
+                    <div class="flex items-start gap-2 p-3 rounded-xl text-xs font-bold border {% if message.tags == 'error' %}bg-red-50 border-red-200 text-red-700{% else %}bg-green-50 border-green-200 text-green-700{% endif %}">
+                        <span>{% if message.tags == 'error' %}⚠️{% else %}✅{% endif %}</span>
+                        <span>{{ message }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
                 <div class="flex-grow">
                     
                     <!-- STEP 1: PERSONAL INFORMATION -->
@@ -213,20 +226,12 @@
                                 <label class="block text-xs font-bold text-gray-700 uppercase">Type of abuse classification</label>
                                 <select id="id_incident_category" name="incident_category" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
                                     <option value="">Select Type of abuse</option>
-                                    <option value="Doxing">Doxing</option>
-                                    <option value="Cyber Stalking">Cyber Stalking</option>
-                                    <option value="Cyber Mob">Cyber Mob</option>
-                                    <option value="Cyber Bullying">Cyber Bullying</option>
-                                    <option value="Image-Based Abuse">Image-Based Abuse</option>
-                                    <option value="Defamation">Defamation</option>
-                                    <option value="Gender Trolling">Gender Trolling</option>
-                                    <option value="Cross-Platform Harassment">Cross-Platform Harassment</option>
-                                    <option value="Denial of Access to Technology">Denial of Access to Technology</option>
-                                    <option value="Shock & Grief Trolling">Shock & Grief Trolling</option>
-                                    <option value="Online Impersonation">Online Impersonation</option>
-                                    <option value="Online Harassment">Online Harassment</option>
-                                    <option value="Revenge Porn">Revenge Porn</option>
-                                    <option value="Sextortion">Sextortion</option>
+                                    <option value="cyberstalking">Cyberstalking &amp; Harassment</option>
+                                    <option value="doxing">Non-Consensual Image Sharing / Doxing</option>
+                                    <option value="impersonation">Impersonation &amp; Identity Theft</option>
+                                    <option value="threats">Online Threats &amp; Hate Speech</option>
+                                    <option value="other">Other Forms of Online Abuse</option>
+                                    <option value="children_home_support">Children's Home Support</option>
                                 </select>
                             </div>
 
@@ -234,14 +239,15 @@
                                 <label class="block text-xs font-bold text-gray-700 uppercase">Platform where the abuse occurred</label>
                                 <select id="id_platform_used" name="platform_used" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
                                     <option value="">Select Platform where the abuse occurred</option>
-                                    <option value="x (twitter)">x (twitter)</option>
-                                    <option value="instagram">instagram</option>
-                                    <option value="facebook">facebook</option>
-                                    <option value="tiktok">tiktok</option>
-                                    <option value="telegram">telegram</option>
-                                    <option value="email">email</option>
-                                    <option value="dating apps">dating apps</option>
-                                    <option value="other">other</option>
+                                    <option value="X (Twitter)">X (Twitter)</option>
+                                    <option value="Instagram">Instagram</option>
+                                    <option value="Facebook">Facebook</option>
+                                    <option value="TikTok">TikTok</option>
+                                    <option value="Telegram">Telegram</option>
+                                    <option value="WhatsApp">WhatsApp</option>
+                                    <option value="Email">Email</option>
+                                    <option value="Dating Apps">Dating Apps</option>
+                                    <option value="Other">Other</option>
                                 </select>
                             </div>
 
@@ -254,15 +260,48 @@
 
                     <!-- STEP 3: EVIDENCE AND CONSENTS -->
                     <div id="wizard-step-3" class="space-y-6 hidden transition-all duration-300">
-                        <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-4">
+                        <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-5">
                             <h3 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-purple-600"></span>Case Integrity Rules & Clearances
+                                <span class="w-2 h-2 rounded-full bg-purple-600"></span>Evidence &amp; Case Clearances
                             </h3>
 
+                            <!-- Evidence File Upload (Optional) -->
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-[9px] font-black text-gray-400 tracking-wider uppercase">Optional — Evidence Attachment</span>
+                                    <span class="text-[9px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-semibold">Not Required</span>
+                                </div>
+                                <label for="id_evidence_attachment" id="evidence-drop-zone" class="flex flex-col items-center justify-center w-full min-h-[110px] border-2 border-dashed border-purple-200 rounded-2xl bg-white cursor-pointer hover:border-purple-400 hover:bg-purple-50/40 transition-all duration-200 group px-4 py-5">
+                                    <div id="evidence-placeholder" class="flex flex-col items-center gap-2 text-center">
+                                        <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-500 group-hover:bg-purple-200 transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-bold text-gray-700">Click to attach evidence file</p>
+                                            <p class="text-[10px] text-gray-400 mt-0.5">Screenshots, logs, recordings &mdash; PNG, JPG, PDF, MP4 (max 10MB)</p>
+                                        </div>
+                                    </div>
+                                    <div id="evidence-selected" class="hidden flex-col items-center gap-2 text-center">
+                                        <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-bold text-green-700" id="evidence-filename">File selected</p>
+                                            <p class="text-[10px] text-green-500 mt-0.5">Click to change file</p>
+                                        </div>
+                                    </div>
+                                    <input type="file" id="id_evidence_attachment" name="evidence_attachment" accept="image/*,.pdf,.mp4,.mov,.avi,.txt,.doc,.docx" class="hidden" onchange="handleEvidenceFileChange(this)">
+                                </label>
+                            </div>
+
                             <div class="p-4 bg-white rounded-xl border border-gray-200 space-y-5 shadow-sm">
-                                <!-- Optional items matching Screenshot 2026-06-30 164810_2.png -->
-                                <div class="space-y-3 border-b border-gray-100 pb-3">
-                                    <span class="block text-[9px] font-black text-gray-400 tracking-wider uppercase">Optional</span>
+                                <!-- Optional checkboxes -->
+                                <div class="space-y-3 border-b border-gray-100 pb-4">
+                                    <span class="block text-[9px] font-black text-gray-400 tracking-wider uppercase">Optional Actions</span>
                                     <div class="flex items-start space-x-3">
                                         <input type="checkbox" id="id_report_police" name="report_police" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
                                         <label for="id_report_police" class="text-xs font-bold text-gray-600 uppercase cursor-pointer select-none">Report to police</label>
@@ -273,16 +312,16 @@
                                     </div>
                                 </div>
 
-                                <!-- Required items matching Screenshot 2026-06-30 164810_2.png -->
+                                <!-- Required consents -->
                                 <div class="space-y-3">
-                                    <span class="block text-[9px] font-black text-red-500 tracking-wider uppercase">Required</span>
-                                    <div class="flex items-start space-x-3">
+                                    <span class="block text-[9px] font-black text-red-500 tracking-wider uppercase">Required Consents</span>
+                                    <div class="flex items-start space-x-3 p-2.5 rounded-lg hover:bg-red-50/60 transition">
                                         <input type="checkbox" id="id_consent_followup" name="allow_contact" onchange="validateLiveFields()" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
-                                        <label for="id_consent_followup" class="text-xs font-bold text-gray-700 uppercase cursor-pointer select-none">I consent to being contacted for follow up</label>
+                                        <label for="id_consent_followup" class="text-xs font-bold text-gray-700 cursor-pointer select-none">I consent to being contacted for follow-up by the SafeSpace team</label>
                                     </div>
-                                    <div class="flex items-start space-x-3">
+                                    <div class="flex items-start space-x-3 p-2.5 rounded-lg hover:bg-red-50/60 transition">
                                         <input type="checkbox" id="id_consent_investigation" name="consent_investigation" onchange="validateLiveFields()" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
-                                        <label for="id_consent_investigation" class="text-xs font-bold text-gray-700 uppercase cursor-pointer select-none">I consent to my information being used for investigation purposes</label>
+                                        <label for="id_consent_investigation" class="text-xs font-bold text-gray-700 cursor-pointer select-none">I consent to my information being used for investigation and legal purposes</label>
                                     </div>
                                 </div>
                             </div>
@@ -355,24 +394,121 @@
                         </div>
                     </div>
 
-                    <!-- STEP 5: DYNAMIC REVIEW PANEL WORKSPACE (from image_7f90fa.png) -->
-                    <div id="wizard-step-5" class="space-y-6 hidden transition-all duration-300">
-                        <div id="summary-review-panel" class="bg-gradient-to-tr from-purple-950 via-indigo-950 to-blue-950 border border-indigo-900 p-6 rounded-2xl space-y-4 shadow-xl text-white">
-                            <h4 class="text-xs font-black uppercase tracking-widest border-b border-white/20 pb-2 flex items-center gap-2 text-purple-300">
-                                📋 Live Submission Summary Package
-                            </h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Reporter Name</span><span id="sm-name" class="font-bold text-white">-</span></div>
-                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Identification Details</span><span id="sm-id" class="font-mono text-white">-</span></div>
-                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Gender & Age</span><span id="sm-demographics" class="font-bold text-white">-</span></div>
-                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Contact Method</span><span id="sm-contact" class="font-medium text-white">-</span></div>
-                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Disability Status</span><span id="sm-disability" class="font-bold text-white">-</span></div>
-                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Abuse Vector Category</span><span id="sm-category" class="font-black text-amber-300">-</span></div>
-                                <div class="p-3 bg-white/10 rounded-xl border border-white/10"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Platform</span><span id="sm-platform" class="font-bold text-white">-</span></div>
-                                <div class="p-3 bg-white/10 rounded-xl border border-white/10 md:col-span-2 lg:col-span-2"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Assigned Target Regional Matrix</span><span id="sm-location" class="font-bold text-emerald-300">-</span></div>
-                                <div class="p-3 bg-white/10 rounded-xl border border-white/10 md:col-span-2 lg:col-span-3"><span class="font-bold text-purple-300 block uppercase text-[9px] tracking-wider mb-0.5">Consents & Actions</span><span id="sm-consents" class="font-bold text-white">-</span></div>
+                    <!-- STEP 5: BEAUTIFUL LIGHT MULTICOLOR REVIEW PANEL -->
+                    <div id="wizard-step-5" class="space-y-4 hidden transition-all duration-300">
+
+                        <!-- Header banner -->
+                        <div class="rounded-2xl p-4 review-header-gradient flex items-center gap-3 shadow-md">
+                            <div class="w-9 h-9 rounded-xl bg-white/70 flex items-center justify-center text-lg shadow-sm">📋</div>
+                            <div>
+                                <p class="text-xs font-black text-gray-800 tracking-tight">Submission Review — Final Check</p>
+                                <p class="text-[10px] text-gray-500">Confirm all details below before submitting your secure report.</p>
                             </div>
                         </div>
+
+                        <!-- Card grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+
+                            <!-- Reporter Name — violet card -->
+                            <div class="review-card review-card-violet">
+                                <div class="review-card-icon">👤</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Reporter Name</span>
+                                    <span id="sm-name" class="review-card-value">-</span>
+                                </div>
+                            </div>
+
+                            <!-- ID Details — blue card -->
+                            <div class="review-card review-card-blue">
+                                <div class="review-card-icon">🪪</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Identification</span>
+                                    <span id="sm-id" class="review-card-value font-mono">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Gender & Age — pink card -->
+                            <div class="review-card review-card-pink">
+                                <div class="review-card-icon">🎂</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Gender &amp; Age</span>
+                                    <span id="sm-demographics" class="review-card-value">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Contact — teal card -->
+                            <div class="review-card review-card-teal">
+                                <div class="review-card-icon">📞</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Contact Method</span>
+                                    <span id="sm-contact" class="review-card-value">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Disability — amber card -->
+                            <div class="review-card review-card-amber">
+                                <div class="review-card-icon">♿</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Disability Status</span>
+                                    <span id="sm-disability" class="review-card-value">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Abuse Category — red/coral card -->
+                            <div class="review-card review-card-rose">
+                                <div class="review-card-icon">🚨</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Abuse Category</span>
+                                    <span id="sm-category" class="review-card-value font-black">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Platform — indigo card -->
+                            <div class="review-card review-card-indigo">
+                                <div class="review-card-icon">📱</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Platform</span>
+                                    <span id="sm-platform" class="review-card-value">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Location — emerald card (wide) -->
+                            <div class="review-card review-card-emerald sm:col-span-2">
+                                <div class="review-card-icon">📍</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Regional Location</span>
+                                    <span id="sm-location" class="review-card-value">-</span>
+                                </div>
+                            </div>
+
+                            <!-- Evidence -- sky card -->
+                            <div class="review-card review-card-sky">
+                                <div class="review-card-icon">📎</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Evidence File</span>
+                                    <span id="sm-evidence" class="review-card-value">None attached</span>
+                                </div>
+                            </div>
+
+                            <!-- Consents — full-width green card -->
+                            <div class="review-card review-card-green sm:col-span-2 lg:col-span-3">
+                                <div class="review-card-icon">✅</div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="review-card-label">Consents &amp; Actions</span>
+                                    <span id="sm-consents" class="review-card-value">-</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Confirmation notice -->
+                        <div class="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3.5">
+                            <span class="text-amber-500 text-sm mt-0.5">⚠️</span>
+                            <p class="text-[11px] text-amber-800 font-medium leading-relaxed">
+                                <span class="font-black">Final confirmation:</span> Once submitted, your report is locked and encrypted. You will receive a unique GBV reference code and a 6-digit PIN — save both immediately.
+                            </p>
+                        </div>
+
                     </div>
 
                 </div>
@@ -533,12 +669,12 @@
             }
             isContactValid = isNumeric && contactVal.length === 10;
         } else {
-            const hasGmail = contactVal.toLowerCase().includes('@gmail');
-            if(contactVal.length > 0 && !hasGmail) {
-                errNode.textContent = "⚠️ Form rule error: Email address string must contain '@gmail'.";
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(contactVal.length > 0 && !emailRegex.test(contactVal)) {
+                errNode.textContent = "⚠️ Form rule error: Please enter a valid email address.";
                 errNode.classList.remove('hidden');
             }
-            isContactValid = hasGmail && contactVal.length > 5;
+            isContactValid = emailRegex.test(contactVal) && contactVal.length > 5;
         }
 
         updateSideItemStatus('side-item-name', nameVal.length > 0);
@@ -623,21 +759,141 @@
         }
     }
 
+    function showStepSpinner(buttonEl) {
+        // Show spinner inside button
+        buttonEl.disabled = true;
+        buttonEl.dataset.originalText = buttonEl.textContent;
+        buttonEl.innerHTML = `<span class="inline-flex items-center gap-2">
+            <svg class="animate-spin w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Processing...
+        </span>`;
+    }
+
+    function hideStepSpinner(buttonEl, originalText) {
+        buttonEl.disabled = false;
+        buttonEl.textContent = originalText || buttonEl.dataset.originalText || 'Next Step';
+    }
+
+    function showSubmitOverlay() {
+        const overlay = document.getElementById('submit-loading-overlay');
+        if (overlay) overlay.classList.remove('hidden');
+    }
+
+    function showToast(message, type = 'error') {
+        // Remove any existing toast
+        const old = document.getElementById('wizard-toast');
+        if (old) old.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'wizard-toast';
+        const isError = type === 'error';
+        toast.className = [
+            'fixed top-5 left-1/2 -translate-x-1/2 z-[200]',
+            'flex items-start gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border',
+            'max-w-sm w-[90vw] text-xs font-bold',
+            'transition-all duration-300 opacity-0 translate-y-[-12px]',
+            isError
+                ? 'bg-red-50 border-red-200 text-red-800'
+                : 'bg-green-50 border-green-200 text-green-800'
+        ].join(' ');
+
+        toast.innerHTML = `
+            <span class="text-base mt-0.5 shrink-0">${isError ? '⚠️' : '✅'}</span>
+            <span class="leading-relaxed">${message}</span>
+            <button onclick="this.parentElement.remove()" class="ml-auto shrink-0 opacity-50 hover:opacity-100 text-base leading-none">&times;</button>
+        `;
+        document.body.appendChild(toast);
+
+        // Animate in
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                toast.classList.remove('opacity-0', '-translate-y-[12px]', 'translate-y-[-12px]');
+                toast.classList.add('opacity-100', 'translate-y-0');
+            });
+        });
+
+        // Auto-dismiss after 4 seconds
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-y-[-12px]');
+            setTimeout(() => toast.remove(), 350);
+        }, 4000);
+    }
+
+    function getStepErrors(step) {
+        const errors = [];
+        if (step === 1) {
+            const nameVal = document.getElementById('id_reporter_name').value.trim();
+            const genVal = document.getElementById('id_gender').value;
+            const idVal = document.getElementById('id_national_id_number').value.trim();
+            const ageVal = document.getElementById('id_age_group').value;
+            const contactVal = document.getElementById('id_contact_info').value.trim();
+            const contactMode = document.getElementById('id_contact_mode').value;
+            const disVal = document.getElementById('id_disability').value;
+            if (!nameVal) errors.push('Full Name is required');
+            if (!genVal) errors.push('Gender Identity is required');
+            if (!idVal || idVal.length < 3) errors.push('National ID / Passport number is required');
+            if (!ageVal) errors.push('Age Bracket is required');
+            if (!disVal) errors.push('Disability status is required');
+            if (contactMode === 'Phone Number') {
+                if (!/^\d{10}$/.test(contactVal)) errors.push('Phone number must be exactly 10 digits');
+            } else {
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactVal)) errors.push('A valid email address is required');
+            }
+        } else if (step === 2) {
+            if (!document.getElementById('id_incident_category').value) errors.push('Type of abuse is required');
+            if (!document.getElementById('id_platform_used').value) errors.push('Platform where abuse occurred is required');
+            if (!document.getElementById('id_description').value.trim()) errors.push('Incident description is required');
+        } else if (step === 3) {
+            if (!document.getElementById('id_consent_followup').checked) errors.push('You must consent to being contacted for follow-up');
+            if (!document.getElementById('id_consent_investigation').checked) errors.push('You must consent to information use for investigation');
+        } else if (step === 4) {
+            if (!document.getElementById('id_county').value) errors.push('County is required');
+            if (!document.getElementById('id_constituency').value) errors.push('Constituency / Sub-County is required');
+            if (!document.getElementById('id_ward').value) errors.push('Ward is required');
+        }
+        return errors;
+    }
+
     function stepWizardNavigationEngine(directionDelta) {
+        const btnNext = document.getElementById('next-step-btn');
+
         if (activeStepCursor === boundaryTerminalStep && directionDelta === 1) {
-            document.getElementById('report-form-start').submit();
+            // Final submission - show overlay and submit
+            showSubmitOverlay();
+            showStepSpinner(btnNext);
+            setTimeout(() => {
+                document.getElementById('report-form-start').submit();
+            }, 600);
             return;
         }
 
         const nextStep = activeStepCursor + directionDelta;
         if (nextStep < 1 || nextStep > boundaryTerminalStep) return;
 
-        // Form verification rules block moving forward prematurely
-        if (directionDelta === 1 && nextStep === 5 && !validateLiveFields()) {
-            alert("Please make sure all mandatory field parameters across previous steps are filled correctly before arriving at the review stage.");
-            return;
+        // Per-step validation when moving forward
+        if (directionDelta === 1) {
+            const stepErrors = getStepErrors(activeStepCursor);
+            if (stepErrors.length > 0) {
+                showToast('Please fix the following: ' + stepErrors.join(' • '));
+                return;
+            }
         }
 
+        // Show spinner briefly when moving forward
+        if (directionDelta === 1) {
+            showStepSpinner(btnNext);
+            setTimeout(() => {
+                doStepTransition(nextStep, directionDelta, btnNext);
+            }, 500);
+        } else {
+            doStepTransition(nextStep, directionDelta, btnNext);
+        }
+    }
+
+    function doStepTransition(nextStep, directionDelta, btnNext) {
         document.getElementById(`wizard-step-${activeStepCursor}`).classList.add('hidden');
         document.querySelector(`#side-sec-${activeStepCursor} > div`).className = "text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between";
 
@@ -648,8 +904,6 @@
 
         document.getElementById('step-indicator-tag').textContent = `Step ${activeStepCursor} of ${boundaryTerminalStep}`;
         document.getElementById('back-step-btn').classList.toggle('invisible', activeStepCursor === 1);
-
-        const btnNext = document.getElementById('next-step-btn');
         
         if (activeStepCursor === 4) {
             btnNext.textContent = "FINISH & REVIEW SUBMISSION";
@@ -662,6 +916,7 @@
             btnNext.textContent = "Next Step";
             btnNext.className = "px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition tracking-wider uppercase";
         }
+        btnNext.disabled = false;
         validateLiveFields();
     }
 
@@ -669,4 +924,98 @@
         validateLiveFields();
     });
 </script>
+
+<!-- Full-screen submit loading overlay -->
+<div id="submit-loading-overlay" class="hidden fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-3xl p-10 shadow-2xl flex flex-col items-center gap-6 max-w-xs w-full mx-4">
+        <div class="relative w-16 h-16">
+            <svg class="animate-spin w-16 h-16 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+                <path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </div>
+        <div class="text-center">
+            <p class="text-sm font-black text-gray-900 tracking-tight">Encrypting &amp; Submitting Report</p>
+            <p class="text-xs text-gray-500 mt-1">Please wait while your report is being securely processed...</p>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full animate-progress-bar"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes progress-bar {
+    0% { width: 0%; }
+    40% { width: 60%; }
+    80% { width: 85%; }
+    100% { width: 95%; }
+}
+.animate-progress-bar {
+    animation: progress-bar 2.5s ease-in-out forwards;
+}
+
+/* ===== REVIEW PANEL STYLES ===== */
+.review-header-gradient {
+    background: linear-gradient(135deg, #f0f4ff 0%, #fdf2f8 50%, #f0fdf4 100%);
+    border: 1px solid #e5e7eb;
+}
+
+.review-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.review-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+.review-card-icon {
+    font-size: 1rem;
+    line-height: 1;
+    margin-top: 1px;
+    flex-shrink: 0;
+}
+.review-card-label {
+    display: block;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+    opacity: 0.6;
+}
+.review-card-value {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+/* Card color variants */
+.review-card-violet  { background: #f5f3ff; border-color: #ddd6fe; color: #4c1d95; }
+.review-card-violet .review-card-label  { color: #7c3aed; }
+.review-card-blue    { background: #eff6ff; border-color: #bfdbfe; color: #1e3a5f; }
+.review-card-blue .review-card-label    { color: #2563eb; }
+.review-card-pink    { background: #fdf2f8; border-color: #fbcfe8; color: #831843; }
+.review-card-pink .review-card-label    { color: #db2777; }
+.review-card-teal    { background: #f0fdfa; border-color: #99f6e4; color: #134e4a; }
+.review-card-teal .review-card-label    { color: #0d9488; }
+.review-card-amber   { background: #fffbeb; border-color: #fde68a; color: #78350f; }
+.review-card-amber .review-card-label   { color: #d97706; }
+.review-card-rose    { background: #fff1f2; border-color: #fecdd3; color: #881337; }
+.review-card-rose .review-card-label    { color: #e11d48; }
+.review-card-indigo  { background: #eef2ff; border-color: #c7d2fe; color: #1e1b4b; }
+.review-card-indigo .review-card-label  { color: #4338ca; }
+.review-card-emerald { background: #ecfdf5; border-color: #a7f3d0; color: #064e3b; }
+.review-card-emerald .review-card-label { color: #059669; }
+.review-card-sky     { background: #f0f9ff; border-color: #bae6fd; color: #0c4a6e; }
+.review-card-sky .review-card-label     { color: #0284c7; }
+.review-card-green   { background: #f0fdf4; border-color: #bbf7d0; color: #14532d; }
+.review-card-green .review-card-label   { color: #16a34a; }
+</style>
 {% endblock %}
