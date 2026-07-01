@@ -6,16 +6,20 @@
 {% block content %}
 <!-- HEADER: Top Bar with Guest Mode Active Badge -->
 <div class="max-w-7xl mx-auto px-4 mt-6">
-    <div class="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
+    <div
+        class="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 shadow-sm">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-between p-2.5 text-purple-700">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                 </svg>
             </div>
             <div>
                 <h2 class="text-sm font-black text-gray-900 tracking-tight">Anonymous Submission Node</h2>
-                <p class="text-xs text-gray-500">Your connection endpoints are completely masked via cryptographic routing.</p>
+                <p class="text-xs text-gray-500">Your connection endpoints are completely masked via cryptographic
+                    routing.</p>
             </div>
         </div>
         <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-sm">
@@ -27,69 +31,91 @@
 
 <!-- Main Grid Workspace Grid Container Layout -->
 <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-    
+
     <!-- LEFT SIDEBAR: Interactive Form Tree Progress Tracker -->
     <div class="lg:col-span-1 lg:sticky lg:top-6 self-start">
         <div class="bg-gradient-to-b from-white to-gray-50 rounded-2xl p-5 border border-gray-200 shadow-md space-y-6">
             <h2 class="text-xs font-black text-gray-400 uppercase tracking-widest border-b pb-2">Report Progress</h2>
             <nav class="space-y-4" id="sidebar-progress-nav">
-                
+
                 <!-- Section 1 -->
                 <div id="side-sec-1" class="step-group active-group">
-                    <div class="text-xs font-bold px-3 py-2 bg-blue-600 text-white rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm">
+                    <div
+                        class="text-xs font-bold px-3 py-2 bg-blue-600 text-white rounded-xl flex items-center justify-between transition-all duration-300 shadow-sm">
                         <span>Personal Information</span>
                         <span class="status-icon hidden">✓</span>
                     </div>
-                    <ul class="mt-2 ml-4 space-y-2 border-l-2 border-gray-200 pl-3 text-[11px] font-medium transition-all">
-                        <li id="side-item-name" class="flex justify-between items-center text-red-500 font-bold"><span>Full Name</span><span class="indicator">*</span></li>
-                        <li id="side-item-gender" class="flex justify-between items-center text-red-500 font-bold"><span>Gender</span><span class="indicator">*</span></li>
-                        <li id="side-item-id" class="flex justify-between items-center text-red-500 font-bold"><span>ID / Passport</span><span class="indicator">*</span></li>
-                        <li id="side-item-age" class="flex justify-between items-center text-red-500 font-bold"><span>Age</span><span class="indicator">*</span></li>
-                        <li id="side-item-contact" class="flex justify-between items-center text-red-500 font-bold"><span>Contact Info</span><span class="indicator">*</span></li>
-                        <li id="side-item-disability" class="flex justify-between items-center text-red-500 font-bold"><span>Disability Status</span><span class="indicator">*</span></li>
+                    <ul
+                        class="mt-2 ml-4 space-y-2 border-l-2 border-gray-200 pl-3 text-[11px] font-medium transition-all">
+                        <li id="side-item-name" class="flex justify-between items-center text-red-500 font-bold">
+                            <span>Full Name</span><span class="indicator">*</span></li>
+                        <li id="side-item-gender" class="flex justify-between items-center text-red-500 font-bold">
+                            <span>Gender</span><span class="indicator">*</span></li>
+                        <li id="side-item-id" class="flex justify-between items-center text-red-500 font-bold"><span>ID
+                                / Passport</span><span class="indicator">*</span></li>
+                        <li id="side-item-age" class="flex justify-between items-center text-red-500 font-bold">
+                            <span>Age</span><span class="indicator">*</span></li>
+                        <li id="side-item-contact" class="flex justify-between items-center text-red-500 font-bold">
+                            <span>Contact Info</span><span class="indicator">*</span></li>
+                        <li id="side-item-disability" class="flex justify-between items-center text-red-500 font-bold">
+                            <span>Disability Status</span><span class="indicator">*</span></li>
                     </ul>
                 </div>
 
                 <!-- Section 2 -->
                 <div id="side-sec-2" class="step-group">
-                    <div class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
+                    <div
+                        class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
                         <span>Incident Details</span>
                         <span class="status-icon hidden">✓</span>
                     </div>
-                    <ul class="mt-2 ml-4 space-y-2 border-l-2 border-gray-200 pl-3 text-[11px] font-medium text-gray-400">
-                        <li id="side-item-category" class="flex justify-between items-center"><span>Type of abuse</span><span class="indicator text-red-400">*</span></li>
-                        <li id="side-item-platform" class="flex justify-between items-center"><span>Platform of Abuse</span><span class="indicator text-red-400">*</span></li>
-                        <li id="side-item-desc" class="flex justify-between items-center"><span>Description</span><span class="indicator text-gray-300"></span></li>
+                    <ul
+                        class="mt-2 ml-4 space-y-2 border-l-2 border-gray-200 pl-3 text-[11px] font-medium text-gray-400">
+                        <li id="side-item-category" class="flex justify-between items-center"><span>Type of
+                                abuse</span><span class="indicator text-red-400">*</span></li>
+                        <li id="side-item-platform" class="flex justify-between items-center"><span>Platform of
+                                Abuse</span><span class="indicator text-red-400">*</span></li>
+                        <li id="side-item-desc" class="flex justify-between items-center"><span>Description</span><span
+                                class="indicator text-gray-300"></span></li>
                     </ul>
                 </div>
 
                 <!-- Section 3 -->
                 <div id="side-sec-3" class="step-group">
-                    <div class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
+                    <div
+                        class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
                         <span>Evidence & Cases</span>
                         <span class="status-icon hidden">✓</span>
                     </div>
-                    <ul class="mt-2 ml-4 space-y-2 border-l-2 border-gray-100 pl-3 text-[11px] font-medium text-gray-400">
-                        <li id="side-item-consents" class="flex justify-between items-center"><span>System Consents</span><span class="indicator text-red-400">*</span></li>
+                    <ul
+                        class="mt-2 ml-4 space-y-2 border-l-2 border-gray-100 pl-3 text-[11px] font-medium text-gray-400">
+                        <li id="side-item-consents" class="flex justify-between items-center"><span>System
+                                Consents</span><span class="indicator text-red-400">*</span></li>
                     </ul>
                 </div>
 
                 <!-- Section 4 -->
                 <div id="side-sec-4" class="step-group">
-                    <div class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
+                    <div
+                        class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
                         <span>Location details</span>
                         <span class="status-icon hidden">✓</span>
                     </div>
-                    <ul class="mt-2 ml-4 space-y-2 border-l-2 border-gray-100 pl-3 text-[11px] font-medium text-gray-400">
-                        <li id="side-item-county" class="flex justify-between items-center"><span>County</span><span class="indicator text-red-400">*</span></li>
-                        <li id="side-item-constituency" class="flex justify-between items-center"><span>Sub-County</span><span class="indicator text-red-400">*</span></li>
-                        <li id="side-item-ward" class="flex justify-between items-center"><span>Ward</span><span class="indicator text-red-400">*</span></li>
+                    <ul
+                        class="mt-2 ml-4 space-y-2 border-l-2 border-gray-100 pl-3 text-[11px] font-medium text-gray-400">
+                        <li id="side-item-county" class="flex justify-between items-center"><span>County</span><span
+                                class="indicator text-red-400">*</span></li>
+                        <li id="side-item-constituency" class="flex justify-between items-center">
+                            <span>Sub-County</span><span class="indicator text-red-400">*</span></li>
+                        <li id="side-item-ward" class="flex justify-between items-center"><span>Ward</span><span
+                                class="indicator text-red-400">*</span></li>
                     </ul>
                 </div>
 
                 <!-- Section 5 -->
                 <div id="side-sec-5" class="step-group">
-                    <div class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
+                    <div
+                        class="text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between transition-all duration-300">
                         <span>Final Submission package</span>
                         <span class="status-icon hidden">✓</span>
                     </div>
@@ -101,21 +127,25 @@
     <!-- RIGHT FORM WORKSPACE -->
     <div class="lg:col-span-3">
         <div class="bg-white rounded-3xl border border-gray-200 shadow-2xl overflow-hidden min-h-[580px] flex flex-col">
-            
+
             <!-- Dashboard Accent Header Banner -->
-            <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900 text-white p-6 sm:p-8 flex justify-between items-center shadow-md">
+            <div
+                class="bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900 text-white p-6 sm:p-8 flex justify-between items-center shadow-md">
                 <div>
                     <h1 class="text-xl sm:text-2xl font-black tracking-tight">Secure Incident Reporting Portal</h1>
-                    <p class="text-xs text-purple-200/80 mt-1">Managed under strict identity cryptographic concealment guidelines.</p>
+                    <p class="text-xs text-purple-200/80 mt-1">Managed under strict identity cryptographic concealment
+                        guidelines.</p>
                 </div>
                 <div class="shrink-0">
-                    <span id="step-indicator-tag" class="bg-white/10 px-3 py-1.5 rounded-xl font-mono text-xs font-bold border border-white/20">
+                    <span id="step-indicator-tag"
+                        class="bg-white/10 px-3 py-1.5 rounded-xl font-mono text-xs font-bold border border-white/20">
                         Step 1 of 5
                     </span>
                 </div>
             </div>
 
-            <form id="report-form-start" method="POST" enctype="multipart/form-data" class="flex-grow flex flex-col p-6 sm:p-8 justify-between space-y-8">
+            <form id="report-form-start" method="POST" enctype="multipart/form-data"
+                class="flex-grow flex flex-col p-6 sm:p-8 justify-between space-y-8">
                 {% csrf_token %}
                 <!-- Hidden field for reporter_type with default -->
                 <input type="hidden" name="reporter_type" value="self">
@@ -123,7 +153,8 @@
                 {% if messages %}
                 <div id="form-messages-block" class="space-y-2">
                     {% for message in messages %}
-                    <div class="flex items-start gap-2 p-3 rounded-xl text-xs font-bold border {% if message.tags == 'error' %}bg-red-50 border-red-200 text-red-700{% else %}bg-green-50 border-green-200 text-green-700{% endif %}">
+                    <div
+                        class="flex items-start gap-2 p-3 rounded-xl text-xs font-bold border {% if message.tags == 'error' %}bg-red-50 border-red-200 text-red-700{% else %}bg-green-50 border-green-200 text-green-700{% endif %}">
                         <span>{% if message.tags == 'error' %}⚠️{% else %}✅{% endif %}</span>
                         <span>{{ message }}</span>
                     </div>
@@ -132,29 +163,35 @@
                 {% endif %}
 
                 <div class="flex-grow">
-                    
+
                     <!-- STEP 1: PERSONAL INFORMATION -->
                     <div id="wizard-step-1" class="space-y-6 transition-all duration-300">
                         <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-4">
-                            <h3 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
+                            <h3
+                                class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-purple-600"></span>Identity Metrics
                             </h3>
-                            
+
                             <!-- Full Name Input -->
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-700 uppercase" for="id_reporter_name">Full Name</label>
-                                <input type="text" id="id_reporter_name" name="reporter_name" oninput="validateLiveFields()" placeholder="Enter your complete legal name" class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none transition">
+                                <label class="block text-xs font-bold text-gray-700 uppercase"
+                                    for="id_reporter_name">Full Name</label>
+                                <input type="text" id="id_reporter_name" name="reporter_name"
+                                    oninput="validateLiveFields()" placeholder="Enter your complete legal name"
+                                    class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none transition">
                             </div>
 
                             <!-- Gender & ID Dynamic Toggle Subsections -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1.5">
-                                    <label class="block text-xs font-bold text-gray-700 uppercase">Gender Identity</label>
-                                    <select id="id_gender" name="gender" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <label class="block text-xs font-bold text-gray-700 uppercase">Gender
+                                        Identity</label>
+                                    <select id="id_gender" name="gender" onchange="validateLiveFields()"
+                                        class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
                                         <option value="">Select Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
-                                        <option value="Non-Binary">Non-Binary</option>
+                                        <option value="Intersex">Intersex</option>
                                         <option value="Secret">Prefer not to say</option>
                                     </select>
                                 </div>
@@ -162,14 +199,21 @@
                                 <!-- Mini Button Selection: Identification Type -->
                                 <div class="space-y-1.5 flex flex-col justify-end">
                                     <div class="flex items-center justify-between mb-1">
-                                        <label class="text-xs font-bold text-gray-700 uppercase" id="id_string_label">National ID Number</label>
-                                        <div class="inline-flex gap-1 bg-gray-200/60 p-0.5 rounded-lg border border-gray-300">
-                                            <button type="button" id="btn-id-nat" onclick="setIdentityType('National ID')" class="px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200">ID</button>
-                                            <button type="button" id="btn-id-pass" onclick="setIdentityType('Passport')" class="px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900">Passport</button>
+                                        <label class="text-xs font-bold text-gray-700 uppercase"
+                                            id="id_string_label">National ID Number</label>
+                                        <div
+                                            class="inline-flex gap-1 bg-gray-200/60 p-0.5 rounded-lg border border-gray-300">
+                                            <button type="button" id="btn-id-nat"
+                                                onclick="setIdentityType('National ID')"
+                                                class="px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200">ID</button>
+                                            <button type="button" id="btn-id-pass" onclick="setIdentityType('Passport')"
+                                                class="px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900">Passport</button>
                                         </div>
                                     </div>
                                     <input type="hidden" id="id_type" name="id_type" value="National ID">
-                                    <input type="text" id="id_national_id_number" name="national_id_number" oninput="validateLiveFields()" placeholder="Enter your 8-digit National ID" class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <input type="text" id="id_national_id_number" name="national_id_number"
+                                        oninput="validateLiveFields()" placeholder="Enter your 8-digit National ID"
+                                        class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
                                 </div>
                             </div>
 
@@ -177,39 +221,49 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div class="space-y-1.5">
                                     <label class="block text-xs font-bold text-gray-700 uppercase">Age Bracket</label>
-                                    <select id="id_age_group" name="age_group" onchange="validateLiveFields();" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <select id="id_age_group" name="age_group" onchange="validateLiveFields();"
+                                        class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
                                         <option value="">Select Age Group</option>
-                                        <option value="18-24">18 - 24 years</option>
-                                        <option value="25-34">25 - 34 years</option>
-                                        <option value="35-44">35 - 44 years</option>
-                                        <option value="45+">45 years and above</option>
+                                        <option value="18-24">Child (0 - 17)</option>
+                                        <option value="25-34">Youth (18 - 35)</option>
+                                        <option value="35-44">Adult (36 - 60)</option>
+                                        <option value="45+">Senior (60+)</option>
                                     </select>
                                 </div>
 
                                 <!-- Mini Button Selection: Contact Mechanism -->
                                 <div class="space-y-1.5 flex flex-col justify-end">
                                     <div class="flex items-center justify-between mb-1">
-                                        <label class="text-xs font-bold text-gray-700 uppercase" id="contact_input_label">Phone Number</label>
-                                        <div class="inline-flex gap-1 bg-gray-200/60 p-0.5 rounded-lg border border-gray-300">
-                                            <button type="button" id="btn-contact-num" onclick="setContactMode('Phone Number')" class="px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200">Phone</button>
-                                            <button type="button" id="btn-contact-email" onclick="setContactMode('Email Address')" class="px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900">Email</button>
+                                        <label class="text-xs font-bold text-gray-700 uppercase"
+                                            id="contact_input_label">Phone Number</label>
+                                        <div
+                                            class="inline-flex gap-1 bg-gray-200/60 p-0.5 rounded-lg border border-gray-300">
+                                            <button type="button" id="btn-contact-num"
+                                                onclick="setContactMode('Phone Number')"
+                                                class="px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200">Phone</button>
+                                            <button type="button" id="btn-contact-email"
+                                                onclick="setContactMode('Email Address')"
+                                                class="px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900">Email</button>
                                         </div>
                                     </div>
                                     <input type="hidden" id="id_contact_mode" name="contact_mode" value="Phone Number">
-                                    <input type="text" id="id_contact_info" name="contact_info" oninput="validateLiveFields()" placeholder="e.g. 0712345678" class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
-                                    <span id="contact-err-msg" class="text-[10px] text-red-500 font-semibold mt-1 hidden block"></span>
+                                    <input type="text" id="id_contact_info" name="contact_info"
+                                        oninput="validateLiveFields()" placeholder="e.g. 0712345678"
+                                        class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none">
+                                    <span id="contact-err-msg"
+                                        class="text-[10px] text-red-500 font-semibold mt-1 hidden block"></span>
                                 </div>
                             </div>
 
                             <!-- Disability Info Select -->
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-700 uppercase">Are you a person with disability?</label>
-                                <select id="id_disability" name="disability" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Are you a person with
+                                    disability?</label>
+                                <select id="id_disability" name="disability" onchange="validateLiveFields()"
+                                    class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
                                     <option value="">Select Option</option>
-                                    <option value="No condition">No condition</option>
-                                    <option value="Visual Impairment">Visual Impairment</option>
-                                    <option value="Hearing Impairment">Hearing Impairment</option>
-                                    <option value="Mobility Impairment">Physical / Mobility Impairment</option>
+                                    <option value="NO">NO</option>
+                                    <option value="YES">YES</option>
                                 </select>
                             </div>
                         </div>
@@ -218,26 +272,32 @@
                     <!-- STEP 2: INCIDENT DETAILS -->
                     <div id="wizard-step-2" class="space-y-6 hidden transition-all duration-300">
                         <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-4">
-                            <h3 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
+                            <h3
+                                class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-purple-600"></span>Abuse Categorization
                             </h3>
-                            
+
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-700 uppercase">Type of abuse classification</label>
-                                <select id="id_incident_category" name="incident_category" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Type of abuse
+                                    classification</label>
+                                <select id="id_incident_category" name="incident_category"
+                                    onchange="validateLiveFields()"
+                                    class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
                                     <option value="">Select Type of abuse</option>
                                     <option value="cyberstalking">Cyberstalking &amp; Harassment</option>
                                     <option value="doxing">Non-Consensual Image Sharing / Doxing</option>
                                     <option value="impersonation">Impersonation &amp; Identity Theft</option>
                                     <option value="threats">Online Threats &amp; Hate Speech</option>
-                                    <option value="other">Other Forms of Online Abuse</option>
                                     <option value="children_home_support">Children's Home Support</option>
+                                    <option value="other">Other Forms of Online Abuse</option>
                                 </select>
                             </div>
 
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-700 uppercase">Platform where the abuse occurred</label>
-                                <select id="id_platform_used" name="platform_used" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Platform where the abuse
+                                    occurred</label>
+                                <select id="id_platform_used" name="platform_used" onchange="validateLiveFields()"
+                                    class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
                                     <option value="">Select Platform where the abuse occurred</option>
                                     <option value="X (Twitter)">X (Twitter)</option>
                                     <option value="Instagram">Instagram</option>
@@ -252,8 +312,11 @@
                             </div>
 
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-700 uppercase">Incident Description narrative</label>
-                                <textarea id="id_description" name="description" rows="3" placeholder="Describe chronologically..." class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none resize-none"></textarea>
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Incident Description
+                                    narrative</label>
+                                <textarea id="id_description" name="description" rows="3"
+                                    placeholder="Describe chronologically..."
+                                    class="w-full p-3 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-purple-500 outline-none resize-none"></textarea>
                             </div>
                         </div>
                     </div>
@@ -261,67 +324,102 @@
                     <!-- STEP 3: EVIDENCE AND CONSENTS -->
                     <div id="wizard-step-3" class="space-y-6 hidden transition-all duration-300">
                         <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-5">
-                            <h3 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
+                            <h3
+                                class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-purple-600"></span>Evidence &amp; Case Clearances
                             </h3>
 
                             <!-- Evidence File Upload (Optional) -->
                             <div class="space-y-2">
                                 <div class="flex items-center gap-2 mb-1">
-                                    <span class="text-[9px] font-black text-gray-400 tracking-wider uppercase">Optional — Evidence Attachment</span>
-                                    <span class="text-[9px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-semibold">Not Required</span>
+                                    <span class="text-[9px] font-black text-gray-400 tracking-wider uppercase">Optional
+                                        — Evidence Attachment</span>
+                                    <span
+                                        class="text-[9px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-semibold">Not
+                                        Required</span>
                                 </div>
-                                <label for="id_evidence_attachment" id="evidence-drop-zone" class="flex flex-col items-center justify-center w-full min-h-[110px] border-2 border-dashed border-purple-200 rounded-2xl bg-white cursor-pointer hover:border-purple-400 hover:bg-purple-50/40 transition-all duration-200 group px-4 py-5">
+                                <label for="id_evidence_attachment" id="evidence-drop-zone"
+                                    class="flex flex-col items-center justify-center w-full min-h-[110px] border-2 border-dashed border-purple-200 rounded-2xl bg-white cursor-pointer hover:border-purple-400 hover:bg-purple-50/40 transition-all duration-200 group px-4 py-5">
                                     <div id="evidence-placeholder" class="flex flex-col items-center gap-2 text-center">
-                                        <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-500 group-hover:bg-purple-200 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
+                                        <div
+                                            class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-500 group-hover:bg-purple-200 transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
                                             </svg>
                                         </div>
                                         <div>
                                             <p class="text-xs font-bold text-gray-700">Click to attach evidence file</p>
-                                            <p class="text-[10px] text-gray-400 mt-0.5">Screenshots, logs, recordings &mdash; PNG, JPG, PDF, MP4 (max 10MB)</p>
+                                            <p class="text-[10px] text-gray-400 mt-0.5">Screenshots, logs, recordings
+                                                &mdash; PNG, JPG, PDF, MP4 (max 10MB)</p>
                                         </div>
                                     </div>
                                     <div id="evidence-selected" class="hidden flex-col items-center gap-2 text-center">
-                                        <div class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        <div
+                                            class="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-bold text-green-700" id="evidence-filename">File selected</p>
+                                            <p class="text-xs font-bold text-green-700" id="evidence-filename">File
+                                                selected</p>
                                             <p class="text-[10px] text-green-500 mt-0.5">Click to change file</p>
                                         </div>
                                     </div>
-                                    <input type="file" id="id_evidence_attachment" name="evidence_attachment" accept="image/*,.pdf,.mp4,.mov,.avi,.txt,.doc,.docx" class="hidden" onchange="handleEvidenceFileChange(this)">
+                                    <input type="file" id="id_evidence_attachment" name="evidence_attachment"
+                                        accept="image/*,.pdf,.mp4,.mov,.avi,.txt,.doc,.docx" class="hidden"
+                                        onchange="handleEvidenceFileChange(this)">
                                 </label>
                             </div>
 
                             <div class="p-4 bg-white rounded-xl border border-gray-200 space-y-5 shadow-sm">
                                 <!-- Optional checkboxes -->
                                 <div class="space-y-3 border-b border-gray-100 pb-4">
-                                    <span class="block text-[9px] font-black text-gray-400 tracking-wider uppercase">Optional Actions</span>
+                                    <span
+                                        class="block text-[9px] font-black text-gray-400 tracking-wider uppercase">Optional
+                                        Actions</span>
                                     <div class="flex items-start space-x-3">
-                                        <input type="checkbox" id="id_report_police" name="report_police" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
-                                        <label for="id_report_police" class="text-xs font-bold text-gray-600 uppercase cursor-pointer select-none">Report to police</label>
+                                        <input type="checkbox" id="id_report_police" name="report_police"
+                                            class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+                                        <label for="id_report_police"
+                                            class="text-xs font-bold text-gray-600 uppercase cursor-pointer select-none">Report
+                                            to police</label>
                                     </div>
                                     <div class="flex items-start space-x-3">
-                                        <input type="checkbox" id="id_recommend_counseling" name="recommend_counseling" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
-                                        <label for="id_recommend_counseling" class="text-xs font-bold text-gray-600 uppercase cursor-pointer select-none">Recommend counselling center</label>
+                                        <input type="checkbox" id="id_recommend_counseling" name="recommend_counseling"
+                                            class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+                                        <label for="id_recommend_counseling"
+                                            class="text-xs font-bold text-gray-600 uppercase cursor-pointer select-none">Recommend
+                                            counselling center</label>
                                     </div>
                                 </div>
 
                                 <!-- Required consents -->
                                 <div class="space-y-3">
-                                    <span class="block text-[9px] font-black text-red-500 tracking-wider uppercase">Required Consents</span>
-                                    <div class="flex items-start space-x-3 p-2.5 rounded-lg hover:bg-red-50/60 transition">
-                                        <input type="checkbox" id="id_consent_followup" name="allow_contact" onchange="validateLiveFields()" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
-                                        <label for="id_consent_followup" class="text-xs font-bold text-gray-700 cursor-pointer select-none">I consent to being contacted for follow-up by the SafeSpace team</label>
+                                    <span
+                                        class="block text-[9px] font-black text-red-500 tracking-wider uppercase">Required
+                                        Consents</span>
+                                    <div
+                                        class="flex items-start space-x-3 p-2.5 rounded-lg hover:bg-red-50/60 transition">
+                                        <input type="checkbox" id="id_consent_followup" name="allow_contact"
+                                            onchange="validateLiveFields()"
+                                            class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+                                        <label for="id_consent_followup"
+                                            class="text-xs font-bold text-gray-700 cursor-pointer select-none">I consent
+                                            to being contacted for follow-up by the SafeSpace team</label>
                                     </div>
-                                    <div class="flex items-start space-x-3 p-2.5 rounded-lg hover:bg-red-50/60 transition">
-                                        <input type="checkbox" id="id_consent_investigation" name="consent_investigation" onchange="validateLiveFields()" class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
-                                        <label for="id_consent_investigation" class="text-xs font-bold text-gray-700 cursor-pointer select-none">I consent to my information being used for investigation and legal purposes</label>
+                                    <div
+                                        class="flex items-start space-x-3 p-2.5 rounded-lg hover:bg-red-50/60 transition">
+                                        <input type="checkbox" id="id_consent_investigation"
+                                            name="consent_investigation" onchange="validateLiveFields()"
+                                            class="mt-0.5 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+                                        <label for="id_consent_investigation"
+                                            class="text-xs font-bold text-gray-700 cursor-pointer select-none">I consent
+                                            to my information being used for investigation and legal purposes</label>
                                     </div>
                                 </div>
                             </div>
@@ -331,63 +429,85 @@
                     <!-- STEP 4: GEOLOCATION ROUTING JURISDICTIONS -->
                     <div id="wizard-step-4" class="space-y-6 hidden transition-all duration-300">
                         <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-4">
-                            <h3 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
+                            <h3
+                                class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full bg-purple-600"></span>Regional Distribution Parameters
                             </h3>
-                            
+
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-700 uppercase">County Hub Jurisdiction</label>
-                                <select id="id_county" name="county" onchange="populateConstituency(); validateLiveFields();" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
+                                <label class="block text-xs font-bold text-gray-700 uppercase">County Hub
+                                    Jurisdiction</label>
+                                <select id="id_county" name="county"
+                                    onchange="populateConstituency(); validateLiveFields();"
+                                    class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none">
                                     <option value="">-- Select County --</option>
-                                    <!-- Alphabetized Counties mapping screenshots dynamically -->
                                     <option value="Baringo">Baringo</option>
                                     <option value="Bomet">Bomet</option>
                                     <option value="Bungoma">Bungoma</option>
                                     <option value="Busia">Busia</option>
-                                    <option value="Elgeyo/Marakwet">Elgeyo/Marakwet</option>
+                                    <option value="Elgeyo-Marakwet">Elgeyo-Marakwet</option>
+                                    <option value="Embu">Embu</option>
                                     <option value="Garissa">Garissa</option>
                                     <option value="Homa Bay">Homa Bay</option>
                                     <option value="Isiolo">Isiolo</option>
                                     <option value="Kajiado">Kajiado</option>
                                     <option value="Kakamega">Kakamega</option>
                                     <option value="Kericho">Kericho</option>
+                                    <option value="Kiambu">Kiambu</option>
                                     <option value="Kilifi">Kilifi</option>
+                                    <option value="Kirinyaga">Kirinyaga</option>
                                     <option value="Kisii">Kisii</option>
                                     <option value="Kisumu">Kisumu</option>
+                                    <option value="Kitui">Kitui</option>
                                     <option value="Kwale">Kwale</option>
                                     <option value="Laikipia">Laikipia</option>
                                     <option value="Lamu">Lamu</option>
+                                    <option value="Machakos">Machakos</option>
+                                    <option value="Makueni">Makueni</option>
                                     <option value="Mandera">Mandera</option>
                                     <option value="Marsabit">Marsabit</option>
                                     <option value="Meru">Meru</option>
                                     <option value="Migori">Migori</option>
                                     <option value="Mombasa">Mombasa</option>
+                                    <option value="Murang'a">Murang'a</option>
                                     <option value="Nairobi">Nairobi</option>
                                     <option value="Nakuru">Nakuru</option>
                                     <option value="Nandi">Nandi</option>
                                     <option value="Narok">Narok</option>
                                     <option value="Nyamira">Nyamira</option>
+                                    <option value="Nyandarua">Nyandarua</option>
+                                    <option value="Nyeri">Nyeri</option>
+                                    <option value="Samburu">Samburu</option>
                                     <option value="Siaya">Siaya</option>
-                                    <option value="Taita Taveta">Taita Taveta</option>
+                                    <option value="Taita-Taveta">Taita-Taveta</option>
                                     <option value="Tana River">Tana River</option>
                                     <option value="Tharaka-Nithi">Tharaka-Nithi</option>
                                     <option value="Trans Nzoia">Trans Nzoia</option>
+                                    <option value="Turkana">Turkana</option>
                                     <option value="Uasin Gishu">Uasin Gishu</option>
                                     <option value="Vihiga">Vihiga</option>
                                     <option value="Wajir">Wajir</option>
+                                    <option value="West Pokot">West Pokot</option>
                                 </select>
                             </div>
 
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-700 uppercase">Constituency / Sub-County</label>
-                                <select id="id_constituency" name="constituency" onchange="populateWard(); validateLiveFields();" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none" disabled>
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Constituency /
+                                    Sub-County</label>
+                                <select id="id_constituency" name="constituency"
+                                    onchange="populateWard(); validateLiveFields();"
+                                    class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none"
+                                    disabled>
                                     <option value="">-- Select Constituency --</option>
                                 </select>
                             </div>
 
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-700 uppercase">Administrative Ward Unit</label>
-                                <select id="id_ward" name="ward" onchange="validateLiveFields()" class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none" disabled>
+                                <label class="block text-xs font-bold text-gray-700 uppercase">Administrative Ward
+                                    Unit</label>
+                                <select id="id_ward" name="ward" onchange="validateLiveFields()"
+                                    class="w-full p-3 bg-white border border-gray-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-purple-500 outline-none"
+                                    disabled>
                                     <option value="">-- Select Ward Designation --</option>
                                 </select>
                             </div>
@@ -399,10 +519,14 @@
 
                         <!-- Header banner -->
                         <div class="rounded-2xl p-4 review-header-gradient flex items-center gap-3 shadow-md">
-                            <div class="w-9 h-9 rounded-xl bg-white/70 flex items-center justify-center text-lg shadow-sm">📋</div>
+                            <div
+                                class="w-9 h-9 rounded-xl bg-white/70 flex items-center justify-center text-lg shadow-sm">
+                                📋</div>
                             <div>
-                                <p class="text-xs font-black text-gray-800 tracking-tight">Submission Review — Final Check</p>
-                                <p class="text-[10px] text-gray-500">Confirm all details below before submitting your secure report.</p>
+                                <p class="text-xs font-black text-gray-800 tracking-tight">Submission Review — Final
+                                    Check</p>
+                                <p class="text-[10px] text-gray-500">Confirm all details below before submitting your
+                                    secure report.</p>
                             </div>
                         </div>
 
@@ -505,7 +629,9 @@
                         <div class="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3.5">
                             <span class="text-amber-500 text-sm mt-0.5">⚠️</span>
                             <p class="text-[11px] text-amber-800 font-medium leading-relaxed">
-                                <span class="font-black">Final confirmation:</span> Once submitted, your report is locked and encrypted. You will receive a unique GBV reference code and a 6-digit PIN — save both immediately.
+                                <span class="font-black">Final confirmation:</span> Once submitted, your report is
+                                locked and encrypted. You will receive a unique GBV reference code and a 6-digit PIN —
+                                save both immediately.
                             </p>
                         </div>
 
@@ -515,10 +641,12 @@
 
                 <!-- Footer Operations Deck Button controls -->
                 <div class="pt-6 border-t border-gray-100 flex justify-between items-center bg-transparent">
-                    <button type="button" id="back-step-btn" onclick="stepWizardNavigationEngine(-1)" class="invisible px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-xs rounded-xl transition shadow-sm uppercase tracking-wider">
+                    <button type="button" id="back-step-btn" onclick="stepWizardNavigationEngine(-1)"
+                        class="invisible px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-xs rounded-xl transition shadow-sm uppercase tracking-wider">
                         ← Back
                     </button>
-                    <button type="button" id="next-step-btn" onclick="stepWizardNavigationEngine(1)" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition uppercase tracking-wider">
+                    <button type="button" id="next-step-btn" onclick="stepWizardNavigationEngine(1)"
+                        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-xl shadow-md transition uppercase tracking-wider">
                         Next Step
                     </button>
                 </div>
@@ -531,54 +659,256 @@
     let activeStepCursor = 1;
     const boundaryTerminalStep = 5;
 
-    // Comprehensive alphabetized county data mapping logic
+    // Comprehensive alphabetized county data mapping logic for all 47 counties
     const localLocationGraph = {
-        "Baringo": { "Baringo Central": ["Kabarnet", "Sacho"] },
-        "Bomet": { "Bomet Central": ["Siloam", "Mutarakwa"] },
-        "Bungoma": { "Kanduyi": ["Bukembe", "Musikoma"] },
-        "Busia": { "Matayos": ["Busia Town", "Burumba"] },
-        "Elgeyo/Marakwet": { "Keiyo North": ["Kamarin", "Tambach"] },
-        "Garissa": { "Garissa Township": ["Waberi", "Iftin"] },
-        "Homa Bay": { "Homa Bay Town": ["Central", "Arujo"] },
-        "Isiolo": { "Isiolo North": ["Wabera", "Bulla Pesa"] },
-        "Kajiado": { "Kajiado North": ["Ngong", "Rongai"] },
-        "Kakamega": { "Lurambi": ["Butsotso", "Shirere"] },
-        "Kericho": { "Ainamoi": ["Kapsuser", "Kericho Town"] },
-        "Kilifi": { "Kilifi North": ["Matsangoni", "Mnarani", "Sokoni", "Tezo"], "Malindi": ["Ganda", "Kakuyuni", "Sabaki", "Shella"] },
-        "Kisii": { "Kitutu Chache": ["Mosocho", "Marani"] },
-        "Kisumu": { "Kisumu Central": ["Kondele", "Market", "Milimani", "Nyabera"], "Kisumu East": ["Kajulu", "Kolwa East", "Kolwa West"] },
-        "Kwale": { "Matuga": ["Waa", "Tiwi"] },
-        "Laikipia": { "Laikipia East": ["Nanyuki", "Thingithu"] },
-        "Lamu": { "Lamu West": ["Shella", "Mkomani"] },
-        "Mandera": { "Mandera East": ["Township", "Neboi"] },
-        "Marsabit": { "Saku": ["Township", "Sagante"] },
-        "Meru": { "Imenti Central": ["Mwanganthia", "Abothuguchi"] },
-        "Migori": { "Suna West": ["Wiga", "Wasimbete"] },
-        "Mombasa": { "Mvita": ["Makadara", "Mji Wa Kale", "Shimanzi"], "Nyali": ["Frere Town", "Mkomani", "Ziwa La Ng'ombe"] },
-        "Nairobi": { "Kasarani": ["Clay City", "Mwiki", "Njiru", "Roysambu"], "Starehe": ["Landimawe", "Ngara", "Pangani", "Ziwani"], "Westlands": ["Highridge", "Kangemi", "Kitisuru", "Parklands"] },
-        "Nakuru": { "Naivasha": ["Hell's Gate", "Lake View", "Mai Mahiu"], "Nakuru East": ["Biashara", "Flamingo", "Kivumbini"] },
-        "Nandi": { "Emgwen": ["Kapsabet", "Chepterit"] },
-        "Narok": { "Narok North": ["Township", "Olokurto"] },
-        "Nyamira": { "West Mugirango": ["Nyamira Town", "Bogichora"] },
-        "Siaya": { "Alego Usonga": ["Siaya Town", "Central Alego"] },
-        "Taita Taveta": { "Voi": ["Mbololo", "Kaloleni"] },
-        "Tana River": { "Galole": ["Wayu", "Mikinduni"] },
-        "Tharaka-Nithi": { "Chuka": ["Mariani", "Magumoni"] },
-        "Trans Nzoia": { "Saboti": ["Kitale Town", "Tuwan"] },
-        "Uasin Gishu": { "Ainabkoi": ["Ainabkoi", "Kapsoya", "Kaptagat"], "Turbo": ["Kamagut", "Ngenyilel", "Tapsagoi"] },
-        "Vihiga": { "Sabatia": ["Chavakali", "Wodanga"] },
-        "Wajir": { "Wajir East": ["Township", "Wagberi"] }
+        "Baringo": {
+            "Baringo Central": ["Kabarnet", "Sacho", "Ewalel Socho", "Kapropita"],
+            "Baringo North": ["Barwessa", "Kabartonjo", "Saimo Soi", "Bartabwa"],
+            "Baringo South": ["Marigat", "Ilchamus", "Mochongoi", "Mukutani"]
+        },
+        "Bomet": {
+            "Bomet Central": ["Siloam", "Mutarakwa", "Chesoen", "Singorwet"],
+            "Bomet East": ["Longisa", "Kembu", "Chemaner", "Merigi"],
+            "Sotik": ["Ndanai", "Abosi", "Chemagel", "Kipsonoi"]
+        },
+        "Bungoma": {
+            "Kanduyi": ["Bukembe", "Musikoma", "Khalaba", "Tuuti"],
+            "Webuye West": ["Sitikho", "Misikhu", "Matulo"],
+            "Sirisia": ["Namwela", "Malakisi", "Lwandanyi"]
+        },
+        "Busia": {
+            "Matayos": ["Busia Town", "Burumba", "Matayos South", "Busibwabo"],
+            "Nambale": ["Nambale West", "Bukhayo North", "Walatsi"],
+            "Teso North": ["Malaba Central", "Malaba North", "Ang'urai"]
+        },
+        "Elgeyo/Marakwet": {
+            "Keiyo North": ["Kamarin", "Tambach", "Kapchemutwa", "Emsoo"],
+            "Keiyo South": ["Kaptarakwa", "Chepkorio", "Soy", "Metkei"],
+            "Marakwet East": ["Kapyego", "Sambirir", "Endo"]
+        },
+        "Embu": {
+            "Manyatta": ["Mugamba-Ciakariga", "Ruguru-Ngandori", "Kithimu", "Mbeti North", "Kirimari"],
+            "Runyenjes": ["Gaturi South", "Kagaari North", "Kagaari South", "Central Ward", "Kyeni North"],
+            "Mbeere South": ["Mwea", "Aminti", "Mbeti South", "Kiambere"]
+        },
+        "Garissa": {
+            "Garissa Township": ["Waberi", "Iftin", "Galbet", "Township"],
+            "Dadaab": ["Dadaab", "Labasigale", "Damajale"],
+            "Fafi": ["Bura", "Dekaharia", "Jarajilla"]
+        },
+        "Homa Bay": {
+            "Homa Bay Town": ["Central", "Arujo", "Kalanya Bol", "Kanyabala"],
+            "Ndhiwa": ["Kwabwai", "Kanyadoto", "Kanyikela", "Kabondo"],
+            "Suba North": ["Mbita", "Rusinga Island", "Kasgunga"]
+        },
+        "Isiolo": {
+            "Isiolo North": ["Wabera", "Bulla Pesa", "Chari", "Cherab"],
+            "Isiolo South": ["Kinna", "Garba Tulla", "Sericho"]
+        },
+        "Kajiado": {
+            "Kajiado North": ["Ngong", "Rongai", "Olkeri", "Nkaimurunya"],
+            "Kajiado Central": ["Purko", "Ildamat", "Dalalekutuk"],
+            "Kajiado East": ["Kitengela", "Sholinke", "Kenyewa"]
+        },
+        "Kakamega": {
+            "Lurambi": ["Butsotso East", "Butsotso South", "Butsotso Central", "Shirere", "Mahiakalo"],
+            "Malava": ["West Kabras", "Chemuche", "East Kabras", "Butali"],
+            "Mumias West": ["Mumias Central", "Mumias North", "Musanda"]
+        },
+        "Kericho": {
+            "Ainamoi": ["Kapsuser", "Kericho Town", "Ainamoi", "Kapsoit"],
+            "Belgut": ["Waldai", "Chaik", "Kabianga"],
+            "Bureti": ["Litein", "Cheboin", "Kisiara", "Tebesonik"]
+        },
+        "Kiambu": {
+            "Kiambu": ["Ting'ang'a", "Ndumberi", "Riabai", "Township"],
+            "Thika Town": ["Township", "Kamenu", "Hospital", "Gatuanyaga", "Ngoliba"],
+            "Ruiru": ["Biashara", "Gitothua", "Kahawa Sukari", "Kahawa Wendani", "Mwihoko"],
+            "Kikuyu": ["Kikuyu", "Sigona", "Karai", "Nachu"]
+        },
+        "Kilifi": {
+            "Kilifi North": ["Matsangoni", "Mnarani", "Sokoni", "Tezo"],
+            "Malindi": ["Ganda", "Kakuyuni", "Sabaki", "Shella"],
+            "Kilifi South": ["Chasimba", "Mtwapa", "Kikambala"]
+        },
+        "Kirinyaga": {
+            "Mwea": ["Mutithi", "Kangai", "Thiba", "Wamumu", "Nyangati"],
+            "Gichugu": ["Kabare", "Baragwi", "Karumandi", "Ngariama", "Njukiini"],
+            "Ndia": ["Kariti", "Mahigaini", "Mukure"]
+        },
+        "Kisii": {
+            "Kitutu Chache North": ["Mosocho", "Marani", "Kegogi"],
+            "Nyaribari Chache": ["Central", "Kiogoro", "Bisia", "Ibeno"],
+            "Bonchari": ["Bomariba", "Bogiakumu", "Riana"]
+        },
+        "Kisumu": {
+            "Kisumu Central": ["Railways", "Migosi", "Shaurimoyo Kaloleni", "Market Milimani", "Kondele", "Nyalenda B"],
+            "Kisumu East": ["Kajulu", "Kolwa East", "Manyatta B", "Nyalenda A", "Kolwa Central"],
+            "Kisumu West": ["South West Kisumu", "Central Kisumu", "Kisumu North", "West Kisumu", "North West Kisumu"],
+            "Seme": ["West Seme", "Central Seme", "East Seme", "North Seme"],
+            "Nyando": ["East Kano/Wawidhi", "Awasi/Onjiko", "Ahero", "Kabonyo/Kanyagwal", "Kobura"],
+            "Muhoroni": ["Miwani", "Ombeyi", "Masogo/Nyang’oma", "Chemelil", "Muhoroni/Koru"],
+            "Nyakach": ["South West Nyakach", "North Nyakach", "Central Nyakach", "West Nyakach", "South East Nyakach"]
+        },
+
+        "Kitui": {
+            "Kitui Central": ["Miambani", "Township", "Kyangwithya West", "Mulango", "Kyangwithya East"],
+            "Mwingi Central": ["Kivou", "Nguni", "Mwingi Central", "Mwingi West"],
+            "Kitui South": ["Ikutha", "Mutomo", "Mutha", "Kanziko"]
+        },
+        "Kwale": {
+            "Matuga": ["Waa", "Tiwi", "Kubo South", "Tsimba Golini"],
+            "Msambweni": ["Gombato Bongwe", "Ukunda", "Kinondo"],
+            "Lunga Lunga": ["Pongwe Kikoneni", "Vanga", "Mwereni"]
+        },
+        "Laikipia": {
+            "Laikipia East": ["Nanyuki", "Thingithu", "Ngobit", "Tigithi"],
+            "Laikipia West": ["Ol-Moran", "Rumuruti Town", "Githiga"],
+            "Laikipia North": ["Sosian", "Segera"]
+        },
+        "Lamu": {
+            "Lamu West": ["Shella", "Mkomani", "Hindi", "Mpeketoni", "Witu"],
+            "Lamu East": ["Faza", "Kiunga", "Basuba"]
+        },
+        "Machakos": {
+            "Machakos Town": ["Kalama", "Muputi", "Machakos Central", "Mumbuni North"],
+            "Mavoko": ["Athiriver", "Syokimau", "Mlolongo", "Katani"],
+            "Yatta": ["Ndalani", "Matuu", "Kithimani", "Ikombe"]
+        },
+        "Makueni": {
+            "Makueni": ["Wote", "Muvau", "Kathonzweni", "Mavindini", "Kitise"],
+            "Kibwezi West": ["Makindu", "Nguumo", "Kikumbulyu North", "Kikumbulyu South"],
+            "Kaiti": ["Ukia", "Kee", "Kilungu"]
+        },
+        "Mandera": {
+            "Mandera East": ["Township", "Neboi", "Khalalio", "Libehia"],
+            "Mandera West": ["Takaba South", "Takaba Central", "Lagsure"],
+            "Elwak (Mandera South)": ["Elwak North", "Elwak South", "Shimbir Fatuma"]
+        },
+        "Marsabit": {
+            "Saku": ["Township", "Sagante", "Karare"],
+            "Moyale": ["Moyale Township", "Butiye", "Heillu"],
+            "North Horr": ["Dukana", "Maikona", "Turbi"]
+        },
+        "Meru": {
+            "Imenti Central": ["Mwanganthia", "Abothuguchi Central", "Abothuguchi West", "Kiagu"],
+            "Imenti North": ["Municipality", "Ntima East", "Ntima West", "Nyaki West"],
+            "Tigania East": ["Mikinduri", "Kianjai", "Muthara"]
+        },
+        "Migori": {
+            "Suna West": ["Wiga", "Wasimbete", "Ragana-Oruba", "Wasweta"],
+            "Suna East": ["God Kwer", "Suna Central", "Kakrao"],
+            "Rongo": ["Central Kamagambo", "East Kamagambo", "South Kamagambo"]
+        },
+        "Mombasa": {
+            "Mvita": ["Makadara", "Mji Wa Kale", "Shimanzi", "Majengo", "Tudor"],
+            "Nyali": ["Frere Town", "Mkomani", "Ziwa La Ng'ombe", "Kadzandani"],
+            "Likoni": ["Mtongwe", "Shika Adabu", "Bofu", "Likoni"]
+        },
+        "Murang'a": {
+            "Kiharu": ["Wangu", "Mugoiri", "Mbiri", "Township", "Murarandia"],
+            "Maragua": ["Kimorori", "Makuyu", "Kambiti", "Kamahuha", "Ichagaki"],
+            "Gatanga": ["Kakuzi", "Mugumo-ini", "Gatanga", "Kariara"]
+        },
+        "Nairobi": {
+            "Kasarani": ["Clay City", "Mwiki", "Njiru", "Roysambu"],
+            "Starehe": ["Landimawe", "Ngara", "Pangani", "Ziwani", "Pumwani"],
+            "Westlands": ["Highridge", "Kangemi", "Kitisuru", "Parklands", "Karura"]
+        },
+        "Nakuru": {
+            "Naivasha": ["Hell's Gate", "Lake View", "Mai Mahiu", "Biashara"],
+            "Nakuru East": ["Biashara", "Flamingo", "Kivumbini", "Menengai"]
+        },
+        "Nandi": {
+            "Emgwen": ["Kapsabet", "Chepterit", "Kilibwoni", "Kaplamai"],
+            "Mosop": ["Kurgung", "Kabiyet", "Ndolat", "Kipkaren"],
+            "Aldai": ["Kabwareng", "Terik", "Kemeloi-Maraba"]
+        },
+        "Narok": {
+            "Narok North": ["Township", "Olokurto", "Olorropil", "Melili"],
+            "Narok South": ["Majimoto", "Ololulung'a", "Melelo"],
+            "Narok East": ["Mosiro", "Ildamat", "Keekonyokie"]
+        },
+        "Nyamira": {
+            "West Mugirango": ["Nyamira Town", "Bogichora", "Bosamaro", "Bonyamatuta"],
+            "Kitutu Masaba": ["Rigoma", "Gachuba", "Kemera", "Magwagwa"],
+            "North Mugirango": ["Itibo", "Bomwagamo", "Ekerenyo"]
+        },
+        "Nyandarua": {
+            "Ol Kalou": ["Karau", "Kanjuiri Ridge", "Kaimbaga", "Rurii"],
+            "Kinangop": ["Engineer", "Gikoe", "Njabini", "Nyakio", "Magumu"],
+            "Ndaragwa": ["Leshau Pondo", "Kiriita", "Central Ward"]
+        },
+        "Nyeri": {
+            "Nyeri Town": ["Kiganjo", "Rware", "Gatitu", "Ruring'u"],
+            "Othaya": ["Chinga", "Mahiga", "Iria-ini", "Karima"],
+            "Mathira": ["Ruguru", "Magutu", "Iria-ini", "Kirimukuyu"]
+        },
+        "Samburu": {
+            "Samburu West": ["Lodokejek", "Suguta Marmar", "Maralal", "Loosuk"],
+            "Samburu East": ["Waso", "Wamba West", "Wamba East"],
+            "Samburu North": ["Nachola", "Ndoto", "Nyiro"]
+        },
+        "Siaya": {
+            "Alego Usonga": ["Siaya Town", "Central Alego", "North Alego", "South Alego"],
+            "Bondo": ["Yimbo West", "Central Sakwa", "South Sakwa", "Bondo Town"],
+            "Rarieda": ["East Asembo", "West Asembo", "South Kolama"]
+        },
+        "Taita Taveta": {
+            "Voi": ["Mbololo", "Kaloleni", "Sagalla", "Marungu"],
+            "Wundanyi": ["Wundanyi-Mbale", "Ngolia", "Werugha"],
+            "Taveta": ["Chala", "Mahoo", "Bomani", "Mboghoni"]
+        },
+        "Tana River": {
+            "Galole": ["Wayu", "Mikinduni", "Kinakomba", "Chewani"],
+            "Bura": ["Chewele", "Hirimani", "Bangale"],
+            "Garsen": ["Kipini East", "Garsen Central", "Kipini West"]
+        },
+        "Tharaka-Nithi": {
+            "Chuka": ["Mariani", "Magumoni", "Chuka Town", "Mugwe"],
+            "Tharaka": ["Gatunga", "Marimanti", "Nkondi"],
+            "Maara": ["Muthambi", "Mwimbi", "Chogoria"]
+        },
+        "Trans Nzoia": {
+            "Saboti": ["Kitale Town", "Tuwan", "Matisi", "Machewa"],
+            "Kiminini": ["Kiminini", "Matunda", "Sirende"],
+            "Cherangany": ["Sinyerere", "Makutano", "Kaplamai"]
+        },
+        "Turkana": {
+            "Turkana Central": ["Lodwar Township", "Kanamkemer", "Kang'atotha", "Kerio"],
+            "Turkana West": ["Kakuma", "Lokichoggio", "Nanam", "Letea"],
+            "Turkana South": ["Lokichar", "Kapedo", "Katilu"]
+        },
+        "Uasin Gishu": {
+            "Ainabkoi": ["Ainabkoi", "Kapsoya", "Kaptagat"],
+            "Turbo": ["Kamagut", "Ngenyilel", "Tapsagoi", "Huruma", "Kapsaos"]
+        },
+        "Vihiga": {
+            "Sabatia": ["Chavakali", "Wodanga", "Busali", "Sabatia West"],
+            "Vihiga": ["Lugaga-Wamuluma", "Maragoli Central"],
+            "Hamisi": ["Shiruan", "Gisambai", "Shamakhokho"]
+        },
+        "Wajir": {
+            "Wajir East": ["Township", "Wagberi", "Khorof-Harar", "Barwaqo"],
+            "Wajir West": ["Arbajahan", "Hadado", "Ademasajida"],
+            "Wajir South": ["Benane", "Burder", "Diff"]
+        },
+        "West Pokot": {
+            "Kapenguria": ["Riwo", "Kapenguria", "Mnagei", "Siyoi", "Asilong"],
+            "Sigor": ["Weiwei", "Lomut", "Masol", "Sekerr"],
+            "Pokot South": ["Lelan", "Tapach", "Chepareria"]
+        }
     };
 
     function setIdentityType(typeString) {
         document.getElementById('id_type').value = typeString;
         document.getElementById('id_string_label').textContent = typeString;
-        
+
         const btnNat = document.getElementById('btn-id-nat');
         const btnPass = document.getElementById('btn-id-pass');
         const inputField = document.getElementById('id_national_id_number');
-        
-        if(typeString === 'National ID') {
+
+        if (typeString === 'National ID') {
             btnNat.className = "px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200";
             btnPass.className = "px-2 py-0.5 text-[10px] font-bold rounded-md transition-all text-gray-600 hover:text-gray-900";
             inputField.placeholder = "Enter your 8-digit National ID";
@@ -594,11 +924,11 @@
         document.getElementById('id_contact_mode').value = modeString;
         const label = document.getElementById('contact_input_label');
         const input = document.getElementById('id_contact_info');
-        
+
         const btnNum = document.getElementById('btn-contact-num');
         const btnEmail = document.getElementById('btn-contact-email');
 
-        if(modeString === 'Phone Number') {
+        if (modeString === 'Phone Number') {
             label.textContent = "Phone Number";
             input.placeholder = "e.g. 0712345678";
             btnNum.className = "px-2 py-0.5 text-[10px] font-black rounded-md transition-all bg-white text-purple-700 shadow-xs border border-gray-200";
@@ -616,7 +946,7 @@
         const countySel = document.getElementById('id_county').value;
         const constSel = document.getElementById('id_constituency');
         const wardSel = document.getElementById('id_ward');
-        
+
         constSel.innerHTML = '<option value="">-- Select Constituency --</option>';
         wardSel.innerHTML = '<option value="">-- Select Ward Designation --</option>';
         wardSel.disabled = true;
@@ -635,7 +965,7 @@
         const countySel = document.getElementById('id_county').value;
         const constSel = document.getElementById('id_constituency').value;
         const wardSel = document.getElementById('id_ward');
-        
+
         wardSel.innerHTML = '<option value="">-- Select Ward Designation --</option>';
 
         if (countySel && constSel && localLocationGraph[countySel][constSel]) {
@@ -661,16 +991,16 @@
         const errNode = document.getElementById('contact-err-msg');
         errNode.classList.add('hidden');
 
-        if(contactMode === 'Phone Number') {
+        if (contactMode === 'Phone Number') {
             const isNumeric = /^\d+$/.test(contactVal);
-            if(contactVal.length > 0 && (!isNumeric || contactVal.length !== 10)) {
+            if (contactVal.length > 0 && (!isNumeric || contactVal.length !== 10)) {
                 errNode.textContent = "⚠️ Form rule error: Must contain exactly 10 numerical digits.";
                 errNode.classList.remove('hidden');
             }
             isContactValid = isNumeric && contactVal.length === 10;
         } else {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if(contactVal.length > 0 && !emailRegex.test(contactVal)) {
+            if (contactVal.length > 0 && !emailRegex.test(contactVal)) {
                 errNode.textContent = "⚠️ Form rule error: Please enter a valid email address.";
                 errNode.classList.remove('hidden');
             }
@@ -704,7 +1034,7 @@
         updateSideItemStatus('side-item-county', cntVal !== "");
         updateSideItemStatus('side-item-constituency', cstVal !== "");
         updateSideItemStatus('side-item-ward', wrdVal !== "");
-        
+
         const step4Complete = cntVal && cstVal && wrdVal;
         toggleSectionGroupCompletion(4, step4Complete);
 
@@ -723,7 +1053,7 @@
         document.getElementById('sm-platform').textContent = platVal || "-";
         document.getElementById('sm-location').textContent = step4Complete ? `${cntVal} County » ${cstVal} » ${wrdVal}` : "Incomplete parameters.";
         document.getElementById('sm-consents').textContent = consents.filter(Boolean).join(" • ") || "-";
-        
+
         return step1Complete && catVal && platVal && consent1 && consent2 && step4Complete;
     }
 
@@ -733,13 +1063,13 @@
         const indicator = node.querySelector('.indicator');
         if (isValid) {
             node.className = "flex justify-between items-center text-green-600 font-extrabold transition-all duration-200";
-            if(indicator) {
+            if (indicator) {
                 indicator.innerHTML = "✓";
                 indicator.className = "indicator text-green-600";
             }
         } else {
             node.className = "flex justify-between items-center text-red-500 font-bold transition-all duration-200";
-            if(indicator) {
+            if (indicator) {
                 indicator.innerHTML = "*";
                 indicator.className = "indicator text-red-500 font-black";
             }
@@ -752,10 +1082,10 @@
         if (!groupHeader) return;
         if (isComplete) {
             groupHeader.classList.remove('hidden');
-            if(activeStepCursor !== stepNum) groupDiv.className = "text-xs font-bold px-3 py-2 bg-green-50 text-green-800 border border-green-200 rounded-xl flex items-center justify-between";
+            if (activeStepCursor !== stepNum) groupDiv.className = "text-xs font-bold px-3 py-2 bg-green-50 text-green-800 border border-green-200 rounded-xl flex items-center justify-between";
         } else {
             groupHeader.classList.add('hidden');
-            if(activeStepCursor !== stepNum) groupDiv.className = "text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between";
+            if (activeStepCursor !== stepNum) groupDiv.className = "text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between";
         }
     }
 
@@ -898,13 +1228,13 @@
         document.querySelector(`#side-sec-${activeStepCursor} > div`).className = "text-xs font-bold px-3 py-2 bg-gray-100 text-gray-700 rounded-xl flex items-center justify-between";
 
         activeStepCursor = nextStep;
-        
+
         document.getElementById(`wizard-step-${activeStepCursor}`).classList.remove('hidden');
         document.querySelector(`#side-sec-${activeStepCursor} > div`).className = "text-xs font-bold px-3 py-2 bg-blue-600 text-white rounded-xl flex items-center justify-between shadow-md";
 
         document.getElementById('step-indicator-tag').textContent = `Step ${activeStepCursor} of ${boundaryTerminalStep}`;
         document.getElementById('back-step-btn').classList.toggle('invisible', activeStepCursor === 1);
-        
+
         if (activeStepCursor === 4) {
             btnNext.textContent = "FINISH & REVIEW SUBMISSION";
             btnNext.className = "px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl shadow-md transition tracking-wider uppercase";
@@ -926,12 +1256,16 @@
 </script>
 
 <!-- Full-screen submit loading overlay -->
-<div id="submit-loading-overlay" class="hidden fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
+<div id="submit-loading-overlay"
+    class="hidden fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-white rounded-3xl p-10 shadow-2xl flex flex-col items-center gap-6 max-w-xs w-full mx-4">
         <div class="relative w-16 h-16">
-            <svg class="animate-spin w-16 h-16 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <svg class="animate-spin w-16 h-16 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
                 <circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
-                <path class="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <path class="opacity-90" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
             </svg>
         </div>
         <div class="text-center">
@@ -945,77 +1279,172 @@
 </div>
 
 <style>
-@keyframes progress-bar {
-    0% { width: 0%; }
-    40% { width: 60%; }
-    80% { width: 85%; }
-    100% { width: 95%; }
-}
-.animate-progress-bar {
-    animation: progress-bar 2.5s ease-in-out forwards;
-}
+    @keyframes progress-bar {
+        0% {
+            width: 0%;
+        }
 
-/* ===== REVIEW PANEL STYLES ===== */
-.review-header-gradient {
-    background: linear-gradient(135deg, #f0f4ff 0%, #fdf2f8 50%, #f0fdf4 100%);
-    border: 1px solid #e5e7eb;
-}
+        40% {
+            width: 60%;
+        }
 
-.review-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px 14px;
-    border-radius: 14px;
-    border: 1px solid transparent;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.review-card:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-}
-.review-card-icon {
-    font-size: 1rem;
-    line-height: 1;
-    margin-top: 1px;
-    flex-shrink: 0;
-}
-.review-card-label {
-    display: block;
-    font-size: 9px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 3px;
-    opacity: 0.6;
-}
-.review-card-value {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    word-break: break-word;
-}
+        80% {
+            width: 85%;
+        }
 
-/* Card color variants */
-.review-card-violet  { background: #f5f3ff; border-color: #ddd6fe; color: #4c1d95; }
-.review-card-violet .review-card-label  { color: #7c3aed; }
-.review-card-blue    { background: #eff6ff; border-color: #bfdbfe; color: #1e3a5f; }
-.review-card-blue .review-card-label    { color: #2563eb; }
-.review-card-pink    { background: #fdf2f8; border-color: #fbcfe8; color: #831843; }
-.review-card-pink .review-card-label    { color: #db2777; }
-.review-card-teal    { background: #f0fdfa; border-color: #99f6e4; color: #134e4a; }
-.review-card-teal .review-card-label    { color: #0d9488; }
-.review-card-amber   { background: #fffbeb; border-color: #fde68a; color: #78350f; }
-.review-card-amber .review-card-label   { color: #d97706; }
-.review-card-rose    { background: #fff1f2; border-color: #fecdd3; color: #881337; }
-.review-card-rose .review-card-label    { color: #e11d48; }
-.review-card-indigo  { background: #eef2ff; border-color: #c7d2fe; color: #1e1b4b; }
-.review-card-indigo .review-card-label  { color: #4338ca; }
-.review-card-emerald { background: #ecfdf5; border-color: #a7f3d0; color: #064e3b; }
-.review-card-emerald .review-card-label { color: #059669; }
-.review-card-sky     { background: #f0f9ff; border-color: #bae6fd; color: #0c4a6e; }
-.review-card-sky .review-card-label     { color: #0284c7; }
-.review-card-green   { background: #f0fdf4; border-color: #bbf7d0; color: #14532d; }
-.review-card-green .review-card-label   { color: #16a34a; }
+        100% {
+            width: 95%;
+        }
+    }
+
+    .animate-progress-bar {
+        animation: progress-bar 2.5s ease-in-out forwards;
+    }
+
+    /* ===== REVIEW PANEL STYLES ===== */
+    .review-header-gradient {
+        background: linear-gradient(135deg, #f0f4ff 0%, #fdf2f8 50%, #f0fdf4 100%);
+        border: 1px solid #e5e7eb;
+    }
+
+    .review-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .review-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .review-card-icon {
+        font-size: 1rem;
+        line-height: 1;
+        margin-top: 1px;
+        flex-shrink: 0;
+    }
+
+    .review-card-label {
+        display: block;
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 3px;
+        opacity: 0.6;
+    }
+
+    .review-card-value {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        word-break: break-word;
+    }
+
+    /* Card color variants */
+    .review-card-violet {
+        background: #f5f3ff;
+        border-color: #ddd6fe;
+        color: #4c1d95;
+    }
+
+    .review-card-violet .review-card-label {
+        color: #7c3aed;
+    }
+
+    .review-card-blue {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+        color: #1e3a5f;
+    }
+
+    .review-card-blue .review-card-label {
+        color: #2563eb;
+    }
+
+    .review-card-pink {
+        background: #fdf2f8;
+        border-color: #fbcfe8;
+        color: #831843;
+    }
+
+    .review-card-pink .review-card-label {
+        color: #db2777;
+    }
+
+    .review-card-teal {
+        background: #f0fdfa;
+        border-color: #99f6e4;
+        color: #134e4a;
+    }
+
+    .review-card-teal .review-card-label {
+        color: #0d9488;
+    }
+
+    .review-card-amber {
+        background: #fffbeb;
+        border-color: #fde68a;
+        color: #78350f;
+    }
+
+    .review-card-amber .review-card-label {
+        color: #d97706;
+    }
+
+    .review-card-rose {
+        background: #fff1f2;
+        border-color: #fecdd3;
+        color: #881337;
+    }
+
+    .review-card-rose .review-card-label {
+        color: #e11d48;
+    }
+
+    .review-card-indigo {
+        background: #eef2ff;
+        border-color: #c7d2fe;
+        color: #1e1b4b;
+    }
+
+    .review-card-indigo .review-card-label {
+        color: #4338ca;
+    }
+
+    .review-card-emerald {
+        background: #ecfdf5;
+        border-color: #a7f3d0;
+        color: #064e3b;
+    }
+
+    .review-card-emerald .review-card-label {
+        color: #059669;
+    }
+
+    .review-card-sky {
+        background: #f0f9ff;
+        border-color: #bae6fd;
+        color: #0c4a6e;
+    }
+
+    .review-card-sky .review-card-label {
+        color: #0284c7;
+    }
+
+    .review-card-green {
+        background: #f0fdf4;
+        border-color: #bbf7d0;
+        color: #14532d;
+    }
+
+    .review-card-green .review-card-label {
+        color: #16a34a;
+    }
 </style>
 {% endblock %}
