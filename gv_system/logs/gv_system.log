@@ -1831,3 +1831,25 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. Y
 2026-07-01 11:37:16,203 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-07-01 11:40:43,358 [WARNING] django.request: Not Found: /favicon.ico
 2026-07-01 21:18:25,215 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 23:49:01,606 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 23:59:01,801 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 00:12:07,207 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 00:41:34,957 [INFO] reports.views: Saved Report ID 4 | Ref: GBV-WKA0-W1WT | PIN: 078773
+2026-07-02 00:49:53,593 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-02 00:49:54,280 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 00:50:07,233 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-02 00:50:07,887 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 01:17:50,819 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 01:24:11,571 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 01:26:08,663 [INFO] reports.views: Saved Report ID 5 | Ref: GBV-E3C4-7ZZO | PIN: 688550
+2026-07-02 01:31:30,857 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 01:34:52,157 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\notifications.py changed, reloading.
+2026-07-02 01:34:52,930 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 01:43:39,110 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\admin.py changed, reloading.
+2026-07-02 01:43:40,096 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 01:43:59,640 [WARNING] django.request: Not Found: /accounts/login/
+2026-07-02 01:43:59,716 [WARNING] django.request: Not Found: /favicon.ico
+2026-07-02 01:53:22,238 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-02 01:53:23,116 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-02 01:53:32,918 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\urls.py changed, reloading.
+2026-07-02 01:53:33,609 [INFO] django.utils.autoreload: Watching for file changes with StatReloader

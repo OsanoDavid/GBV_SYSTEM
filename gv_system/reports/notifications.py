@@ -123,7 +123,9 @@ def send_tracking_sms(report):
                         headers={
                             "apiKey": sms_api_key,
                             "Content-Type": "application/x-www-form-urlencoded",
+                            "Accept": "application/json"
                         },
+                        verify=False if "sandbox" in sms_api_url else True,
                         timeout=20,
                     )
                 else:

@@ -84,8 +84,11 @@ class SecureIncidentReportAdmin(admin.ModelAdmin):
 
     readonly_fields = ('reference_number', 'case_access_pin', 'ai_classified_category', 'ai_urgency_score', 'ai_research_insights', 'created_at', 'updated_at')
     ordering = ('-created_at',)
-    actions = ['mark_as_urgent', 'resolve_case']
+    actions = ['mark_as_urgent', 'resolve_case', 'close_case']
     inlines = [AuditLogInline]
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
     @admin.action(description="Escalate to Urgent/Level 2")
     def mark_as_urgent(self, request, queryset):
@@ -100,6 +103,13 @@ class SecureIncidentReportAdmin(admin.ModelAdmin):
         for report in queryset:
             AuditLog.objects.create(report=report, user=request.user, action="Admin resolved case.")
         self.message_user(request, f"{rows_updated} reports were marked as Resolved.")
+
+    @admin.action(description="Close Case")
+    def close_case(self, request, queryset):
+        rows_updated = queryset.update(status='closed')
+        for report in queryset:
+            AuditLog.objects.create(report=report, user=request.user, action="Admin closed case.")
+        self.message_user(request, f"{rows_updated} reports were marked as Closed.")
 
 
 @admin.register(Department)

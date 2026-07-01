@@ -178,6 +178,12 @@ def track_case_view(request):
                     stored_phone = normalize_phone_number(report.reporter_phone)
                     submitted_phone = normalize_phone_number(recovery_phone)
                     if stored_phone and submitted_phone and stored_phone == submitted_phone:
+                        import string
+                        import random
+                        # Generate and save a new PIN
+                        report.case_access_pin = ''.join(random.choices(string.digits, k=6))
+                        report.save(update_fields=['case_access_pin'])
+                        
                         success, status_msg = send_tracking_sms(report)
                         recovery_status = {
                             'success': success,
@@ -266,8 +272,15 @@ def friendly_edit_view(request, report_id):
     })
 
 @staff_member_required
-def delete_report_view(request, report_id):
-    get_object_or_404(IncidentReport, id=report_id).delete()
+def close_report_view(request, report_id):
+    report = get_object_or_404(IncidentReport, id=report_id)
+    report.status = 'closed'
+    report.save(update_fields=['status', 'updated_at'])
+    AuditLog.objects.create(
+        report=report,
+        user=request.user,
+        action="Case officially closed by administrator."
+    )
     return redirect('custom_admin_dashboard')
 
 @staff_member_required

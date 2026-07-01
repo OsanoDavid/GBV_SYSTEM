@@ -38,12 +38,20 @@
             </button>
         </form>
 
-        <div class="mt-6 p-6 bg-white border border-purple-100 rounded-3xl shadow-sm">
-            <div class="flex items-center justify-between">
+        <!-- Forgot PIN Link -->
+        <div class="mt-6 text-center">
+            <button type="button" onclick="document.getElementById('forgot-pin-section').classList.toggle('hidden')" class="text-purple-600 hover:text-purple-800 text-[11px] font-black uppercase tracking-wider underline transition-colors">
+                Forgot your Secret Access PIN?
+            </button>
+        </div>
+
+        <div id="forgot-pin-section" class="{% if not recovery_status and not request.POST.recover_pin %}hidden{% endif %} mt-4 p-6 bg-white border border-purple-100 rounded-3xl shadow-sm transition-all duration-300">
+            <div class="flex items-start justify-between">
                 <div>
-                    <h2 class="text-sm font-black text-purple-950 uppercase tracking-widest">Forgot your PIN?</h2>
+                    <h2 class="text-sm font-black text-purple-950 uppercase tracking-widest">PIN Recovery</h2>
                     <p class="text-xs text-gray-500 mt-1">Enter your GBV reference code and the phone number registered with your report.</p>
                 </div>
+                <button type="button" onclick="document.getElementById('forgot-pin-section').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 p-1">✕</button>
             </div>
             <form method="POST" action="{% url 'track_case' %}" class="mt-5 space-y-4">
                 {% csrf_token %}

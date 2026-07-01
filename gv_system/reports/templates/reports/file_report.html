@@ -17,15 +17,26 @@
                 </svg>
             </div>
             <div>
+                {% if user.is_authenticated %}
+                <h2 class="text-sm font-black text-gray-900 tracking-tight">Authenticated Reporter Node</h2>
+                <p class="text-xs text-gray-500">You are securely signed in as <strong>{{ user.username }}</strong>. Your identity is protected.</p>
+                {% else %}
                 <h2 class="text-sm font-black text-gray-900 tracking-tight">Anonymous Submission Node</h2>
                 <p class="text-xs text-gray-500">Your connection endpoints are completely masked via cryptographic
                     routing.</p>
+                {% endif %}
             </div>
         </div>
+        {% if user.is_authenticated %}
+        <div class="flex items-center gap-2 bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-full shadow-sm">
+            <span class="text-[11px] font-black tracking-wider text-blue-800 uppercase">Authenticated</span>
+        </div>
+        {% else %}
         <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-sm">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span class="text-[11px] font-black tracking-wider text-emerald-800 uppercase">Guest Mode Active</span>
         </div>
+        {% endif %}
     </div>
 </div>
 
@@ -172,6 +183,31 @@
 
                     <!-- STEP 1: PERSONAL INFORMATION -->
                     <div id="wizard-step-1" class="space-y-6 transition-all duration-300">
+                        
+                        <!-- Terms and Conditions Mandatory Check -->
+                        <div class="bg-white border border-purple-200 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                            <div class="flex items-start gap-4">
+                                <div class="mt-0.5 bg-blue-100 p-2 rounded-lg text-blue-600">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 9H8v-2h5v2zm4 4H8v-2h9v2zm0 4H8v-2h9v2z"/>
+                                    </svg>
+                                </div>
+                                <div class="space-y-1">
+                                    <button type="button" onclick="openTermsModal()" class="text-sm font-bold text-green-700 hover:text-green-800 underline decoration-2 underline-offset-2 transition" style="text-underline-offset: 4px;">
+                                        Terms and conditions
+                                    </button>
+                                    <div class="flex items-center gap-1.5" id="terms-status-text">
+                                        <span id="terms-status-icon" class="text-gray-400">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                        </span>
+                                        <span class="text-[11px] font-semibold text-red-600">Action Required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="terms-agreed-input" name="terms_agreed" value="false">
+                            <span id="side-item-terms" class="hidden"></span>
+                        </div>
+
                         <div class="bg-gray-50/60 p-6 rounded-2xl border border-gray-100 space-y-4">
                             <h3
                                 class="text-xs font-black tracking-wider text-purple-900 uppercase flex items-center gap-2">
@@ -1194,6 +1230,10 @@
         } else {
             constSel.disabled = true;
         }
+        if (window.jQuery && $(constSel).data('select2')) {
+            $(constSel).select2(window.globalSelect2Options);
+            $(wardSel).select2(window.globalSelect2Options);
+        }
     }
 
     function populateWard() {
@@ -1210,6 +1250,9 @@
             });
         } else {
             wardSel.disabled = true;
+        }
+        if (window.jQuery && $(wardSel).data('select2')) {
+            $(wardSel).select2(window.globalSelect2Options);
         }
     }
 
@@ -1249,7 +1292,10 @@
         updateSideItemStatus('side-item-contact', isContactValid);
         updateSideItemStatus('side-item-disability', disVal !== "");
 
-        const step1Complete = nameVal && genVal && idVal && ageVal && isContactValid && disVal;
+        const termsAgreed = document.getElementById('terms-agreed-input').value === 'true';
+        updateSideItemStatus('side-item-terms', termsAgreed);
+        
+        const step1Complete = nameVal && genVal && idVal && ageVal && isContactValid && disVal && termsAgreed;
         toggleSectionGroupCompletion(1, step1Complete);
 
         const catVal = document.getElementById('id_incident_category').value;
@@ -1407,6 +1453,9 @@
             } else {
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactVal)) errors.push('A valid email address is required');
             }
+            if (document.getElementById('terms-agreed-input').value !== 'true') {
+                errors.push('You must agree to the Terms and Conditions');
+            }
         } else if (step === 2) {
             if (!document.getElementById('id_incident_category').value) errors.push('Type of abuse is required');
             if (!document.getElementById('id_platform_used').value) errors.push('Platform where abuse occurred is required');
@@ -1512,6 +1561,80 @@
         </div>
     </div>
 </div>
+
+<!-- Terms Modal -->
+<div id="terms-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
+        <div class="p-5 sm:p-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900 text-white">
+            <h3 class="text-lg font-black tracking-tight flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Digital Safe Space Use
+            </h3>
+            <button type="button" onclick="closeTermsModal()" class="text-purple-200 hover:text-white transition p-1">✕</button>
+        </div>
+        <div class="p-5 sm:p-8 overflow-y-auto flex-grow text-xs text-gray-700 space-y-5 leading-relaxed bg-gray-50/30">
+            <div>
+                <p class="text-sm font-black text-gray-900">Terms and Conditions for Digital Safe Space use</p>
+                <p class="text-[10px] text-gray-500 font-bold mt-1 uppercase tracking-wider">Last Updated: January 26, 2026</p>
+            </div>
+            
+            <div>
+                <p class="font-bold text-gray-900 mb-1">1. Agreement to Terms</p>
+                <p>By accessing our website, you agree to be bound by these Terms and Conditions and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.</p>
+            </div>
+            
+            <div>
+                <p class="font-bold text-gray-900 mb-1">2. Intellectual Property Rights</p>
+                <p>Unless otherwise stated, we and/or our licensors own the intellectual property rights for all material on this website. You may access this for your own personal use, but you must not:</p>
+                <ul class="list-disc ml-5 mt-2 space-y-1 text-gray-600">
+                    <li>Republish or sell material from www.digital_safe_space.go.ke.</li>
+                    <li>Reproduce, duplicate, or copy content for commercial purposes.</li>
+                    <li>Redistribute content unless specifically allowed.</li>
+                </ul>
+            </div>
+            
+            <div>
+                <p class="font-bold text-gray-900 mb-1">3. User Conduct</p>
+                <p>You agree not to use the website for any unlawful purpose or any purpose prohibited under this clause. You agree not to use the website in any way that could damage the website, services, or general business.</p>
+            </div>
+            
+            <div>
+                <p class="font-bold text-gray-900 mb-1">4. Limitation of Liability</p>
+                <p>In no event shall we, nor any of our officers, directors, and employees, be held liable for anything arising out of or in any way connected with your use of this website. We shall not be held liable for any indirect, consequential, or special liability arising out of or in any way related to your use of this website.</p>
+            </div>
+            
+            <div>
+                <p class="font-bold text-gray-900 mb-1">5. Termination</p>
+                <p>We may terminate or suspend your access to our service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+            </div>
+            
+            <div>
+                <p class="font-bold text-gray-900 mb-1">6. Governing Law</p>
+                <p>These terms and conditions are governed by and construed in accordance with the laws of Kenya, and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
+            </div>
+        </div>
+        <div class="p-5 border-t border-gray-100 bg-white flex justify-end gap-3">
+            <button type="button" onclick="closeTermsModal()" class="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition">
+                Cancel
+            </button>
+            <button type="button" onclick="acceptTerms()" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white font-black text-xs rounded-xl shadow-md transition tracking-wider uppercase">
+                I Agree &amp; Accept
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openTermsModal() { document.getElementById('terms-modal').classList.remove('hidden'); }
+    function closeTermsModal() { document.getElementById('terms-modal').classList.add('hidden'); }
+    function acceptTerms() {
+        closeTermsModal();
+        document.getElementById('terms-status-icon').innerHTML = '<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>';
+        document.getElementById('terms-status-text').innerHTML = '<span class="text-green-700 font-extrabold text-[13px]">Accepted</span>';
+        document.getElementById('terms-agreed-input').value = 'true';
+        validateLiveFields();
+    }
+</script>
 
 <style>
     @keyframes progress-bar {
@@ -1681,5 +1804,87 @@
     .review-card-green .review-card-label {
         color: #16a34a;
     }
+</style>
+
+<!-- Select2 Implementation for search and custom tags -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        window.globalSelect2Options = {
+            tags: true,
+            width: '100%',
+            createTag: function (params) {
+                var term = $.trim(params.term);
+                if (term === '') return null;
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true 
+                }
+            }
+        };
+
+        $('select').select2(window.globalSelect2Options).on('change', function(e) {
+            // Trigger native change to update validation and UI
+            if (e.originalEvent === undefined) { 
+                const event = new Event('change');
+                this.dispatchEvent(event);
+            }
+        });
+    });
+</script>
+<style>
+/* Custom Select2 Tailwind Styling */
+.select2-container .select2-selection--single {
+    height: 46px !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0.75rem !important; 
+    font-size: 0.75rem !important; 
+    background-color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #374151 !important; 
+    padding-left: 0.75rem !important;
+    font-weight: 500 !important;
+    line-height: normal !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 44px !important;
+    right: 10px !important;
+}
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #a855f7 !important; 
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.4) !important;
+}
+.select2-dropdown {
+    border-radius: 0.75rem !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+    font-size: 0.75rem !important;
+    padding: 4px !important;
+}
+.select2-search__field {
+    border-radius: 0.5rem !important;
+    border: 1px solid #e5e7eb !important;
+    padding: 0.5rem !important;
+}
+.select2-search__field:focus {
+    outline: none !important;
+    border-color: #a855f7 !important;
+    box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2) !important;
+}
+.select2-results__option {
+    border-radius: 0.5rem !important;
+    margin-bottom: 2px !important;
+}
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #f3e8ff !important;
+    color: #6b21a8 !important;
+}
 </style>
 {% endblock %}
