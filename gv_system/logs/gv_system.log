@@ -1819,3 +1819,13 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. Y
 2026-07-01 10:48:38,494 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
 2026-07-01 10:48:41,346 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
 2026-07-01 10:54:39,457 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 11:01:17,977 [INFO] reports.views: Saved Report ID 3 | Ref: GBV-UWDA-KIHN | PIN: 763117
+2026-07-01 11:33:22,357 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-01 11:33:22,372 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-01 11:33:24,272 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 11:33:24,323 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 11:35:52,092 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-01 11:35:52,121 [INFO] django.utils.autoreload: C:\Users\Admin\Desktop\backup\GBV_SYSTEM\gv_system\reports\views.py changed, reloading.
+2026-07-01 11:35:54,429 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 11:35:54,429 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2026-07-01 11:37:16,203 [INFO] django.utils.autoreload: Watching for file changes with StatReloader

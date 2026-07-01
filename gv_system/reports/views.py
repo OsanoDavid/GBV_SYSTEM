@@ -476,26 +476,19 @@ def report_success_view(request):
 @user_passes_test(is_staff)
 def department_portal_view(request):
     """View to show reports assigned to the logged-in staff member's department."""
-    if request.user.is_superuser:
-        reports = IncidentReport.objects.all().order_by('-created_at')
-        portal_title = 'All Reports'
-        departments = Department.objects.annotate(case_count=Count('incidentreport')).order_by('name')
-        home_cases = IncidentReport.objects.filter(assigned_home__isnull=False).order_by('-created_at')
-        childrens_homes = ChildrensHome.objects.annotate(
-            case_count=Count('incidentreport')
-        ).prefetch_related(
-            Prefetch('incidentreport_set', queryset=home_cases, to_attr='portal_cases')
-        ).order_by('name')
-    else:
-        reports = IncidentReport.objects.all().order_by('-created_at')
-        portal_title = 'All Reports'
-        departments = Department.objects.annotate(case_count=Count('incidentreport')).order_by('name')
-        home_cases = IncidentReport.objects.filter(assigned_home__isnull=False).order_by('-created_at')
-        childrens_homes = ChildrensHome.objects.annotate(
-            case_count=Count('incidentreport')
-        ).prefetch_related(
-            Prefetch('incidentreport_set', queryset=home_cases, to_attr='portal_cases')
-        ).order_by('name')
+    # The logic is the same for all staff/admin users, so no need for an if/else.
+    # In the future, if you want different logic for different admin levels,
+    # you can re-introduce the checks (e.g., if not request.user.is_superuser: ...)
+    reports = IncidentReport.objects.all().order_by('-created_at')
+    portal_title = 'All Reports'
+    departments = Department.objects.annotate(case_count=Count('incidentreport')).order_by('name')
+    home_cases = IncidentReport.objects.filter(assigned_home__isnull=False).order_by('-created_at')
+    childrens_homes = ChildrensHome.objects.annotate(
+        case_count=Count('incidentreport')
+    ).prefetch_related(
+        Prefetch('incidentreport_set', queryset=home_cases, to_attr='portal_cases')
+    ).order_by('name')
+
     return render(request, 'reports/department_portal.html', {
         'reports': reports,
         'portal_title': portal_title,
